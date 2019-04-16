@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="iOS 渲染框架UIKitUIKit自身并不具备在屏幕成像的能力，其主要负责对用户操作事件的响应（UIView继承自UIResponder），事件响应的传递大体是经过逐层的视图树遍历实现的。 Core AnimationCore Animation是一个复合引擎，其职责是尽可能快地组合屏幕上不同的可视内容，这些可视内容可被分解成独立的图层（即CALayer），这些图层会被存储在一个叫做图层树的体系">
+<meta name="description" content="iOS 渲染框架 UIKit UIKit自身并不具备在屏幕成像的能力，其主要负责对用户操作事件的响应（UIView继承自UIResponder），事件响应的传递大体是经过逐层的视图树遍历实现的。 Core Animation Core Animation是一个复合引擎，其职责是尽可能快地组合屏幕上不同的可视内容，这些可视内容可被分解成独立的图层（即CALayer），这些图层会被存储在一个叫做图层树">
 <meta name="keywords" content="knowledge">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS 渲染框架">
 <meta property="og:url" content="https://caicoder.github.io/2018/10/18/knowledge/iOSRenderFramework/index.html">
 <meta property="og:site_name" content="caicoder的博客">
-<meta property="og:description" content="iOS 渲染框架UIKitUIKit自身并不具备在屏幕成像的能力，其主要负责对用户操作事件的响应（UIView继承自UIResponder），事件响应的传递大体是经过逐层的视图树遍历实现的。 Core AnimationCore Animation是一个复合引擎，其职责是尽可能快地组合屏幕上不同的可视内容，这些可视内容可被分解成独立的图层（即CALayer），这些图层会被存储在一个叫做图层树的体系">
+<meta property="og:description" content="iOS 渲染框架 UIKit UIKit自身并不具备在屏幕成像的能力，其主要负责对用户操作事件的响应（UIView继承自UIResponder），事件响应的传递大体是经过逐层的视图树遍历实现的。 Core Animation Core Animation是一个复合引擎，其职责是尽可能快地组合屏幕上不同的可视内容，这些可视内容可被分解成独立的图层（即CALayer），这些图层会被存储在一个叫做图层树">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-04-16T06:27:46.773Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS 渲染框架">
-<meta name="twitter:description" content="iOS 渲染框架UIKitUIKit自身并不具备在屏幕成像的能力，其主要负责对用户操作事件的响应（UIView继承自UIResponder），事件响应的传递大体是经过逐层的视图树遍历实现的。 Core AnimationCore Animation是一个复合引擎，其职责是尽可能快地组合屏幕上不同的可视内容，这些可视内容可被分解成独立的图层（即CALayer），这些图层会被存储在一个叫做图层树的体系">
+<meta name="twitter:description" content="iOS 渲染框架 UIKit UIKit自身并不具备在屏幕成像的能力，其主要负责对用户操作事件的响应（UIView继承自UIResponder），事件响应的传递大体是经过逐层的视图树遍历实现的。 Core Animation Core Animation是一个复合引擎，其职责是尽可能快地组合屏幕上不同的可视内容，这些可视内容可被分解成独立的图层（即CALayer），这些图层会被存储在一个叫做图层树">
 
 
 
@@ -300,12 +300,18 @@
       
 
       
-        <h1 id="iOS-渲染框架"><a href="#iOS-渲染框架" class="headerlink" title="iOS 渲染框架"></a>iOS 渲染框架</h1><h1 id="UIKit"><a href="#UIKit" class="headerlink" title="UIKit"></a><code>UIKit</code></h1><p><code>UIKit</code>自身并不具备在屏幕成像的能力，其主要负责对用户操作事件的响应（<code>UIView</code>继承自<code>UIResponder</code>），事件响应的传递大体是经过逐层的视图树遍历实现的。</p>
-<h1 id="Core-Animation"><a href="#Core-Animation" class="headerlink" title="Core Animation"></a><code>Core Animation</code></h1><p><code>Core Animation</code>是一个复合引擎，其职责是尽可能快地<strong>组合屏幕上不同的可视内容，这些可视内容可被分解成独立的图层（即CALayer）</strong>，这些图层会被存储在一个叫做图层树的体系之中。</p>
-<h1 id="Core-Graphics"><a href="#Core-Graphics" class="headerlink" title="Core Graphics"></a><code>Core Graphics</code></h1><p><code>Core Graphics</code>基于<code>Quartz</code>高级绘图引擎，主要用于<strong>运行时绘制图像</strong>。开发者可以使用此框架来处理基于路径的绘图，转换，颜色管理，离屏渲染，图案，渐变和阴影，图像数据管理，图像创建和图像遮罩以及PDF文档创建，</p>
+        <h1>iOS 渲染框架</h1>
+<h1><code>UIKit</code></h1>
+<p><code>UIKit</code>自身并不具备在屏幕成像的能力，其主要负责对用户操作事件的响应（<code>UIView</code>继承自<code>UIResponder</code>），事件响应的传递大体是经过逐层的视图树遍历实现的。</p>
+<h1><code>Core Animation</code></h1>
+<p><code>Core Animation</code>是一个复合引擎，其职责是尽可能快地<strong>组合屏幕上不同的可视内容，这些可视内容可被分解成独立的图层（即CALayer）</strong>，这些图层会被存储在一个叫做图层树的体系之中。</p>
+<h1><code>Core Graphics</code></h1>
+<p><code>Core Graphics</code>基于<code>Quartz</code>高级绘图引擎，主要用于<strong>运行时绘制图像</strong>。开发者可以使用此框架来处理基于路径的绘图，转换，颜色管理，离屏渲染，图案，渐变和阴影，图像数据管理，图像创建和图像遮罩以及PDF文档创建，</p>
 <p>开发者需要在<strong>运行时创建图像</strong>时，可以使用<code>Core Graphics</code>去绘制。</p>
-<h1 id="Core-Image"><a href="#Core-Image" class="headerlink" title="Core Image"></a><code>Core Image</code></h1><p><code>Core Image</code>与<code>Core Graphics</code>恰恰相反，<code>Core Graphics</code>用于在<strong>运行时创建图像</strong>，而<code>Core Image</code>用于<strong>处理运行前创建的图像</strong>。</p>
-<h1 id="OpenglES"><a href="#OpenglES" class="headerlink" title="OpenglES"></a><code>OpenglES</code></h1>
+<h1><code>Core Image</code></h1>
+<p><code>Core Image</code>与<code>Core Graphics</code>恰恰相反，<code>Core Graphics</code>用于在<strong>运行时创建图像</strong>，而<code>Core Image</code>用于<strong>处理运行前创建的图像</strong>。</p>
+<h1><code>OpenglES</code></h1>
+
       
     </div>
     
@@ -470,7 +476,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#iOS-渲染框架"><span class="nav-number">1.</span> <span class="nav-text">iOS 渲染框架</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#UIKit"><span class="nav-number">2.</span> <span class="nav-text">UIKit</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Core-Animation"><span class="nav-number">3.</span> <span class="nav-text">Core Animation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Core-Graphics"><span class="nav-number">4.</span> <span class="nav-text">Core Graphics</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Core-Image"><span class="nav-number">5.</span> <span class="nav-text">Core Image</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#OpenglES"><span class="nav-number">6.</span> <span class="nav-text">OpenglES</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">iOS 渲染框架</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">2.</span> <span class="nav-text">UIKit</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">3.</span> <span class="nav-text">Core Animation</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">4.</span> <span class="nav-text">Core Graphics</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">5.</span> <span class="nav-text">Core Image</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">6.</span> <span class="nav-text">OpenglES</span></a></li></ol></div>
             
 
           </div>

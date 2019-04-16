@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="Socket编程它是基于TCP/IP协议，Socket就是一个可以连通网络上不同计算机程序之间的管道，把一堆数据从管道的A端扔进去，则会从管道的B端（也许同时还可以从C、D、E、F……端冒出来）。管道的端口由两个因素来唯一确认，即机器的IP地址和程序所使用的端口号。 Socket可以支持数据的发送和接收，它会定义一种称为套接字的变量，发送数据时首先创建套接字，然后使用该套接字的sendto等方法对">
+<meta name="description" content="Socket编程 它是基于TCP/IP协议，Socket就是一个可以连通网络上不同计算机程序之间的管道，把一堆数据从管道的A端扔进去，则会从管道的B端（也许同时还可以从C、D、E、F……端冒出来）。管道的端口由两个因素来唯一确认，即机器的IP地址和程序所使用的端口号。 Socket可以支持数据的发送和接收，它会定义一种称为套接字的变量，发送数据时首先创建套接字，然后使用该套接字的sendto等方法">
 <meta name="keywords" content="network">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Socket编程">
 <meta property="og:url" content="https://caicoder.github.io/2019/02/11/network/Socket/index.html">
 <meta property="og:site_name" content="caicoder的博客">
-<meta property="og:description" content="Socket编程它是基于TCP/IP协议，Socket就是一个可以连通网络上不同计算机程序之间的管道，把一堆数据从管道的A端扔进去，则会从管道的B端（也许同时还可以从C、D、E、F……端冒出来）。管道的端口由两个因素来唯一确认，即机器的IP地址和程序所使用的端口号。 Socket可以支持数据的发送和接收，它会定义一种称为套接字的变量，发送数据时首先创建套接字，然后使用该套接字的sendto等方法对">
+<meta property="og:description" content="Socket编程 它是基于TCP/IP协议，Socket就是一个可以连通网络上不同计算机程序之间的管道，把一堆数据从管道的A端扔进去，则会从管道的B端（也许同时还可以从C、D、E、F……端冒出来）。管道的端口由两个因素来唯一确认，即机器的IP地址和程序所使用的端口号。 Socket可以支持数据的发送和接收，它会定义一种称为套接字的变量，发送数据时首先创建套接字，然后使用该套接字的sendto等方法">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-04-16T06:12:49.232Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Socket编程">
-<meta name="twitter:description" content="Socket编程它是基于TCP/IP协议，Socket就是一个可以连通网络上不同计算机程序之间的管道，把一堆数据从管道的A端扔进去，则会从管道的B端（也许同时还可以从C、D、E、F……端冒出来）。管道的端口由两个因素来唯一确认，即机器的IP地址和程序所使用的端口号。 Socket可以支持数据的发送和接收，它会定义一种称为套接字的变量，发送数据时首先创建套接字，然后使用该套接字的sendto等方法对">
+<meta name="twitter:description" content="Socket编程 它是基于TCP/IP协议，Socket就是一个可以连通网络上不同计算机程序之间的管道，把一堆数据从管道的A端扔进去，则会从管道的B端（也许同时还可以从C、D、E、F……端冒出来）。管道的端口由两个因素来唯一确认，即机器的IP地址和程序所使用的端口号。 Socket可以支持数据的发送和接收，它会定义一种称为套接字的变量，发送数据时首先创建套接字，然后使用该套接字的sendto等方法">
 
 
 
@@ -300,22 +300,29 @@
       
 
       
-        <h1 id="Socket编程"><a href="#Socket编程" class="headerlink" title="Socket编程"></a>Socket编程</h1><p>它是基于TCP/IP协议，Socket就是一个可以连通网络上不同计算机程序之间的管道，把一堆数据从管道的A端扔进去，则会从管道的B端（也许同时还可以从C、D、E、F……端冒出来）。管道的端口由两个因素来唯一确认，即机器的IP地址和程序所使用的端口号。</p>
+        <h1>Socket编程</h1>
+<p>它是基于TCP/IP协议，Socket就是一个可以连通网络上不同计算机程序之间的管道，把一堆数据从管道的A端扔进去，则会从管道的B端（也许同时还可以从C、D、E、F……端冒出来）。管道的端口由两个因素来唯一确认，即机器的IP地址和程序所使用的端口号。</p>
 <p>Socket可以支持数据的发送和接收，它会定义一种称为套接字的变量，发送数据时首先创建套接字，然后使用该套接字的sendto等方法对准某个IP/端口进行数据发送；接收端也首先创建套接字，然后将该套接字绑定到一个IP/端口上，所有发向此端口的数据会被该套接字的recv等函数读出。如同读出文件中的数据一样。</p>
 <p>TCP/IP的socket提供下列三种类型套接字。  流式套接字、数据报式套接字、原始式套接字。</p>
 <p>客户端编程步骤：</p>
 <ol>
-<li><p>加载套接字库，创建套接字(WSAStartup()/socket())；</p>
+<li>
+<p>加载套接字库，创建套接字(WSAStartup()/socket())；</p>
 </li>
-<li><p>向服务器发出连接请求(connect())；</p>
+<li>
+<p>向服务器发出连接请求(connect())；</p>
 </li>
-<li><p>和服务器端进行通信(send()/recv())；</p>
+<li>
+<p>和服务器端进行通信(send()/recv())；</p>
 </li>
-<li><p>关闭套接字，关闭加载的套接字库(closesocket()/WSACleanup())。</p>
+<li>
+<p>关闭套接字，关闭加载的套接字库(closesocket()/WSACleanup())。</p>
 </li>
 </ol>
-<h2 id="心跳包机制"><a href="#心跳包机制" class="headerlink" title="心跳包机制"></a>心跳包机制</h2><p>跳包之所以叫心跳包是因为：它像心跳一样每隔固定时间发一次，以此来告诉服务器，这个客户端还活着。事实上这是为了保持长连接，至于这个包的内容，是没有什么特别规定的，不过一般都是很小的包，或者只包含包头的一个空包。</p>
-<h2 id="心跳检测步骤"><a href="#心跳检测步骤" class="headerlink" title="心跳检测步骤"></a>心跳检测步骤</h2><ol>
+<h2>心跳包机制</h2>
+<p>跳包之所以叫心跳包是因为：它像心跳一样每隔固定时间发一次，以此来告诉服务器，这个客户端还活着。事实上这是为了保持长连接，至于这个包的内容，是没有什么特别规定的，不过一般都是很小的包，或者只包含包头的一个空包。</p>
+<h2>心跳检测步骤</h2>
+<ol>
 <li>客户端每隔一个时间间隔发生一个探测包给服务器</li>
 <li>客户端发包时启动一个超时定时器</li>
 <li>服务器端接收到检测包，应该回应一个包</li>
@@ -352,8 +359,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/10/network/Http 和 Https 有什么关系和区别/" rel="next" title="Http 和 Https 有什么关系和区别">
-                <i class="fa fa-chevron-left"></i> Http 和 Https 有什么关系和区别
+              <a href="/2019/02/10/network/Http&Socket/" rel="next" title="Http和Socket通信的区别">
+                <i class="fa fa-chevron-left"></i> Http和Socket通信的区别
               </a>
             
           </div>
@@ -483,7 +490,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Socket编程"><span class="nav-number">1.</span> <span class="nav-text">Socket编程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#心跳包机制"><span class="nav-number">1.1.</span> <span class="nav-text">心跳包机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#心跳检测步骤"><span class="nav-number">1.2.</span> <span class="nav-text">心跳检测步骤</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">Socket编程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.</span> <span class="nav-text">心跳包机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.</span> <span class="nav-text">心跳检测步骤</span></a></li></ol></li></ol></div>
             
 
           </div>

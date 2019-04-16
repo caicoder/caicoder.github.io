@@ -79,13 +79,13 @@
 
 
 
-<meta name="description" content="Http 和 Https 有什么关系和区别HTTP协议传输的数据都是未加密的，也就是明文的，因此使用HTTP协议传输隐私信息非常不安全，为了保证这些隐私数据能加密传输，于是网景公司设计了SSL（Secure Sockets Layer）协议用于对HTTP协议传输的数据进行加密 HTTPS = HTTP + SSL/TLSHTTPS是安全的HTTP.  HTTPS和HTTP的区别主要如下： 　　1、">
+<meta name="description" content="Http 和 Https 有什么关系和区别 HTTP协议传输的数据都是未加密的，也就是明文的，因此使用HTTP协议传输隐私信息非常不安全，为了保证这些隐私数据能加密传输，于是网景公司设计了SSL（Secure Sockets Layer）协议用于对HTTP协议传输的数据进行加密 HTTPS = HTTP + SSL/TLS HTTPS是安全的HTTP.  HTTPS和HTTP的区别主要如下： 1、">
 <meta name="keywords" content="network">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Http 和 Https 有什么关系和区别">
 <meta property="og:url" content="https://caicoder.github.io/2019/02/10/network/Http 和 Https 有什么关系和区别/index.html">
 <meta property="og:site_name" content="caicoder的博客">
-<meta property="og:description" content="Http 和 Https 有什么关系和区别HTTP协议传输的数据都是未加密的，也就是明文的，因此使用HTTP协议传输隐私信息非常不安全，为了保证这些隐私数据能加密传输，于是网景公司设计了SSL（Secure Sockets Layer）协议用于对HTTP协议传输的数据进行加密 HTTPS = HTTP + SSL/TLSHTTPS是安全的HTTP.  HTTPS和HTTP的区别主要如下： 　　1、">
+<meta property="og:description" content="Http 和 Https 有什么关系和区别 HTTP协议传输的数据都是未加密的，也就是明文的，因此使用HTTP协议传输隐私信息非常不安全，为了保证这些隐私数据能加密传输，于是网景公司设计了SSL（Secure Sockets Layer）协议用于对HTTP协议传输的数据进行加密 HTTPS = HTTP + SSL/TLS HTTPS是安全的HTTP.  HTTPS和HTTP的区别主要如下： 1、">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://img.isylar.com/media/15499427689041.jpg">
 <meta property="og:image" content="http://img.isylar.com/media/15499430718209.jpg">
@@ -94,7 +94,7 @@
 <meta property="og:updated_time" content="2019-04-16T06:14:17.545Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Http 和 Https 有什么关系和区别">
-<meta name="twitter:description" content="Http 和 Https 有什么关系和区别HTTP协议传输的数据都是未加密的，也就是明文的，因此使用HTTP协议传输隐私信息非常不安全，为了保证这些隐私数据能加密传输，于是网景公司设计了SSL（Secure Sockets Layer）协议用于对HTTP协议传输的数据进行加密 HTTPS = HTTP + SSL/TLSHTTPS是安全的HTTP.  HTTPS和HTTP的区别主要如下： 　　1、">
+<meta name="twitter:description" content="Http 和 Https 有什么关系和区别 HTTP协议传输的数据都是未加密的，也就是明文的，因此使用HTTP协议传输隐私信息非常不安全，为了保证这些隐私数据能加密传输，于是网景公司设计了SSL（Secure Sockets Layer）协议用于对HTTP协议传输的数据进行加密 HTTPS = HTTP + SSL/TLS HTTPS是安全的HTTP.  HTTPS和HTTP的区别主要如下： 1、">
 <meta name="twitter:image" content="http://img.isylar.com/media/15499427689041.jpg">
 
 
@@ -305,22 +305,29 @@
       
 
       
-        <h1 id="Http-和-Https-有什么关系和区别"><a href="#Http-和-Https-有什么关系和区别" class="headerlink" title="Http 和 Https 有什么关系和区别"></a>Http 和 Https 有什么关系和区别</h1><p>HTTP协议传输的数据都是未加密的，也就是明文的，因此使用HTTP协议传输隐私信息非常不安全，为了保证这些隐私数据能加密传输，于是网景公司设计了SSL（Secure Sockets Layer）协议用于对HTTP协议传输的数据进行加密</p>
-<p>HTTPS = HTTP + SSL/TLS<br>HTTPS是安全的HTTP.</p>
+        <h1>Http 和 Https 有什么关系和区别</h1>
+<p>HTTP协议传输的数据都是未加密的，也就是明文的，因此使用HTTP协议传输隐私信息非常不安全，为了保证这些隐私数据能加密传输，于是网景公司设计了SSL（Secure Sockets Layer）协议用于对HTTP协议传输的数据进行加密</p>
+<p>HTTPS = HTTP + SSL/TLS
+HTTPS是安全的HTTP.</p>
 <p><img src="http://img.isylar.com/media/15499427689041.jpg" alt></p>
 <p>HTTPS和HTTP的区别主要如下：</p>
-<p>　　1、https协议需要到ca申请证书，一般免费证书较少，因而需要一定费用。</p>
-<p>　　2、http是超文本传输协议，信息是明文传输，https则是具有安全性的ssl加密传输协议。</p>
-<p>　　3、http和https使用的是完全不同的连接方式，用的端口也不一样，前者是80，后者是443。</p>
-<p>　　4、http的连接很简单，是无状态的；HTTPS协议是由SSL+HTTP协议构建的可进行加密传输、身份认证的网络协议，比http协议安全。</p>
-<h2 id="HTTPS-连接简历流程是怎么样的"><a href="#HTTPS-连接简历流程是怎么样的" class="headerlink" title="HTTPS 连接简历流程是怎么样的"></a>HTTPS 连接简历流程是怎么样的</h2><p><img src="http://img.isylar.com/media/15499430718209.jpg" alt></p>
-<h3 id="会话秘钥"><a href="#会话秘钥" class="headerlink" title="会话秘钥"></a>会话秘钥</h3><p>会话秘钥 = randomS + randomC + 预主秘钥</p>
-<h2 id="HTTPS都是用了哪些加密手段"><a href="#HTTPS都是用了哪些加密手段" class="headerlink" title="HTTPS都是用了哪些加密手段?"></a>HTTPS都是用了哪些加密手段?</h2><ul>
+<p>1、https协议需要到ca申请证书，一般免费证书较少，因而需要一定费用。</p>
+<p>2、http是超文本传输协议，信息是明文传输，https则是具有安全性的ssl加密传输协议。</p>
+<p>3、http和https使用的是完全不同的连接方式，用的端口也不一样，前者是80，后者是443。</p>
+<p>4、http的连接很简单，是无状态的；HTTPS协议是由SSL+HTTP协议构建的可进行加密传输、身份认证的网络协议，比http协议安全。</p>
+<h2>HTTPS 连接简历流程是怎么样的</h2>
+<p><img src="http://img.isylar.com/media/15499430718209.jpg" alt></p>
+<h3>会话秘钥</h3>
+<p>会话秘钥 = randomS + randomC + 预主秘钥</p>
+<h2>HTTPS都是用了哪些加密手段?</h2>
+<ul>
 <li>连接建立过程中是用非对称加密，非对称加密很耗时</li>
 <li>后续通讯过程是用对称加密</li>
 </ul>
-<h3 id="非对称加密"><a href="#非对称加密" class="headerlink" title="非对称加密"></a>非对称加密</h3><p><img src="http://img.isylar.com/media/15499433240342.jpg" alt></p>
-<h3 id="对称加密"><a href="#对称加密" class="headerlink" title="对称加密"></a>对称加密</h3><p><img src="http://img.isylar.com/media/15499434404057.jpg" alt></p>
+<h3>非对称加密</h3>
+<p><img src="http://img.isylar.com/media/15499433240342.jpg" alt></p>
+<h3>对称加密</h3>
+<p><img src="http://img.isylar.com/media/15499434404057.jpg" alt></p>
 
       
     </div>
@@ -351,8 +358,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/02/10/network/Http&Socket/" rel="next" title="Http和Socket通信的区别">
-                <i class="fa fa-chevron-left"></i> Http和Socket通信的区别
+              <a href="/2019/02/10/network/OSI/" rel="next" title="OSI七层模型">
+                <i class="fa fa-chevron-left"></i> OSI七层模型
               </a>
             
           </div>
@@ -361,8 +368,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/02/11/network/Socket/" rel="prev" title="Socket编程">
-                Socket编程 <i class="fa fa-chevron-right"></i>
+              <a href="/2019/02/10/network/Http&Socket/" rel="prev" title="Http和Socket通信的区别">
+                Http和Socket通信的区别 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -486,7 +493,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Http-和-Https-有什么关系和区别"><span class="nav-number">1.</span> <span class="nav-text">Http 和 Https 有什么关系和区别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTPS-连接简历流程是怎么样的"><span class="nav-number">1.1.</span> <span class="nav-text">HTTPS 连接简历流程是怎么样的</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#会话秘钥"><span class="nav-number">1.1.1.</span> <span class="nav-text">会话秘钥</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HTTPS都是用了哪些加密手段"><span class="nav-number">1.2.</span> <span class="nav-text">HTTPS都是用了哪些加密手段?</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#非对称加密"><span class="nav-number">1.2.1.</span> <span class="nav-text">非对称加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对称加密"><span class="nav-number">1.2.2.</span> <span class="nav-text">对称加密</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">Http 和 Https 有什么关系和区别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.</span> <span class="nav-text">HTTPS 连接简历流程是怎么样的</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.1.</span> <span class="nav-text">会话秘钥</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.</span> <span class="nav-text">HTTPS都是用了哪些加密手段?</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.1.</span> <span class="nav-text">非对称加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.2.</span> <span class="nav-text">对称加密</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

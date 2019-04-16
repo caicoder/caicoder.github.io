@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="4次挥手过程详解 第一次挥手(FIN=1，seq=x)  假设客户端想要关闭连接，客户端发送一个 FIN 标志位置为1的包，表示自己已经没有数据可以发送了，但是仍然可以接受数据。 发送完毕后，客户端进入 FIN_WAIT_1 状态。  第二次挥手(ACK=1，ACKnum=x+1)  服务器端确认客户端的 FIN 包，发送一个确认包，表明自己接受到了客户端关闭连接的请求，但还没有准备好关闭连接。">
+<meta name="description" content="4次挥手过程详解  第一次挥手(FIN=1，seq=x)  假设客户端想要关闭连接，客户端发送一个 FIN 标志位置为1的包，表示自己已经没有数据可以发送了，但是仍然可以接受数据。 发送完毕后，客户端进入 FIN_WAIT_1 状态。  第二次挥手(ACK=1，ACKnum=x+1)  服务器端确认客户端的 FIN 包，发送一个确认包，表明自己接受到了客户端关闭连接的请求，但还没有准备好关闭连接。">
 <meta name="keywords" content="network">
 <meta property="og:type" content="article">
 <meta property="og:title" content="4次挥手过程详解">
 <meta property="og:url" content="https://caicoder.github.io/2019/01/01/network/4次挥手过程详解/index.html">
 <meta property="og:site_name" content="caicoder的博客">
-<meta property="og:description" content="4次挥手过程详解 第一次挥手(FIN=1，seq=x)  假设客户端想要关闭连接，客户端发送一个 FIN 标志位置为1的包，表示自己已经没有数据可以发送了，但是仍然可以接受数据。 发送完毕后，客户端进入 FIN_WAIT_1 状态。  第二次挥手(ACK=1，ACKnum=x+1)  服务器端确认客户端的 FIN 包，发送一个确认包，表明自己接受到了客户端关闭连接的请求，但还没有准备好关闭连接。">
+<meta property="og:description" content="4次挥手过程详解  第一次挥手(FIN=1，seq=x)  假设客户端想要关闭连接，客户端发送一个 FIN 标志位置为1的包，表示自己已经没有数据可以发送了，但是仍然可以接受数据。 发送完毕后，客户端进入 FIN_WAIT_1 状态。  第二次挥手(ACK=1，ACKnum=x+1)  服务器端确认客户端的 FIN 包，发送一个确认包，表明自己接受到了客户端关闭连接的请求，但还没有准备好关闭连接。">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://img.isylar.com/media/15439929991609.png">
 <meta property="og:updated_time" content="2019-04-16T06:10:23.819Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="4次挥手过程详解">
-<meta name="twitter:description" content="4次挥手过程详解 第一次挥手(FIN=1，seq=x)  假设客户端想要关闭连接，客户端发送一个 FIN 标志位置为1的包，表示自己已经没有数据可以发送了，但是仍然可以接受数据。 发送完毕后，客户端进入 FIN_WAIT_1 状态。  第二次挥手(ACK=1，ACKnum=x+1)  服务器端确认客户端的 FIN 包，发送一个确认包，表明自己接受到了客户端关闭连接的请求，但还没有准备好关闭连接。">
+<meta name="twitter:description" content="4次挥手过程详解  第一次挥手(FIN=1，seq=x)  假设客户端想要关闭连接，客户端发送一个 FIN 标志位置为1的包，表示自己已经没有数据可以发送了，但是仍然可以接受数据。 发送完毕后，客户端进入 FIN_WAIT_1 状态。  第二次挥手(ACK=1，ACKnum=x+1)  服务器端确认客户端的 FIN 包，发送一个确认包，表明自己接受到了客户端关闭连接的请求，但还没有准备好关闭连接。">
 <meta name="twitter:image" content="http://img.isylar.com/media/15439929991609.png">
 
 
@@ -302,7 +302,8 @@
       
 
       
-        <h1 id="4次挥手过程详解"><a href="#4次挥手过程详解" class="headerlink" title="4次挥手过程详解"></a>4次挥手过程详解</h1><ul>
+        <h1>4次挥手过程详解</h1>
+<ul>
 <li>第一次挥手(FIN=1，seq=x)</li>
 </ul>
 <p>假设客户端想要关闭连接，客户端发送一个 FIN 标志位置为1的包，表示自己已经没有数据可以发送了，但是仍然可以接受数据。</p>
@@ -495,7 +496,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#4次挥手过程详解"><span class="nav-number">1.</span> <span class="nav-text">4次挥手过程详解</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">4次挥手过程详解</span></a></li></ol></div>
             
 
           </div>

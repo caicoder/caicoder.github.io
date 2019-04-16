@@ -79,13 +79,13 @@
 
 
 
-<meta name="description" content="The Run Loop Sequence of Events 下面我们看一下 runloop 从启动到退出的整个生命周期内做了哪些事情：  从上图可以看出，runloop 的生命周期大概要经历三个阶段：  runloop 启动后首先处理待处理的事件，如：timer、input source； 进入休眠状态，等待新任务的到来； 有新任务了，runloop(准确地说是 thread) 被唤醒，处理新">
+<meta name="description" content="The Run Loop Sequence of Events  下面我们看一下 runloop 从启动到退出的整个生命周期内做了哪些事情：  从上图可以看出，runloop 的生命周期大概要经历三个阶段：  runloop 启动后首先处理待处理的事件，如：timer、input source； 进入休眠状态，等待新任务的到来； 有新任务了，runloop(准确地说是 thread) 被唤醒，处理">
 <meta name="keywords" content="面试">
 <meta property="og:type" content="article">
 <meta property="og:title" content="谜一样的 Runloop(2_2)">
 <meta property="og:url" content="https://caicoder.github.io/2017/06/08/Article/谜一样的 Runloop(2_2) /index.html">
 <meta property="og:site_name" content="caicoder的博客">
-<meta property="og:description" content="The Run Loop Sequence of Events 下面我们看一下 runloop 从启动到退出的整个生命周期内做了哪些事情：  从上图可以看出，runloop 的生命周期大概要经历三个阶段：  runloop 启动后首先处理待处理的事件，如：timer、input source； 进入休眠状态，等待新任务的到来； 有新任务了，runloop(准确地说是 thread) 被唤醒，处理新">
+<meta property="og:description" content="The Run Loop Sequence of Events  下面我们看一下 runloop 从启动到退出的整个生命周期内做了哪些事情：  从上图可以看出，runloop 的生命周期大概要经历三个阶段：  runloop 启动后首先处理待处理的事件，如：timer、input source； 进入休眠状态，等待新任务的到来； 有新任务了，runloop(准确地说是 thread) 被唤醒，处理">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-23-054440.jpg">
 <meta property="og:image" content="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-23-054507.jpg">
@@ -111,7 +111,7 @@
 <meta property="og:updated_time" content="2019-04-16T06:21:09.588Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="谜一样的 Runloop(2_2)">
-<meta name="twitter:description" content="The Run Loop Sequence of Events 下面我们看一下 runloop 从启动到退出的整个生命周期内做了哪些事情：  从上图可以看出，runloop 的生命周期大概要经历三个阶段：  runloop 启动后首先处理待处理的事件，如：timer、input source； 进入休眠状态，等待新任务的到来； 有新任务了，runloop(准确地说是 thread) 被唤醒，处理新">
+<meta name="twitter:description" content="The Run Loop Sequence of Events  下面我们看一下 runloop 从启动到退出的整个生命周期内做了哪些事情：  从上图可以看出，runloop 的生命周期大概要经历三个阶段：  runloop 启动后首先处理待处理的事件，如：timer、input source； 进入休眠状态，等待新任务的到来； 有新任务了，runloop(准确地说是 thread) 被唤醒，处理">
 <meta name="twitter:image" content="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-23-054440.jpg">
 
 
@@ -322,7 +322,8 @@
       
 
       
-        <h1 id="The-Run-Loop-Sequence-of-Events"><a href="#The-Run-Loop-Sequence-of-Events" class="headerlink" title="The Run Loop Sequence of Events"></a>The Run Loop Sequence of Events</h1><hr>
+        <h1>The Run Loop Sequence of Events</h1>
+<hr>
 <p>下面我们看一下 runloop 从启动到退出的整个生命周期内做了哪些事情：</p>
 <p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-23-054440.jpg" alt></p>
 <p>从上图可以看出，runloop 的生命周期大概要经历三个阶段：</p>
@@ -333,7 +334,8 @@
 </ul>
 <p>需要注意的是：runloop 启动后如果有 port-based input sources event 需要处理，则 runloop 在处理完该事件后直接退出。</p>
 <p>runloop 在整个生命周期内还有一件重要的事情就是与 observer 的交互。我们可以通过设置 runloop 的 observer 来监控 runloop 的内部状态。</p>
-<h1 id="Understanding-Runloop-Internals-by-Runloop-Observer"><a href="#Understanding-Runloop-Internals-by-Runloop-Observer" class="headerlink" title="Understanding Runloop Internals by Runloop-Observer"></a>Understanding Runloop Internals by Runloop-Observer</h1><hr>
+<h1>Understanding Runloop Internals by Runloop-Observer</h1>
+<hr>
 <p>runloop 之所以像谜一样让人琢磨不透，主要在于我们难于了解其内部实现机制、触发时机，同时也很难感受到它的存在。虽然，<a href="http://zxfcumtcs.github.io/2014/11/15/runloop/" target="_blank" rel="noopener">前文</a>通过 pseudo-code 的形式模拟了 runloop 的内部实现，但对于 runloop 真正何时会被触发，何时结束还是不太清楚。</p>
 <p>幸运的是，Apple 还是给了我们近距离观察 runloop 的机会——runloop observer(可以形象地将其称之为 runloop 之窗 ^_^)。</p>
 <p>通过 runloop observer 我们可以近距离的监听 runloop 以下重要事件：</p>
@@ -345,12 +347,16 @@
 <li>runloop 被唤醒，但还未处理唤醒它的事件——kCFRunLoopAfterWaiting；</li>
 <li>runloop 退出——kCFRunLoopExit。</li>
 </ul>
-<h2 id="CFRunLoopObserver-——-runloop-之窗。"><a href="#CFRunLoopObserver-——-runloop-之窗。" class="headerlink" title="CFRunLoopObserver —— runloop 之窗。"></a>CFRunLoopObserver —— runloop 之窗。</h2><p>Apple 君为我们提供了两个创建<code>CFRunLoopObserver</code>的接口：</p>
+<h2>CFRunLoopObserver —— runloop 之窗。</h2>
+<p>Apple 君为我们提供了两个创建<code>CFRunLoopObserver</code>的接口：</p>
 <p><code>CFRunLoopObserverCreate</code>以及<code>CFRunLoopObserverCreateWithHandler</code>。</p>
 <p>两者的区别仅在于前者以函数指针的形式提供监听回调，后者以 block 的形式提供回调接口。</p>
-<p>以<code>CFRunLoopObserverCreateWithHandler</code>为例，Observer 的实现大致如下：<br><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-23-054507.jpg" alt></p>
+<p>以<code>CFRunLoopObserverCreateWithHandler</code>为例，Observer 的实现大致如下：
+<img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-23-054507.jpg" alt></p>
 <p>我们可以选择要监听的 runloop 事件，上面代码中使用了<code>kCFRunLoopAllActivities</code>，其他还有：<code>kCFRunLoopEntry</code>、<code>kCFRunLoopBeforeTimers</code>、<code>kCFRunLoopBeforeSources</code>、<code>kCFRunLoopBeforeWaiting</code>、<code>kCFRunLoopAfterWaiting</code>以及<code>kCFRunLoopExit</code>。</p>
-<h2 id="Runloop-Observer-of-Main-Runloop"><a href="#Runloop-Observer-of-Main-Runloop" class="headerlink" title="Runloop Observer of Main Runloop"></a>Runloop Observer of Main Runloop</h2><p>首先，我们通过 runloop observer 监听一下 main runloop。<br><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-23-054520.png" alt></p>
+<h2>Runloop Observer of Main Runloop</h2>
+<p>首先，我们通过 runloop observer 监听一下 main runloop。
+<img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-23-054520.png" alt></p>
 <p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-23-054530.png" alt></p>
 <p>从上面的 log 我们可以得出：<strong>main runloop 在主界面初始化完成，即将显示到屏幕前自动启动，runloop 启动后 (唤醒后) 会依次处理 timer(如果有)、source event(如果有)并在此前通知 observer。</strong></p>
 <p>为了 log 显示简洁突出主题，下面我们只监听<code>kCFRunLoopEntry</code>、<code>kCFRunLoopBeforeWaiting</code>、<code>kCFRunLoopAfterWaiting</code>以及<code>kCFRunLoopExit</code>事件。</p>
@@ -363,19 +369,22 @@
 <p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-23-054632.png" alt></p>
 <p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-23-054639.png" alt>]</p>
 <p><strong>如果唤醒 runloop 的事件含有异步操作，runloop 不会等待异步操作完成。<code>viewWillAppear:</code>和<code>viewDidAppear:</code>不在同一次 runloop 中被调用。</strong></p>
-<h2 id="Runloop-Observer-of-Other-Runloop"><a href="#Runloop-Observer-of-Other-Runloop" class="headerlink" title="Runloop Observer of Other Runloop"></a>Runloop Observer of Other Runloop</h2><p>main runloop 作为整个 app 的神经中枢，很大程度上受系统所控制，下面我们通过 runloop observer 观察一下子线程的 runloop。</p>
+<h2>Runloop Observer of Other Runloop</h2>
+<p>main runloop 作为整个 app 的神经中枢，很大程度上受系统所控制，下面我们通过 runloop observer 观察一下子线程的 runloop。</p>
 <p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-23-054707.png" alt></p>
 <p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-23-054712.png" alt></p>
 <p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-23-054728.png" alt></p>
 <p><strong>timer 会唤醒 runloop 但不会使 runloop 退出</strong></p>
-<p>如果子线程的 runloop 不添加任何 timer、source event：<br><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-23-054748.png" alt></p>
+<p>如果子线程的 runloop 不添加任何 timer、source event：
+<img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-23-054748.png" alt></p>
 <p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-23-054803.png" alt></p>
 <p><strong>可以看到，此情况下，runloop 直接退出，连 runloop observer 都不通知一下 (runloop 根本没有启动)！</strong></p>
 <p>下面再看一个更加复杂点的情况，添加第二个按钮，在其点击事件中向子线程发送 performSelector 消息：</p>
 <p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-23-054904.png" alt></p>
 <p>子线程的 timer handler、performSelector handler 如下：</p>
 <p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-23-054914.png" alt></p>
-<p>在子线程启动并触发 timer，但 timer handler 未返回之前，点击第二个 button：<br><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-23-054941.png" alt></p>
+<p>在子线程启动并触发 timer，但 timer handler 未返回之前，点击第二个 button：
+<img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-23-054941.png" alt></p>
 <p>可以看到，子线程在 timer handler 返回后才处理 performSelector 消息，并且在一次 runloop 中可以处理多个事件。</p>
 <p>奇怪的是，runloop 在处理完 performSelector 消息后，还处理了另一个 timer fire 事件，随后退出。</p>
 <p>ok，小结一下：</p>
@@ -389,25 +398,32 @@
 <li>如果子线程的 runloop 没有绑定 timer 或 source event，其 runloop 不会启动；</li>
 <li>一次 runloop 可以处理多个事件。</li>
 </ul>
-<h1 id="Autorelease-and-Runloop"><a href="#Autorelease-and-Runloop" class="headerlink" title="Autorelease and Runloop"></a>Autorelease and Runloop</h1><hr>
+<h1>Autorelease and Runloop</h1>
+<hr>
 <p>在 MRC 中，autorelase 作为重要的内存管理机制而被广大程序猿们烂记于心。我们都知道，autorelease 对象会被放入 autorelease pool，最终会被自动 release！借用一句广告词：<strong>有了 autorelease，程序猿们再也不用担心内存泄漏了！</strong></p>
 <p>那么，问题来了：autorelease pool 中的对象到底什么时候会被真正的 release？</p>
 <p>嗯，这也是一道很好的面试题！</p>
 <p>答案也很简单，每次 runloop 退出前都会处理 autorelease pool——将其中的所有 object 都 release 一次。</p>
-<p>咱们还是通过代码来看看吧，将前面提到的子线程的 performSelector 实现改成如下所示：<br><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-23-055000.png" alt></p>
+<p>咱们还是通过代码来看看吧，将前面提到的子线程的 performSelector 实现改成如下所示：
+<img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-23-055000.png" alt></p>
 <p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-23-055013.png" alt></p>
 <p>是的，如预期所料，<code>testAutoreleaseObj</code>作为 autorelease object 在 runloop 退出前被 release 了。</p>
-<p>autorelease 固然好用，但在使用过程中也需谨慎，否则容易出问题，并且由 autorelease 引发的问题一般较难排查。<br>常见问题有：</p>
+<p>autorelease 固然好用，但在使用过程中也需谨慎，否则容易出问题，并且由 autorelease 引发的问题一般较难排查。
+常见问题有：</p>
 <ul>
 <li>autorelease object 被手动 release；</li>
 <li>跨 runloop 使用 autorelease object。</li>
 </ul>
-<p>一旦在大型项目中出现第一个问题，很难排查，其 crash 堆栈如下：<br><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-23-055025.png" alt></p>
-<p>从这个堆栈中我们能得到的只有：autorelease object 提前被手动 release！<br>呵呵，至于是哪个 object 被提前 release 了，不得而知！</p>
-<p>第二个问题主要出现在类的对象含有 autorelease 的成员变量：<br><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-23-055044.png" alt></p>
+<p>一旦在大型项目中出现第一个问题，很难排查，其 crash 堆栈如下：
+<img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-23-055025.png" alt></p>
+<p>从这个堆栈中我们能得到的只有：autorelease object 提前被手动 release！
+呵呵，至于是哪个 object 被提前 release 了，不得而知！</p>
+<p>第二个问题主要出现在类的对象含有 autorelease 的成员变量：
+<img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-23-055044.png" alt></p>
 <p><code>testViewController</code>类的实例保存了 autorelease 的<code>_str</code>，由于<code>viewDidAppear:</code>的调用在另一 runloop 中，此时<code>_str</code>已经释放！</p>
 <p>是的，在类的成员变量中保存 autorelease 对象是一件十分危险的事情！</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><hr>
+<h1>总结</h1>
+<hr>
 <p>runloop 作为事件处理的神经中枢，对整个 app 的意义不言而喻。准确而深入地了解 runloop 的机制，对程序猿的意义也不言而喻！</p>
 <p>这两篇文章，我们简要介绍了 runloop 的基本概念、通过 pseudo-code 遐想了 runloop 的实现机制、通过 runloop observer 偷窥了 runloop 的重要时刻。</p>
 <p>当然，runloop 还有很多问题值得探索…</p>
@@ -576,7 +592,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#The-Run-Loop-Sequence-of-Events"><span class="nav-number">1.</span> <span class="nav-text">The Run Loop Sequence of Events</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Understanding-Runloop-Internals-by-Runloop-Observer"><span class="nav-number">2.</span> <span class="nav-text">Understanding Runloop Internals by Runloop-Observer</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CFRunLoopObserver-——-runloop-之窗。"><span class="nav-number">2.1.</span> <span class="nav-text">CFRunLoopObserver —— runloop 之窗。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Runloop-Observer-of-Main-Runloop"><span class="nav-number">2.2.</span> <span class="nav-text">Runloop Observer of Main Runloop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Runloop-Observer-of-Other-Runloop"><span class="nav-number">2.3.</span> <span class="nav-text">Runloop Observer of Other Runloop</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Autorelease-and-Runloop"><span class="nav-number">3.</span> <span class="nav-text">Autorelease and Runloop</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">The Run Loop Sequence of Events</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">2.</span> <span class="nav-text">Understanding Runloop Internals by Runloop-Observer</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">2.1.</span> <span class="nav-text">CFRunLoopObserver —— runloop 之窗。</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">2.2.</span> <span class="nav-text">Runloop Observer of Main Runloop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">2.3.</span> <span class="nav-text">Runloop Observer of Other Runloop</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">3.</span> <span class="nav-text">Autorelease and Runloop</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>

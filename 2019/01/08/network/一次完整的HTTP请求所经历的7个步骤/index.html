@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="一次完整的HTTP请求所经历的7个步骤HTTP通信机制是在一次完整的HTTP通信过程中，Web浏览器与Web服务器之间将完成下列7个步骤：  建立TCP连接  在HTTP工作开始之前，Web浏览器首先要通过网络与Web服务器建立连接，该连接是通过TCP来完成的，该协议与IP协议共同构建 Internet，即著名的TCP/IP协议族，因此Internet又被称作是TCP/IP网络。HTTP是比TCP">
+<meta name="description" content="一次完整的HTTP请求所经历的7个步骤 HTTP通信机制是在一次完整的HTTP通信过程中，Web浏览器与Web服务器之间将完成下列7个步骤：  建立TCP连接  在HTTP工作开始之前，Web浏览器首先要通过网络与Web服务器建立连接，该连接是通过TCP来完成的，该协议与IP协议共同构建 Internet，即著名的TCP/IP协议族，因此Internet又被称作是TCP/IP网络。HTTP是比TC">
 <meta name="keywords" content="network">
 <meta property="og:type" content="article">
 <meta property="og:title" content="一次完整的HTTP请求所经历的7个步骤">
 <meta property="og:url" content="https://caicoder.github.io/2019/01/08/network/一次完整的HTTP请求所经历的7个步骤/index.html">
 <meta property="og:site_name" content="caicoder的博客">
-<meta property="og:description" content="一次完整的HTTP请求所经历的7个步骤HTTP通信机制是在一次完整的HTTP通信过程中，Web浏览器与Web服务器之间将完成下列7个步骤：  建立TCP连接  在HTTP工作开始之前，Web浏览器首先要通过网络与Web服务器建立连接，该连接是通过TCP来完成的，该协议与IP协议共同构建 Internet，即著名的TCP/IP协议族，因此Internet又被称作是TCP/IP网络。HTTP是比TCP">
+<meta property="og:description" content="一次完整的HTTP请求所经历的7个步骤 HTTP通信机制是在一次完整的HTTP通信过程中，Web浏览器与Web服务器之间将完成下列7个步骤：  建立TCP连接  在HTTP工作开始之前，Web浏览器首先要通过网络与Web服务器建立连接，该连接是通过TCP来完成的，该协议与IP协议共同构建 Internet，即著名的TCP/IP协议族，因此Internet又被称作是TCP/IP网络。HTTP是比TC">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-04-16T06:10:03.434Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一次完整的HTTP请求所经历的7个步骤">
-<meta name="twitter:description" content="一次完整的HTTP请求所经历的7个步骤HTTP通信机制是在一次完整的HTTP通信过程中，Web浏览器与Web服务器之间将完成下列7个步骤：  建立TCP连接  在HTTP工作开始之前，Web浏览器首先要通过网络与Web服务器建立连接，该连接是通过TCP来完成的，该协议与IP协议共同构建 Internet，即著名的TCP/IP协议族，因此Internet又被称作是TCP/IP网络。HTTP是比TCP">
+<meta name="twitter:description" content="一次完整的HTTP请求所经历的7个步骤 HTTP通信机制是在一次完整的HTTP通信过程中，Web浏览器与Web服务器之间将完成下列7个步骤：  建立TCP连接  在HTTP工作开始之前，Web浏览器首先要通过网络与Web服务器建立连接，该连接是通过TCP来完成的，该协议与IP协议共同构建 Internet，即著名的TCP/IP协议族，因此Internet又被称作是TCP/IP网络。HTTP是比TC">
 
 
 
@@ -300,7 +300,8 @@
       
 
       
-        <h1 id="一次完整的HTTP请求所经历的7个步骤"><a href="#一次完整的HTTP请求所经历的7个步骤" class="headerlink" title="一次完整的HTTP请求所经历的7个步骤"></a>一次完整的HTTP请求所经历的7个步骤</h1><p>HTTP通信机制是在一次完整的HTTP通信过程中，Web浏览器与Web服务器之间将完成下列7个步骤：</p>
+        <h1>一次完整的HTTP请求所经历的7个步骤</h1>
+<p>HTTP通信机制是在一次完整的HTTP通信过程中，Web浏览器与Web服务器之间将完成下列7个步骤：</p>
 <ul>
 <li>建立TCP连接</li>
 </ul>
@@ -312,7 +313,9 @@
 <ul>
 <li>Web浏览器发送请求头</li>
 </ul>
-<p>浏览器发送其请求命令之后，还要以头信息的形式向Web服务器发送一些别的信息，之后浏览器发送了一空白行来通知服务器，它已经结束了该头信息的发送。<br>Web服务器应答<br>客户机向服务器发出请求后，服务器会客户机回送应答， HTTP/1.1 200 OK ，应答的第一部分是协议的版本号和应答状态码。</p>
+<p>浏览器发送其请求命令之后，还要以头信息的形式向Web服务器发送一些别的信息，之后浏览器发送了一空白行来通知服务器，它已经结束了该头信息的发送。
+Web服务器应答
+客户机向服务器发出请求后，服务器会客户机回送应答， HTTP/1.1 200 OK ，应答的第一部分是协议的版本号和应答状态码。</p>
 <ul>
 <li>Web服务器发送应答头</li>
 </ul>
@@ -325,7 +328,8 @@
 <li>Web服务器关闭TCP连接</li>
 </ul>
 <p>Connection:keep-alive</p>
-<p>一般情况下，一旦Web服务器向浏览器发送了请求数据，它就要关闭TCP连接，然后如果浏览器或者服务器在其头信息加入了这行代码：<br>TCP连接在发送后将仍然保持打开状态，于是，浏览器可以继续通过相同的连接发送请求。保持连接节省了为每个请求建立新连接所需的时间，还节约了网络带宽。</p>
+<p>一般情况下，一旦Web服务器向浏览器发送了请求数据，它就要关闭TCP连接，然后如果浏览器或者服务器在其头信息加入了这行代码：
+TCP连接在发送后将仍然保持打开状态，于是，浏览器可以继续通过相同的连接发送请求。保持连接节省了为每个请求建立新连接所需的时间，还节约了网络带宽。</p>
 <p><strong>建立TCP连接-&gt;发送请求行-&gt;发送请求头-&gt;（到达服务器）发送状态行-&gt;发送响应头-&gt;发送响应数据-&gt;断TCP连接</strong></p>
 
       
@@ -492,7 +496,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一次完整的HTTP请求所经历的7个步骤"><span class="nav-number">1.</span> <span class="nav-text">一次完整的HTTP请求所经历的7个步骤</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">一次完整的HTTP请求所经历的7个步骤</span></a></li></ol></div>
             
 
           </div>

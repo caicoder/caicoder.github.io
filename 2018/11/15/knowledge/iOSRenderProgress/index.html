@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="iOS 界面渲染流程  首先一个视图由 CPU 进行 Frame 布局，准备视图和图层的层级关系，查询是否有重写 drawRect: 或 drawLayer:inContext:方法，注意：如果有重写的话，这里的渲染是会占用CPU进行处理的。  CPU 会将处理视图和图层的层级关系打包，通过 IPC（内部处理通信）通道提交给渲染服务，渲染服务由 OpenGL ES 和 GPU 组成。  渲染服务首">
+<meta name="description" content="iOS 界面渲染流程    首先一个视图由 CPU 进行 Frame 布局，准备视图和图层的层级关系，查询是否有重写 drawRect: 或 drawLayer:inContext:方法，注意：如果有重写的话，这里的渲染是会占用CPU进行处理的。   CPU 会将处理视图和图层的层级关系打包，通过 IPC（内部处理通信）通道提交给渲染服务，渲染服务由 OpenGL ES 和 GPU 组成。   渲">
 <meta name="keywords" content="knowledge">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS 界面渲染流程">
 <meta property="og:url" content="https://caicoder.github.io/2018/11/15/knowledge/iOSRenderProgress/index.html">
 <meta property="og:site_name" content="caicoder的博客">
-<meta property="og:description" content="iOS 界面渲染流程  首先一个视图由 CPU 进行 Frame 布局，准备视图和图层的层级关系，查询是否有重写 drawRect: 或 drawLayer:inContext:方法，注意：如果有重写的话，这里的渲染是会占用CPU进行处理的。  CPU 会将处理视图和图层的层级关系打包，通过 IPC（内部处理通信）通道提交给渲染服务，渲染服务由 OpenGL ES 和 GPU 组成。  渲染服务首">
+<meta property="og:description" content="iOS 界面渲染流程    首先一个视图由 CPU 进行 Frame 布局，准备视图和图层的层级关系，查询是否有重写 drawRect: 或 drawLayer:inContext:方法，注意：如果有重写的话，这里的渲染是会占用CPU进行处理的。   CPU 会将处理视图和图层的层级关系打包，通过 IPC（内部处理通信）通道提交给渲染服务，渲染服务由 OpenGL ES 和 GPU 组成。   渲">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://img.isylar.com/media/15420320733034-1.jpg">
 <meta property="og:updated_time" content="2019-04-16T06:14:49.280Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS 界面渲染流程">
-<meta name="twitter:description" content="iOS 界面渲染流程  首先一个视图由 CPU 进行 Frame 布局，准备视图和图层的层级关系，查询是否有重写 drawRect: 或 drawLayer:inContext:方法，注意：如果有重写的话，这里的渲染是会占用CPU进行处理的。  CPU 会将处理视图和图层的层级关系打包，通过 IPC（内部处理通信）通道提交给渲染服务，渲染服务由 OpenGL ES 和 GPU 组成。  渲染服务首">
+<meta name="twitter:description" content="iOS 界面渲染流程    首先一个视图由 CPU 进行 Frame 布局，准备视图和图层的层级关系，查询是否有重写 drawRect: 或 drawLayer:inContext:方法，注意：如果有重写的话，这里的渲染是会占用CPU进行处理的。   CPU 会将处理视图和图层的层级关系打包，通过 IPC（内部处理通信）通道提交给渲染服务，渲染服务由 OpenGL ES 和 GPU 组成。   渲">
 <meta name="twitter:image" content="http://img.isylar.com/media/15420320733034-1.jpg">
 
 
@@ -302,15 +302,20 @@
       
 
       
-        <h1 id="iOS-界面渲染流程"><a href="#iOS-界面渲染流程" class="headerlink" title="iOS 界面渲染流程"></a>iOS 界面渲染流程</h1><p><img src="http://img.isylar.com/media/15420320733034-1.jpg" alt="15420320733034"></p>
+        <h1>iOS 界面渲染流程</h1>
+<p><img src="http://img.isylar.com/media/15420320733034-1.jpg" alt="15420320733034"></p>
 <ol>
-<li><p>首先一个视图由 CPU 进行 Frame 布局，准备视图和图层的层级关系，查询是否有重写 <code>drawRect:</code> 或 <code>drawLayer:inContext:</code>方法，<strong>注意：如果有重写的话，这里的渲染是会占用CPU进行处理的。</strong></p>
+<li>
+<p>首先一个视图由 CPU 进行 Frame 布局，准备视图和图层的层级关系，查询是否有重写 <code>drawRect:</code> 或 <code>drawLayer:inContext:</code>方法，<strong>注意：如果有重写的话，这里的渲染是会占用CPU进行处理的。</strong></p>
 </li>
-<li><p>CPU 会将处理视图和图层的层级关系打包，通过 IPC（内部处理通信）通道提交给渲染服务，渲染服务由 OpenGL ES 和 GPU 组成。</p>
+<li>
+<p>CPU 会将处理视图和图层的层级关系打包，通过 IPC（内部处理通信）通道提交给渲染服务，渲染服务由 OpenGL ES 和 GPU 组成。</p>
 </li>
-<li><p>渲染服务首先将图层数据交给 OpenGL ES 进行纹理生成和着色。生成前后帧缓存，再根据显示硬件的刷新频率，一般以设备的Vsync信号和CADisplayLink为标准，进行前后帧缓存的切换。</p>
+<li>
+<p>渲染服务首先将图层数据交给 OpenGL ES 进行纹理生成和着色。生成前后帧缓存，再根据显示硬件的刷新频率，一般以设备的Vsync信号和CADisplayLink为标准，进行前后帧缓存的切换。</p>
 </li>
-<li><p>最后，将最终要显示在画面上的后帧缓存交给 GPU，进行采集图片和形状，运行变换，应用文理和混合。最终显示在屏幕上。</p>
+<li>
+<p>最后，将最终要显示在画面上的后帧缓存交给 GPU，进行采集图片和形状，运行变换，应用文理和混合。最终显示在屏幕上。</p>
 </li>
 </ol>
 <blockquote>
@@ -481,7 +486,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#iOS-界面渲染流程"><span class="nav-number">1.</span> <span class="nav-text">iOS 界面渲染流程</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">iOS 界面渲染流程</span></a></li></ol></div>
             
 
           </div>

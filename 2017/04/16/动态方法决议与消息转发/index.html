@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="在Objective-C中，如果向一个对象发送一条该对象无法处理的消息(对应selector不存在)，会导致程序crash， 但是，在crash之前，oc的运行时系统会先经过以下两个步骤：  Dynamic Method Resolution Message Forwarding  1 Dynamic Method Resolution（动态方法决议）Objective C 提供了一种名为动态方法">
+<meta name="description" content="在Objective-C中，如果向一个对象发送一条该对象无法处理的消息(对应selector不存在)，会导致程序crash， 但是，在crash之前，oc的运行时系统会先经过以下两个步骤：  Dynamic Method Resolution Message Forwarding  1 Dynamic Method Resolution（动态方法决议） Objective C 提供了一种名为动态方">
 <meta property="og:type" content="article">
 <meta property="og:title" content="动态方法决议与消息转发">
 <meta property="og:url" content="https://caicoder.github.io/2017/04/16/动态方法决议与消息转发/index.html">
 <meta property="og:site_name" content="caicoder的博客">
-<meta property="og:description" content="在Objective-C中，如果向一个对象发送一条该对象无法处理的消息(对应selector不存在)，会导致程序crash， 但是，在crash之前，oc的运行时系统会先经过以下两个步骤：  Dynamic Method Resolution Message Forwarding  1 Dynamic Method Resolution（动态方法决议）Objective C 提供了一种名为动态方法">
+<meta property="og:description" content="在Objective-C中，如果向一个对象发送一条该对象无法处理的消息(对应selector不存在)，会导致程序crash， 但是，在crash之前，oc的运行时系统会先经过以下两个步骤：  Dynamic Method Resolution Message Forwarding  1 Dynamic Method Resolution（动态方法决议） Objective C 提供了一种名为动态方">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="https://raw.githubusercontent.com/937447974/Blog/master/Resources/2016101401.png">
 <meta property="og:updated_time" content="2019-04-16T04:32:47.799Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="动态方法决议与消息转发">
-<meta name="twitter:description" content="在Objective-C中，如果向一个对象发送一条该对象无法处理的消息(对应selector不存在)，会导致程序crash， 但是，在crash之前，oc的运行时系统会先经过以下两个步骤：  Dynamic Method Resolution Message Forwarding  1 Dynamic Method Resolution（动态方法决议）Objective C 提供了一种名为动态方法">
+<meta name="twitter:description" content="在Objective-C中，如果向一个对象发送一条该对象无法处理的消息(对应selector不存在)，会导致程序crash， 但是，在crash之前，oc的运行时系统会先经过以下两个步骤：  Dynamic Method Resolution Message Forwarding  1 Dynamic Method Resolution（动态方法决议） Objective C 提供了一种名为动态方">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/937447974/Blog/master/Resources/2016101401.png">
 
 
@@ -306,18 +306,21 @@
 <li>Dynamic Method Resolution</li>
 <li>Message Forwarding</li>
 </ol>
-<h2 id="1-Dynamic-Method-Resolution（动态方法决议）"><a href="#1-Dynamic-Method-Resolution（动态方法决议）" class="headerlink" title="1 Dynamic Method Resolution（动态方法决议）"></a>1 Dynamic Method Resolution（动态方法决议）</h2><p>Objective C 提供了一种名为动态方法决议的手段，使得我们可以在运行时动态地为一个 selector 提供实现。我们只要实现 +resolveInstanceMethod: 或 +resolveClassMethod: 方法，并在其中为指定的 selector  提供实现即可（通过调用运行时函数 class_addMethod 来添加)，并返回YES，运行时系统会重启一次消息的发送过程，调用动态添加的方法。例如,下面的例子：</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> dynamicMethodIMP(<span class="keyword">id</span> <span class="keyword">self</span>, SEL _cmd) &#123;</span><br><span class="line">    <span class="comment">// implementation ....</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">MyClass</span></span></span><br><span class="line">+ (<span class="built_in">BOOL</span>)resolveInstanceMethod:(SEL)aSEL</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (aSEL == <span class="keyword">@selector</span>(resolveThisMethodDynamically)) &#123;</span><br><span class="line">          class_addMethod([<span class="keyword">self</span> <span class="keyword">class</span>], aSEL, (IMP) dynamicMethodIMP, <span class="string">"v@:"</span>);</span><br><span class="line">          <span class="keyword">return</span> <span class="literal">YES</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> [<span class="keyword">super</span> resolveInstanceMethod:aSEL];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<h2>1 Dynamic Method Resolution（动态方法决议）</h2>
+<p>Objective C 提供了一种名为动态方法决议的手段，使得我们可以在运行时动态地为一个 selector 提供实现。我们只要实现 +resolveInstanceMethod: 或 +resolveClassMethod: 方法，并在其中为指定的 selector  提供实现即可（通过调用运行时函数 class_addMethod 来添加)，并返回YES，运行时系统会重启一次消息的发送过程，调用动态添加的方法。例如,下面的例子：</p>
+<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> dynamicMethodIMP(<span class="keyword">id</span> <span class="keyword">self</span>, SEL _cmd) &#123;</span><br><span class="line">    <span class="comment">// implementation ....</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">MyClass</span></span></span><br><span class="line">+ (<span class="built_in">BOOL</span>)resolveInstanceMethod:(SEL)aSEL</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (aSEL == <span class="keyword">@selector</span>(resolveThisMethodDynamically)) &#123;</span><br><span class="line">          class_addMethod([<span class="keyword">self</span> <span class="keyword">class</span>], aSEL, (IMP) dynamicMethodIMP, <span class="string">"v@:"</span>);</span><br><span class="line">          <span class="keyword">return</span> <span class="literal">YES</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> [<span class="keyword">super</span> resolveInstanceMethod:aSEL];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure></p>
 <p>class_addMethod 方法动态的添加新的方法与对应的实现，如果调用了[MyClass resolveThisMethodDynamically],将会转到动态添加的dynamicMethodIMP 方法中。Objective-C的方法本质上是一个至少包含两个参数(id self, SEL _cmd)的C函数，这样，当重启消息发送时，就能在类中找到@selector(dynamicMethodIMP)了。而如果方法返回NO时，将会进入下一步：消息转发(Message Forwarding)</p>
-<h2 id="2-Message-Forwarding（消息转发）"><a href="#2-Message-Forwarding（消息转发）" class="headerlink" title="2 Message Forwarding（消息转发）"></a>2 Message Forwarding（消息转发）</h2><p>消息转发分为两步：</p>
+<h2>2 Message Forwarding（消息转发）</h2>
+<p>消息转发分为两步：</p>
 <p>首先运行时系统会调用- (id)forwardingTargetForSelector:(SEL)aSelector方法，如果这个方法中返回的不是nil或者self，运行时系统将把消息发送给返回的那个对象。</p>
 <p>如果返回的是nil或者self，运行时系统首先会调用- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector方法来获得方法签名，方法签名记录了方法的参数和返回值的信息。</p>
 <p>如果－methodSignatureForSelector 返回的是nil, 运行时系统会抛出unrecognized selector exception，程序到这里就结束了。</p>
-<h2 id="3-流程图"><a href="#3-流程图" class="headerlink" title="3 流程图"></a>3 流程图</h2><p>整个流程可以用下面这张图表示</p>
+<h2>3 流程图</h2>
+<p>整个流程可以用下面这张图表示</p>
 <p><img src="https://raw.githubusercontent.com/937447974/Blog/master/Resources/2016101401.png" alt></p>
 <p>调用<code>[[YJItem alloc] test]</code>，从控制台打印方法的执行顺序如下所示</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">resolveInstanceMethod:</span><br><span class="line">forwardingTargetForSelector:</span><br><span class="line">methodSignatureForSelector:</span><br><span class="line">resolveInstanceMethod:</span><br><span class="line">doesNotRecognizeSelector:</span><br><span class="line">-[YJItem test]: unrecognized selector sent to instance <span class="number">0x61800000d5c0</span></span><br></pre></td></tr></table></figure>
-<p>&#160;</p>
+<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">resolveInstanceMethod:</span><br><span class="line">forwardingTargetForSelector:</span><br><span class="line">methodSignatureForSelector:</span><br><span class="line">resolveInstanceMethod:</span><br><span class="line">doesNotRecognizeSelector:</span><br><span class="line">-[YJItem test]: unrecognized selector sent to instance <span class="number">0x61800000d5c0</span></span><br></pre></td></tr></table></figure></p>
+<p> </p>
 <hr>
 
       
@@ -478,7 +481,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Dynamic-Method-Resolution（动态方法决议）"><span class="nav-number">1.</span> <span class="nav-text">1 Dynamic Method Resolution（动态方法决议）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Message-Forwarding（消息转发）"><span class="nav-number">2.</span> <span class="nav-text">2 Message Forwarding（消息转发）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-流程图"><span class="nav-number">3.</span> <span class="nav-text">3 流程图</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">1 Dynamic Method Resolution（动态方法决议）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">2.</span> <span class="nav-text">2 Message Forwarding（消息转发）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">3.</span> <span class="nav-text">3 流程图</span></a></li></ol></div>
             
 
           </div>

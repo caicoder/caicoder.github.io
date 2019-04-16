@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="什么是Http协议无状态协议?怎么解决Http协议无状态协议?无状态协议对于事务处理没有记忆能力。缺少状态意味着如果后续处理需要前面的信息也就是说，当客户端一次HTTP请求完成以后，客户端再发送一次HTTP请求，HTTP并不知道当前客户端是一个”老用户“。可以使用Cookie来解决无状态的问题，Cookie就相当于一个通行证，第一次访问的时候给客户端发送一个Cookie，当客户端再次来的时候，拿着">
+<meta name="description" content="什么是Http协议无状态协议?怎么解决Http协议无状态协议? 无状态协议对于事务处理没有记忆能力。缺少状态意味着如果后续处理需要前面的信息 也就是说，当客户端一次HTTP请求完成以后，客户端再发送一次HTTP请求，HTTP并不知道当前客户端是一个”老用户“。 可以使用Cookie来解决无状态的问题，Cookie就相当于一个通行证，第一次访问的时候给客户端发送一个Cookie，当客户端再次来的时候">
 <meta name="keywords" content="network">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Http协议无状态协议">
 <meta property="og:url" content="https://caicoder.github.io/2019/01/07/network/什么是Http协议无状态协议">
 <meta property="og:site_name" content="caicoder的博客">
-<meta property="og:description" content="什么是Http协议无状态协议?怎么解决Http协议无状态协议?无状态协议对于事务处理没有记忆能力。缺少状态意味着如果后续处理需要前面的信息也就是说，当客户端一次HTTP请求完成以后，客户端再发送一次HTTP请求，HTTP并不知道当前客户端是一个”老用户“。可以使用Cookie来解决无状态的问题，Cookie就相当于一个通行证，第一次访问的时候给客户端发送一个Cookie，当客户端再次来的时候，拿着">
+<meta property="og:description" content="什么是Http协议无状态协议?怎么解决Http协议无状态协议? 无状态协议对于事务处理没有记忆能力。缺少状态意味着如果后续处理需要前面的信息 也就是说，当客户端一次HTTP请求完成以后，客户端再发送一次HTTP请求，HTTP并不知道当前客户端是一个”老用户“。 可以使用Cookie来解决无状态的问题，Cookie就相当于一个通行证，第一次访问的时候给客户端发送一个Cookie，当客户端再次来的时候">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-04-16T06:28:25.344Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Http协议无状态协议">
-<meta name="twitter:description" content="什么是Http协议无状态协议?怎么解决Http协议无状态协议?无状态协议对于事务处理没有记忆能力。缺少状态意味着如果后续处理需要前面的信息也就是说，当客户端一次HTTP请求完成以后，客户端再发送一次HTTP请求，HTTP并不知道当前客户端是一个”老用户“。可以使用Cookie来解决无状态的问题，Cookie就相当于一个通行证，第一次访问的时候给客户端发送一个Cookie，当客户端再次来的时候，拿着">
+<meta name="twitter:description" content="什么是Http协议无状态协议?怎么解决Http协议无状态协议? 无状态协议对于事务处理没有记忆能力。缺少状态意味着如果后续处理需要前面的信息 也就是说，当客户端一次HTTP请求完成以后，客户端再发送一次HTTP请求，HTTP并不知道当前客户端是一个”老用户“。 可以使用Cookie来解决无状态的问题，Cookie就相当于一个通行证，第一次访问的时候给客户端发送一个Cookie，当客户端再次来的时候">
 
 
 
@@ -300,7 +300,10 @@
       
 
       
-        <h1 id="什么是Http协议无状态协议-怎么解决Http协议无状态协议"><a href="#什么是Http协议无状态协议-怎么解决Http协议无状态协议" class="headerlink" title="什么是Http协议无状态协议?怎么解决Http协议无状态协议?"></a>什么是Http协议无状态协议?怎么解决Http协议无状态协议?</h1><p>无状态协议对于事务处理没有记忆能力。缺少状态意味着如果后续处理需要前面的信息<br>也就是说，当客户端一次HTTP请求完成以后，客户端再发送一次HTTP请求，HTTP并不知道当前客户端是一个”老用户“。<br>可以使用Cookie来解决无状态的问题，Cookie就相当于一个通行证，第一次访问的时候给客户端发送一个Cookie，当客户端再次来的时候，拿着Cookie(通行证)，那么服务器就知道这个是”老用户“。</p>
+        <h1>什么是Http协议无状态协议?怎么解决Http协议无状态协议?</h1>
+<p>无状态协议对于事务处理没有记忆能力。缺少状态意味着如果后续处理需要前面的信息
+也就是说，当客户端一次HTTP请求完成以后，客户端再发送一次HTTP请求，HTTP并不知道当前客户端是一个”老用户“。
+可以使用Cookie来解决无状态的问题，Cookie就相当于一个通行证，第一次访问的时候给客户端发送一个Cookie，当客户端再次来的时候，拿着Cookie(通行证)，那么服务器就知道这个是”老用户“。</p>
 
       
     </div>
@@ -466,7 +469,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#什么是Http协议无状态协议-怎么解决Http协议无状态协议"><span class="nav-number">1.</span> <span class="nav-text">什么是Http协议无状态协议?怎么解决Http协议无状态协议?</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">什么是Http协议无状态协议?怎么解决Http协议无状态协议?</span></a></li></ol></div>
             
 
           </div>

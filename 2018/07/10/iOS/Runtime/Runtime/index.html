@@ -79,13 +79,13 @@
 
 
 
-<meta name="description" content="Runtime机制List1. Runtime基础 2.Runtime一些考点与知识点 3.Runtime Reference  Runtime基础Runtime内容流程  1.对象和类数据结构一个类的内部结构如下,      superClass 指向当前类的父类 cache_t 提供消息传递过程当中的缓存方法查找 ， 实质上是装满了 bucket_t 的一个 hash 表。因为散列表检索起来更">
+<meta name="description" content="Runtime机制 List &amp;lt;a href=&amp;quot;#Runtime Foundation&amp;quot;&amp;gt;1. Runtime基础&amp;lt;/a&amp;gt; &amp;lt;a href=&amp;quot;#Runtime Key Points&amp;quot;&amp;gt;2.Runtime一些考点与知识点&amp;lt;/a&amp;gt; &amp;lt;a href=&amp;quot;#Runtime Reference&amp;quot;&amp;">
 <meta name="keywords" content="Runtime">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Runtime">
 <meta property="og:url" content="https://caicoder.github.io/2018/07/10/iOS/Runtime/Runtime/index.html">
 <meta property="og:site_name" content="caicoder的博客">
-<meta property="og:description" content="Runtime机制List1. Runtime基础 2.Runtime一些考点与知识点 3.Runtime Reference  Runtime基础Runtime内容流程  1.对象和类数据结构一个类的内部结构如下,      superClass 指向当前类的父类 cache_t 提供消息传递过程当中的缓存方法查找 ， 实质上是装满了 bucket_t 的一个 hash 表。因为散列表检索起来更">
+<meta property="og:description" content="Runtime机制 List &amp;lt;a href=&amp;quot;#Runtime Foundation&amp;quot;&amp;gt;1. Runtime基础&amp;lt;/a&amp;gt; &amp;lt;a href=&amp;quot;#Runtime Key Points&amp;quot;&amp;gt;2.Runtime一些考点与知识点&amp;lt;/a&amp;gt; &amp;lt;a href=&amp;quot;#Runtime Reference&amp;quot;&amp;">
 <meta property="og:locale" content="default">
 <meta property="og:image" content="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-19-022544.jpg">
 <meta property="og:image" content="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-24-085229.jpg">
@@ -101,7 +101,7 @@
 <meta property="og:updated_time" content="2019-04-16T06:18:52.560Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Runtime">
-<meta name="twitter:description" content="Runtime机制List1. Runtime基础 2.Runtime一些考点与知识点 3.Runtime Reference  Runtime基础Runtime内容流程  1.对象和类数据结构一个类的内部结构如下,      superClass 指向当前类的父类 cache_t 提供消息传递过程当中的缓存方法查找 ， 实质上是装满了 bucket_t 的一个 hash 表。因为散列表检索起来更">
+<meta name="twitter:description" content="Runtime机制 List &amp;lt;a href=&amp;quot;#Runtime Foundation&amp;quot;&amp;gt;1. Runtime基础&amp;lt;/a&amp;gt; &amp;lt;a href=&amp;quot;#Runtime Key Points&amp;quot;&amp;gt;2.Runtime一些考点与知识点&amp;lt;/a&amp;gt; &amp;lt;a href=&amp;quot;#Runtime Reference&amp;quot;&amp;">
 <meta name="twitter:image" content="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-19-022544.jpg">
 
 
@@ -312,13 +312,17 @@
       
 
       
-        <h1 id="Runtime机制"><a href="#Runtime机制" class="headerlink" title="Runtime机制"></a>Runtime机制</h1><h2 id="List"><a href="#List" class="headerlink" title="List"></a>List</h2><p><a href="#Runtime Foundation">1. Runtime基础</a></p>
-<p><a href="#Runtime Key Points">2.Runtime一些考点与知识点</a></p>
-<p><a href="#Runtime Reference">3.Runtime Reference</a></p>
-<p><a id="Runtime Foundation"></a></p>
-<h2 id="Runtime基础"><a href="#Runtime基础" class="headerlink" title="Runtime基础"></a>Runtime基础</h2><p>Runtime内容流程</p>
+        <h1>Runtime机制</h1>
+<h2>List</h2>
+<p>&lt;a href=&quot;#Runtime Foundation&quot;&gt;1. Runtime基础&lt;/a&gt;</p>
+<p>&lt;a href=&quot;#Runtime Key Points&quot;&gt;2.Runtime一些考点与知识点&lt;/a&gt;</p>
+<p>&lt;a href=&quot;#Runtime Reference&quot;&gt;3.Runtime Reference&lt;/a&gt;</p>
+<p>&lt;a id=&quot;Runtime Foundation&quot;&gt;</p>
+<h2>Runtime基础</h2>
+<p>Runtime内容流程</p>
 <p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-19-022544.jpg" alt></p>
-<h2 id="1-对象和类数据结构"><a href="#1-对象和类数据结构" class="headerlink" title="1.对象和类数据结构"></a>1.对象和类数据结构</h2><p>一个类的内部结构如下,</p>
+<h2>1.对象和类数据结构</h2>
+<p>一个类的内部结构如下,</p>
 <p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-24-085229.jpg" alt="image-20190324153451659"></p>
 <p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-19-023218.jpg" alt></p>
 <p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-24-085240.jpg" alt="image-20190324154051666"></p>
@@ -329,23 +333,28 @@
 <li>class_data_bits_t 类的基础信息，包含了类的方法列表，协议列表等。</li>
 </ul>
 <p>method_t是一个方法的封装,里面包括了名称(SEL),返回值,参数,与函数体(实现)</p>
-<h4 id="1-1-class-data-bits-t-结构体"><a href="#1-1-class-data-bits-t-结构体" class="headerlink" title="1.1 class_data_bits_t 结构体"></a>1.1 class_data_bits_t 结构体</h4><p><code>class_data_bits_t</code>结构体中只有一个64位的指针bits，它相当于<code>class_rw_t</code>指针加上 rr/alloc 等标志位。其中<code>class_rw_t</code>指针存在于4~47位（从1开始计）</p>
+<h4>1.1 class_data_bits_t 结构体</h4>
+<p><code>class_data_bits_t</code>结构体中只有一个64位的指针bits，它相当于<code>class_rw_t</code>指针加上 rr/alloc 等标志位。其中<code>class_rw_t</code>指针存在于4~47位（从1开始计）</p>
 <p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-19-023930.png" alt></p>
 <p>class_rw_t结构体的定义如下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">struct class_rw_t &#123;</span><br><span class="line">    uint32_t flags;</span><br><span class="line">    uint32_t version;</span><br><span class="line"></span><br><span class="line">    const class_ro_t *ro;</span><br><span class="line">		//这个是单个类(基本原类)的结构体</span><br><span class="line">  //里面与 class_rw_t结构一样</span><br><span class="line">  //也是包括了方法，属性与协议</span><br><span class="line">  </span><br><span class="line">    method_array_t methods;</span><br><span class="line">  //重点看这里</span><br><span class="line">  //方法数组.</span><br><span class="line">  //其实是该类与该类的分类所有方法的集合</span><br><span class="line">  //下 属性与协议数组相同 意思</span><br><span class="line">    property_array_t properties;</span><br><span class="line">    protocol_array_t protocols;</span><br><span class="line"></span><br><span class="line">    Class firstSubclass;</span><br><span class="line">&#125;；</span><br></pre></td></tr></table></figure>
-<h4 id="1-2-class-ro-t-结构体"><a href="#1-2-class-ro-t-结构体" class="headerlink" title="1.2 class_ro_t 结构体"></a>1.2 class_ro_t 结构体</h4><p>class_ro_t与class_rw_t的最大区别在于一个是只读的，一个是可读写的，实质上ro就是readonly的简写，rw是readwrite的简写。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">struct class_ro_t &#123;</span><br><span class="line">    const char * name;</span><br><span class="line">    method_list_t * baseMethodList;</span><br><span class="line">    protocol_list_t * baseProtocols;</span><br><span class="line">    const ivar_list_t * ivars;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p><code>class_ro_t</code>在<strong>内存中是不可变</strong>的。<strong>[所以说扩展编译器已经决定了内存结构不能添加属性，只能通过关联添加]</strong>在运行期间，动态给类添加方法，实质上是更新class_rw_t的methods列表。</p>
-<h4 id="1-3-cache-t"><a href="#1-3-cache-t" class="headerlink" title="1.3 cache_t"></a>1.3 cache_t</h4><p>用于缓存方法</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">struct class_rw_t &#123;</span><br><span class="line">    uint32_t flags;</span><br><span class="line">    uint32_t version;</span><br><span class="line"></span><br><span class="line">    const class_ro_t *ro;</span><br><span class="line">		//这个是单个类(基本原类)的结构体</span><br><span class="line">  //里面与 class_rw_t结构一样</span><br><span class="line">  //也是包括了方法，属性与协议</span><br><span class="line">  </span><br><span class="line">    method_array_t methods;</span><br><span class="line">  //重点看这里</span><br><span class="line">  //方法数组.</span><br><span class="line">  //其实是该类与该类的分类所有方法的集合</span><br><span class="line">  //下 属性与协议数组相同 意思</span><br><span class="line">    property_array_t properties;</span><br><span class="line">    protocol_array_t protocols;</span><br><span class="line"></span><br><span class="line">    Class firstSubclass;</span><br><span class="line">&#125;；</span><br></pre></td></tr></table></figure></p>
+<h4>1.2 class_ro_t 结构体</h4>
+<p>class_ro_t与class_rw_t的最大区别在于一个是只读的，一个是可读写的，实质上ro就是readonly的简写，rw是readwrite的简写。</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">struct class_ro_t &#123;</span><br><span class="line">    const char * name;</span><br><span class="line">    method_list_t * baseMethodList;</span><br><span class="line">    protocol_list_t * baseProtocols;</span><br><span class="line">    const ivar_list_t * ivars;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p><code>class_ro_t</code>在<strong>内存中是不可变</strong>的。**[所以说扩展编译器已经决定了内存结构不能添加属性，只能通过关联添加]**在运行期间，动态给类添加方法，实质上是更新class_rw_t的methods列表。</p>
+<h4>1.3 cache_t</h4>
+<p>用于缓存方法</p>
 <p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-24-085245.jpg" alt="image-20190324153654016"></p>
-<h2 id="2-类对象与元类对象"><a href="#2-类对象与元类对象" class="headerlink" title="2.类对象与元类对象"></a>2.类对象与元类对象</h2><h4 id="2-1-metaclass-amp-class"><a href="#2-1-metaclass-amp-class" class="headerlink" title="2.1 metaclass &amp; class"></a>2.1 metaclass &amp; class</h4><p>在objc中，class存储类的实例方法（-），meta class存储类的类方法（+），class的isa指针指向meta class。</p>
+<h2>2.类对象与元类对象</h2>
+<h4>2.1 metaclass &amp; class</h4>
+<p>在objc中，class存储类的实例方法（-），meta class存储类的类方法（+），class的isa指针指向meta class。</p>
 <p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-19-023919.jpg" alt></p>
 <p><img src="https://ws4.sinaimg.cn/large/006tKfTcgy1g1dxftgghzj30ad05gwf3.jpg" alt="image-20190324154213040"></p>
 <p>每个类<strong>仅有一个类对象</strong>，而每个类对象<strong>仅有一个与之相关的元类</strong>。当你发出一个类似 <code>[NSObject alloc]</code>的消息时，你事实上是把这个消息发给了一个类对象 (Class Object) ，这个类对象必须是一个元类的实例，而这个元类同时也是一个根元类 (root meta class) 的实例。所有的元类最终都指向根元类为其超类。所有的元类的方法列表都有能够响应消息的类方法。所以当 [NSObject alloc] 这条消息发给类对象的时候，objc_msgSend() 会去它的元类里面去查找能够响应消息的方法，如果找到了，然后对这个类对象执行方法调用。</p>
 <p>看一个例子:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@interface CustomObject : NSObject</span><br><span class="line">-(NSString *)returnMeHelloWorld;</span><br><span class="line">@end</span><br><span class="line">@implementation CustomObject</span><br><span class="line"></span><br><span class="line">-(NSString *)returnMeHelloWorld&#123;</span><br><span class="line">    return @&quot;hello world&quot;;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">@interface CustomObject : NSObject</span><br><span class="line">-(NSString *)returnMeHelloWorld;</span><br><span class="line">@end</span><br><span class="line">@implementation CustomObject</span><br><span class="line"></span><br><span class="line">-(NSString *)returnMeHelloWorld&#123;</span><br><span class="line">    return @&quot;hello world&quot;;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure></p>
 <p>先只看调用这一行:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSString * helloWorld =  [obj returnMeHelloWorld];</span><br></pre></td></tr></table></figure>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NSString * helloWorld =  [obj returnMeHelloWorld];</span><br></pre></td></tr></table></figure></p>
 <ol>
 <li>编译成如下<code>id objc_msgSend(self,@selector(returnMeHelloWorld:));</code></li>
 <li>在self中沿着<code>isa</code>找到<code>CustomObject</code>的类对象</li>
@@ -353,7 +362,8 @@
 <li>把参数传递给IMP实际指向的执行代码</li>
 <li>代码执行返回结果给helloWorld</li>
 </ol>
-<h2 id="3-消息传递"><a href="#3-消息传递" class="headerlink" title="3.消息传递"></a>3.消息传递</h2><p>OC 是一门动态语言，函数调用变成了消息发送，在编译期不能知道要调用哪个函数。所以 Runtime 无非就是去解决如何在运行时期找到调用方法这样的问题</p>
+<h2>3.消息传递</h2>
+<p>OC 是一门动态语言，函数调用变成了消息发送，在编译期不能知道要调用哪个函数。所以 Runtime 无非就是去解决如何在运行时期找到调用方法这样的问题</p>
 <blockquote>
 <p>instance -&gt; class -&gt; method -&gt; SEL -&gt; IMP -&gt; 实现函数</p>
 </blockquote>
@@ -369,17 +379,23 @@
 <p><strong>Q:OC中向一个nil对象发送消息将会发生什么?为什么?</strong></p>
 <p><strong>A:</strong> nil的定义是null pointer to object-c object，指的是一个OC对象指针为空，本质就是(id)0，是OC对象的字面0值.OC中给空指针发消息不会崩溃的语言特性，<strong>原因是OC的函数调用都是通过objc_msgSend进行消息发送来实现的</strong>，相对于C和C++来说，对于空指针的操作会引起Crash的问题，<strong>而objc_msgSend会通过判断self来决定是否发送消息，如果self为nil，那么selector也会为空，直接返回</strong>，所以不会出现问题。</p>
 <p>objc在向一个对象发送消息时，runtime库会根据对象的isa指针找到该对象实际所属的类，然后在该类中的方法列表以及其父类方法列表中寻找方法运行，然后在发送消息的时候，objc_msgSend方法不会返回值，所谓的返回内容都是具体调用时执行的。那么，回到本题，如果向一个nil对象发送消息，首先在寻找对象的isa指针时就是0地址返回了，所以不会出现任何错误。</p>
-<h3 id="3-1-消息转发"><a href="#3-1-消息转发" class="headerlink" title="3.1 消息转发"></a>3.1 消息转发</h3><p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-19-061727.jpg" alt></p>
-<p><a id="Runtime Key Points"></a></p>
-<h2 id="Runtime更多知识点"><a href="#Runtime更多知识点" class="headerlink" title="Runtime更多知识点"></a>Runtime更多知识点</h2><h4 id="1-方法缓存存在什么地方？"><a href="#1-方法缓存存在什么地方？" class="headerlink" title="1.方法缓存存在什么地方？"></a>1.方法缓存存在什么地方？</h4><p>在类的定义里就有cache字段，没错，类的所有缓存都存在metaclass上，所以每个类都只有一份方法缓存，而<strong>不是每一个类的object都保存一份</strong></p>
-<h4 id="2-父类方法的缓存只存在父类么，还是子类也会缓存父类的方法？"><a href="#2-父类方法的缓存只存在父类么，还是子类也会缓存父类的方法？" class="headerlink" title="2.父类方法的缓存只存在父类么，还是子类也会缓存父类的方法？"></a>2.父类方法的缓存只存在父类么，还是子类也会缓存父类的方法？</h4><p>即便是从父类取到的方法，<strong>也会存在类本身的方法缓存里</strong>。而当用一个父类对象去调用那个方法的时候，也会在父类的metaclass里缓存一份。</p>
-<h4 id="3-为什么-类的方法列表-不直接做成散列表呢，做成list，还要单独缓存，多费事？"><a href="#3-为什么-类的方法列表-不直接做成散列表呢，做成list，还要单独缓存，多费事？" class="headerlink" title="3.为什么 类的方法列表 不直接做成散列表呢，做成list，还要单独缓存，多费事？"></a>3.为什么 类的方法列表 不直接做成散列表呢，做成list，还要单独缓存，多费事？</h4><ul>
+<h3>3.1 消息转发</h3>
+<p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-19-061727.jpg" alt></p>
+<p>&lt;a id=&quot;Runtime Key Points&quot;&gt;</p>
+<h2>Runtime更多知识点</h2>
+<h4>1.方法缓存存在什么地方？</h4>
+<p>在类的定义里就有cache字段，没错，类的所有缓存都存在metaclass上，所以每个类都只有一份方法缓存，而<strong>不是每一个类的object都保存一份</strong></p>
+<h4>2.父类方法的缓存只存在父类么，还是子类也会缓存父类的方法？</h4>
+<p>即便是从父类取到的方法，<strong>也会存在类本身的方法缓存里</strong>。而当用一个父类对象去调用那个方法的时候，也会在父类的metaclass里缓存一份。</p>
+<h4>3.为什么 类的方法列表 不直接做成散列表呢，做成list，还要单独缓存，多费事？</h4>
+<ul>
 <li>散列表是没有顺序的，Objective-C的方法列表是一个list，是有顺序的；Objective-C在查找方法的时候会顺着list依次寻找，并且category的方法在原始方法list的前面，需要先被找到，如果直接用hash存方法，方法的顺序就没法保证。</li>
 <li>list的方法还保存了除了selector和imp之外其他很多属性</li>
 <li>散列表是有空槽的，会浪费空间</li>
 </ul>
-<p><a id="Runtime Reference"></a></p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.jianshu.com/p/0a4e5b944d7d" target="_blank" rel="noopener">1.Objective-C Runtime机制简析(Article文件夹有收藏)</a></p>
+<p>&lt;a id=&quot;Runtime Reference&quot;&gt;</p>
+<h2>Reference</h2>
+<p><a href="https://www.jianshu.com/p/0a4e5b944d7d" target="_blank" rel="noopener">1.Objective-C Runtime机制简析(Article文件夹有收藏)</a></p>
 <p><a href="http://yulingtianxia.com/blog/2014/11/05/objective-c-runtime/" target="_blank" rel="noopener">2.Objective-C Runtime</a></p>
 <p><a href="https://tech.meituan.com/2015/08/12/deep-understanding-object-c-of-method-caching.html" target="_blank" rel="noopener">3.深入理解 Objective-C：方法缓存</a></p>
 
@@ -547,7 +563,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Runtime机制"><span class="nav-number">1.</span> <span class="nav-text">Runtime机制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#List"><span class="nav-number">1.1.</span> <span class="nav-text">List</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Runtime基础"><span class="nav-number">1.2.</span> <span class="nav-text">Runtime基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-对象和类数据结构"><span class="nav-number">1.3.</span> <span class="nav-text">1.对象和类数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-1-class-data-bits-t-结构体"><span class="nav-number">1.3.0.1.</span> <span class="nav-text">1.1 class_data_bits_t 结构体</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-class-ro-t-结构体"><span class="nav-number">1.3.0.2.</span> <span class="nav-text">1.2 class_ro_t 结构体</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-cache-t"><span class="nav-number">1.3.0.3.</span> <span class="nav-text">1.3 cache_t</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-类对象与元类对象"><span class="nav-number">1.4.</span> <span class="nav-text">2.类对象与元类对象</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-metaclass-amp-class"><span class="nav-number">1.4.0.1.</span> <span class="nav-text">2.1 metaclass &amp; class</span></a></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#3-消息传递"><span class="nav-number">1.5.</span> <span class="nav-text">3.消息传递</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-消息转发"><span class="nav-number">1.5.1.</span> <span class="nav-text">3.1 消息转发</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Runtime更多知识点"><span class="nav-number">1.6.</span> <span class="nav-text">Runtime更多知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-方法缓存存在什么地方？"><span class="nav-number">1.6.0.1.</span> <span class="nav-text">1.方法缓存存在什么地方？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-父类方法的缓存只存在父类么，还是子类也会缓存父类的方法？"><span class="nav-number">1.6.0.2.</span> <span class="nav-text">2.父类方法的缓存只存在父类么，还是子类也会缓存父类的方法？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-为什么-类的方法列表-不直接做成散列表呢，做成list，还要单独缓存，多费事？"><span class="nav-number">1.6.0.3.</span> <span class="nav-text">3.为什么 类的方法列表 不直接做成散列表呢，做成list，还要单独缓存，多费事？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">1.7.</span> <span class="nav-text">Reference</span></a></li></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">Runtime机制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.1.</span> <span class="nav-text">List</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.2.</span> <span class="nav-text">Runtime基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.</span> <span class="nav-text">1.对象和类数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.0.1.</span> <span class="nav-text">1.1 class_data_bits_t 结构体</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.0.2.</span> <span class="nav-text">1.2 class_ro_t 结构体</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.3.0.3.</span> <span class="nav-text">1.3 cache_t</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.4.</span> <span class="nav-text">2.类对象与元类对象</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.4.0.1.</span> <span class="nav-text">2.1 metaclass &amp; class</span></a></li></ol></li></ol><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.5.</span> <span class="nav-text">3.消息传递</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#undefined"><span class="nav-number">1.5.1.</span> <span class="nav-text">3.1 消息转发</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.6.</span> <span class="nav-text">Runtime更多知识点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.6.0.1.</span> <span class="nav-text">1.方法缓存存在什么地方？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.6.0.2.</span> <span class="nav-text">2.父类方法的缓存只存在父类么，还是子类也会缓存父类的方法？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#undefined"><span class="nav-number">1.6.0.3.</span> <span class="nav-text">3.为什么 类的方法列表 不直接做成散列表呢，做成list，还要单独缓存，多费事？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#undefined"><span class="nav-number">1.7.</span> <span class="nav-text">Reference</span></a></li></div>
             
 
           </div>
