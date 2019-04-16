@@ -483,178 +483,6 @@ dispatch_async(队列,任务)</p>
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://caicoder.github.io/2018/07/08/iOS/Memory/Memory/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="caicoder">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="caicoder的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/08/iOS/Memory/Memory/" itemprop="url">内存管理</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-08T12:12:42+08:00">
-                2018-07-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1>Memory内存管理</h1>
-<h2>1.内存中的5大区分别是什么？</h2>
-<ul>
-<li>栈区（stack）：由编译器自动分配释放 ，存放函数的参数值，局部变量的值等。其 操作方式类似于数据结构中的栈。</li>
-<li>堆区（heap）：一般由程序员分配释放， 若程序员不释放，程序结束时可能由OS回收 。注意它与数据结构中的堆是两回事，分配方式倒是类似于链表。</li>
-<li>全局区（静态区）（static）：全局变量和静态变量的存储是放在一块的，初始化的 全局变量和静态变量在一块区域， 未初始化的全局变量和未初始化的静态变量在相邻的另一块区域。 - 程序结束后由系统释放。</li>
-<li>文字常量区：常量字符串就是放在这里的。 程序结束后由系统释放。</li>
-<li>程序代码区：存放函数体的二进制代码。</li>
-</ul>
-<p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-24-085314.jpg" alt="image-20190324161722448"></p>
-<h2>2.内存管理方案</h2>
-<ul>
-<li>系统针对不同场景下内存管理方案不同，如小对象(NSNumber等)采用 <code>TaggedPointer</code> 内存管理方案.</li>
-<li>针对64位下iOS程序采用 <code>NONPOINTER_ISA</code> 方案</li>
-<li>散列表(包括引用计数表，弱引用表)</li>
-</ul>
-<h4>2.1 NONPOINTER_ISA</h4>
-<ul>
-<li>第一位的 0 或 1 代表是纯地址型 isa 指针，还是 NONPOINTER_ISA 指针。</li>
-<li>第二位，代表是否有关联对象</li>
-<li>第三位代表是否有 C++ 代码。</li>
-<li>接下来33位代表指向的内存地址</li>
-<li>接下来有 弱引用 的标记</li>
-<li>接下来有是否 delloc 的标记....等等</li>
-</ul>
-<h4>2.2 散列表</h4>
-<p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-24-085318.jpg" alt="image-20190324165113450"></p>
-<p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-24-085324.jpg" alt="image-20190324165155926"></p>
-<p>SideTable是一张哈希表.使用多张 SideTable .因为可以提高查找效率.对象的引用计数值修改时候可能存在不同线程，需要锁保证数据安全，如果用同一张表会导致效率问题，需要使用<code>分离锁</code>分离操作.</p>
-<h2>3.数据结构</h2>
-<p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-24-085931.png" alt="image-20190324165929441"></p>
-<h2>4. 什么是ARC</h2>
-<ul>
-<li>ARC 是LLVM和Runtime共同协作的结果，进行自动引用计数的管理</li>
-<li>ARC中禁止手动调用retain/release/retaincount/dealloc</li>
-<li>ARC中新增weak，strong属性关键字</li>
-</ul>
-<h2>5.引用计数管理</h2>
-<h3>alloc实现</h3>
-<p>经过一系列调用，最终调用了C函数calloc,此时并没有设置引用计数为1</p>
-<h3>retain实现</h3>
-<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">SideTable &amp;table = SideTables()[this];</span><br><span class="line">//在tables里面，根据当前对象指针获取对应的sidetable</span><br><span class="line"></span><br><span class="line">size_t &amp;refcntStorage = table.refcnts[this];</span><br><span class="line">//获得引用计数</span><br><span class="line"></span><br><span class="line">//添加引用计数</span><br><span class="line">refcntStorage += SIDE_TABLE_RC_ONE(4,位计算)</span><br></pre></td></tr></table></figure></p>
-<h3>release 实现</h3>
-<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SideTable &amp;table = SideTables()[this];</span><br><span class="line">RefcountMap::iterator it = table.refcnts.find[this];</span><br><span class="line">it-&gt;second -= SIDE_TABLE_RC_ONE</span><br></pre></td></tr></table></figure></p>
-<h3>retianCount</h3>
-<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SideTable &amp;table = SideTables()[this];</span><br><span class="line">size_t refcnt_result = 1;</span><br><span class="line">RefcountMap::iterator it = table.refcnts.find[this];</span><br><span class="line">refcnt_result += it-&gt;second &gt;&gt; SIDE_TABLE_RC_SHIFT;(将向右偏移操作)</span><br></pre></td></tr></table></figure></p>
-<h3>dealloc实现</h3>
-<p><img src="http://img.isylar.com/media/dealloc.png" alt="deallo"></p>
-<h2>弱引用管理</h2>
-<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    id __weak obj1 = ob1; </span><br><span class="line">    //  =&gt; 编译 </span><br><span class="line">    id objc1;</span><br><span class="line">    objc_initWeak(&amp;obj1,obj);</span><br><span class="line">    //obj1弱引用对象地址，obj被修饰对象</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>添加weak变量</p>
-<p><img src="http://img.isylar.com/media/15475622619941.jpg" alt></p>
-<p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-24-090109.png" alt="image-20190324170107697"></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://caicoder.github.io/2018/07/08/iOS/Block/Block/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -838,6 +666,402 @@ dispatch_async(队列,任务)</p>
 <p><code>__block</code> 本身无法避免循环引用的问题，但是我们可以通过在 block 内部手动把 blockObj 赋值为 nil 的方式来避免循环引用的问题。另外一点就是 <code>__block</code> 修饰的变量在 block 内外都是唯一的，要注意这个特性可能带来的隐患。</p>
 <h2>Reference</h2>
 <p><a href="https://xiaozhuanlan.com/topic/2710695843" target="_blank" rel="noopener">1.深入理解 Block</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://caicoder.github.io/2018/07/08/iOS/Memory/Memory/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="caicoder">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="caicoder的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/08/iOS/Memory/Memory/" itemprop="url">内存管理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-08T12:12:42+08:00">
+                2018-07-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1>Memory内存管理</h1>
+<h2>1.内存中的5大区分别是什么？</h2>
+<ul>
+<li>栈区（stack）：由编译器自动分配释放 ，存放函数的参数值，局部变量的值等。其 操作方式类似于数据结构中的栈。</li>
+<li>堆区（heap）：一般由程序员分配释放， 若程序员不释放，程序结束时可能由OS回收 。注意它与数据结构中的堆是两回事，分配方式倒是类似于链表。</li>
+<li>全局区（静态区）（static）：全局变量和静态变量的存储是放在一块的，初始化的 全局变量和静态变量在一块区域， 未初始化的全局变量和未初始化的静态变量在相邻的另一块区域。 - 程序结束后由系统释放。</li>
+<li>文字常量区：常量字符串就是放在这里的。 程序结束后由系统释放。</li>
+<li>程序代码区：存放函数体的二进制代码。</li>
+</ul>
+<p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-24-085314.jpg" alt="image-20190324161722448"></p>
+<h2>2.内存管理方案</h2>
+<ul>
+<li>系统针对不同场景下内存管理方案不同，如小对象(NSNumber等)采用 <code>TaggedPointer</code> 内存管理方案.</li>
+<li>针对64位下iOS程序采用 <code>NONPOINTER_ISA</code> 方案</li>
+<li>散列表(包括引用计数表，弱引用表)</li>
+</ul>
+<h4>2.1 NONPOINTER_ISA</h4>
+<ul>
+<li>第一位的 0 或 1 代表是纯地址型 isa 指针，还是 NONPOINTER_ISA 指针。</li>
+<li>第二位，代表是否有关联对象</li>
+<li>第三位代表是否有 C++ 代码。</li>
+<li>接下来33位代表指向的内存地址</li>
+<li>接下来有 弱引用 的标记</li>
+<li>接下来有是否 delloc 的标记....等等</li>
+</ul>
+<h4>2.2 散列表</h4>
+<p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-24-085318.jpg" alt="image-20190324165113450"></p>
+<p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-24-085324.jpg" alt="image-20190324165155926"></p>
+<p>SideTable是一张哈希表.使用多张 SideTable .因为可以提高查找效率.对象的引用计数值修改时候可能存在不同线程，需要锁保证数据安全，如果用同一张表会导致效率问题，需要使用<code>分离锁</code>分离操作.</p>
+<h2>3.数据结构</h2>
+<p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-24-085931.png" alt="image-20190324165929441"></p>
+<h2>4. 什么是ARC</h2>
+<ul>
+<li>ARC 是LLVM和Runtime共同协作的结果，进行自动引用计数的管理</li>
+<li>ARC中禁止手动调用retain/release/retaincount/dealloc</li>
+<li>ARC中新增weak，strong属性关键字</li>
+</ul>
+<h2>5.引用计数管理</h2>
+<h3>alloc实现</h3>
+<p>经过一系列调用，最终调用了C函数calloc,此时并没有设置引用计数为1</p>
+<h3>retain实现</h3>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">SideTable &amp;table = SideTables()[this];</span><br><span class="line">//在tables里面，根据当前对象指针获取对应的sidetable</span><br><span class="line"></span><br><span class="line">size_t &amp;refcntStorage = table.refcnts[this];</span><br><span class="line">//获得引用计数</span><br><span class="line"></span><br><span class="line">//添加引用计数</span><br><span class="line">refcntStorage += SIDE_TABLE_RC_ONE(4,位计算)</span><br></pre></td></tr></table></figure></p>
+<h3>release 实现</h3>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SideTable &amp;table = SideTables()[this];</span><br><span class="line">RefcountMap::iterator it = table.refcnts.find[this];</span><br><span class="line">it-&gt;second -= SIDE_TABLE_RC_ONE</span><br></pre></td></tr></table></figure></p>
+<h3>retianCount</h3>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SideTable &amp;table = SideTables()[this];</span><br><span class="line">size_t refcnt_result = 1;</span><br><span class="line">RefcountMap::iterator it = table.refcnts.find[this];</span><br><span class="line">refcnt_result += it-&gt;second &gt;&gt; SIDE_TABLE_RC_SHIFT;(将向右偏移操作)</span><br></pre></td></tr></table></figure></p>
+<h3>dealloc实现</h3>
+<p><img src="http://img.isylar.com/media/dealloc.png" alt="deallo"></p>
+<h2>弱引用管理</h2>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    id __weak obj1 = ob1; </span><br><span class="line">    //  =&gt; 编译 </span><br><span class="line">    id objc1;</span><br><span class="line">    objc_initWeak(&amp;obj1,obj);</span><br><span class="line">    //obj1弱引用对象地址，obj被修饰对象</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>添加weak变量</p>
+<p><img src="http://img.isylar.com/media/15475622619941.jpg" alt></p>
+<p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-24-090109.png" alt="image-20190324170107697"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://caicoder.github.io/2018/07/08/iOS/Runloop/Runloop/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="caicoder">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="caicoder的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/08/iOS/Runloop/Runloop/" itemprop="url">Runloop</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-08T12:12:42+08:00">
+                2018-07-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1>Runloop</h1>
+<p>NSRunLoop是CFRunLoop的封装,提供了面向对象的API</p>
+<p>Apple 官方给 <code>Runloop</code> 的定义：
+Runloop 是线程的基础支撑，是循环处理事件的机制，一个具体的 Runloop 就是一个事件处理循环。</p>
+<p><strong>RunLoop是通过内部维护的事件循环来对事件/消息进行管理的一个对象</strong></p>
+<p><strong>事件循环指,没有消息需要处理时,休眠以避免资源占用,有消息需要处理时,立刻唤醒</strong></p>
+<p><strong>Runloop 的目的是使线程在没有事情可做时进入休眠状态，避免 CPU 空转。</strong></p>
+<blockquote>
+<p>Run loops are part of the fundamental infrastructure associated with threads. A run loop is an event processing loop that you use to schedule work and coordinate the receipt of incoming events. The purpose of a run loop is to keep your thread busy when there is work to do and put your thread to sleep when there is none.</p>
+</blockquote>
+<p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-23-053637.png" alt="img"></p>
+<ul>
+<li>用户态: 应用程序一般都运行在用户态上</li>
+<li>内核态: 系统调用，需要使用到一些操作系统以及一些底层内核指令或者API</li>
+</ul>
+<h2>CFRunLoop</h2>
+<p><img src="http://img.isylar.com/media/15498932761656.jpg" alt></p>
+<h2>CFRunLoopMode</h2>
+<p><img src="http://img.isylar.com/media/15498933418655.jpg" alt></p>
+<ul>
+<li>source0
+需要手动唤醒线程</li>
+<li>source1
+具备唤醒线程的能力</li>
+</ul>
+<h2>CFRunLoopObserver 观察者</h2>
+<p>观察时间点</p>
+<ul>
+<li>kCFRunLoopEntry</li>
+<li>kCFRunLoopBeforeTimers</li>
+<li>kCFRunLoopBeforeSources</li>
+<li>kCFRunLoopBeforeWaiting</li>
+<li>kCFRunLoopAfterWaiting</li>
+<li>kCFRunLoopExit</li>
+</ul>
+<h2>各个数据结构之间关系</h2>
+<p><img src="http://img.isylar.com/media/15498936308142.jpg" alt>
+一个Runloop中包含很多个Mode,Mode中包含Source,Timer与Observer</p>
+<p>Input Source, Timer Source, Run Loop Observer 统称为 Mode Item，这里的 Mode 指的是 Run Loop Mode。一个 Run Loop 包含若干个 Mode，每个 Mode 又包含若干个 Item。Item 与 Mode 是多对多的关系，没有 Item 的 Mode 会立刻退出</p>
+<h2>Runloop Modes</h2>
+<p><code>Runloop Mode</code> 是<code>事件源的集合</code> + <code>Runloop</code>观察者的集合。<strong>Runloop 每次都运行在某个特定的 mode 上。</strong></p>
+<p>之所以要引入 mode 的概念，是<strong>希望 Runloop 在监听过程中过滤掉不关心的事件源，只专注于某些特定的事件。</strong></p>
+<p><code>Runloop</code>总是运行在某种特定的CFRunLoopModeRef下,意思是每次<code>Runloop</code>开始时候会选择一个mode，执行这个mode里面的 <code>block</code>,<code>timer</code>等事件.这可以解释滑动过程中，<code>NSTimer</code>为什么会停止,因为滑动过程中<code>Runloop</code>处于 <code>TrackingMode</code>,<code>NSTimer</code>默认添加在<code>DefaultMode</code>,所以不执行</p>
+<h4>CommonMode的特殊性</h4>
+<p><code>NSRunLoopCommonModes</code></p>
+<ul>
+<li>CommonMode不是实际存在的一种Mode</li>
+<li>是同步Source/Timer/Observer到多个Mode中的一种技术方案</li>
+</ul>
+<p><img src="http://img.isylar.com/media/15441532587740.png" alt></p>
+<p>如果某个 <code>input source</code> 所属的 mode 不是当前监听的 mode，那 <strong>其产生的所有事件都将被 hold 住，直到 runloop 运行在与其匹配的 mode 上。</strong></p>
+<p>应用场景举例：主线程的 RunLoop 里有两个预置的 Mode：<code>kCFRunLoopDefaultMode</code> 和 <code>UITrackingRunLoopMode</code>。这两个 Mode 都已经被标记为”Common”属性。<code>DefaultMode</code> 是 App 平时所处的状态，<code>TrackingRunLoopMode</code> 是追踪 ScrollView 滑动时的状态。当你创建一个 Timer 并加到 <code>DefaultMode</code> 时，Timer 会得到重复回调，但此时滑动一个TableView时，<strong>RunLoop 会将 mode 切换为</strong><code>TrackingRunLoopMode</code>，这时 Timer 就不会被回调，并且也不会影响到滑动操作。</p>
+<p>同时，在默认情况下<code>NSRunLoopCommonModes</code>包含<code>NSEventTrackingRunLoopMode</code>，也就是说与<code>NSRunLoopCommonModes</code>关联的事件源也与<code>NSEventTrackingRunLoopMode</code>关联。</p>
+<p>而此时，如果有子线程想通过<code>performSelecorOnMainThread...</code> 或 <code>dispatch_async(dispatch_get_main_queue(),^{})</code> 在主线程上执行某 selector，默认情况下上述两种方式产生的事件是关联到<code>NSRunLoopCommonModes</code>，因此在 UI 滑动时也会响应该事件并执行指定的 selector，从而影响滑动的流畅性。</p>
+<p>为了避免此问题，可以封装上述接口，使其指定的 selector 运行在 Main Runloop 的其他 mode 上，如：<code>NSDefaultRunLoopMode</code>。</p>
+<h2>Runtloop运行流程</h2>
+<p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-24-031607.png" alt="img"></p>
+<p>Run Loop 接收的事件来源 (source) 有两种。</p>
+<ul>
+<li>Input Source 传送来自其他应用或线程的异步事件/消息；</li>
+<li>Timer Source 传送的是基于定时器的同步事件，可以定时或重复发送。</li>
+</ul>
+<h2>Runloop &amp; Thread</h2>
+<p><code>Runloop</code>与线程是一一对应的，一个runloop对应一个核心的线程。每个 <code>thread</code> 都有自己的 <code>Runloop</code>，可以通过 <code>NSRunLoop</code>的类方法<code>currentRunLoop</code>获取<strong>当前线程</strong>的 <code>runloop</code>。</p>
+<p>但只有 <code>main thread</code> 的 <code>runloop</code> <strong>默认是开启</strong>的，<strong>其他线程如果希望持续存活下去，就需要手动开启Runloop</strong>。对于子线程来说，runloop是懒加载的，只有当我们使用的时候才会创建，所以在子线程用定时器要注意：确保子线程的runloop被创建，不然定时器不会回调。</p>
+<p><code>Runloop</code>是来管理线程的，当线程的runloop被开启后，线程会在执行完任务后进入休眠状态，有了任务就会被唤醒去执行任务。</p>
+<h2>Summary</h2>
+<ul>
+<li>
+<p>main runloop在主界面即将显示前由系统启动(主界面 controller 的 viewWillAppear:执行后启动)；</p>
+</li>
+<li>
+<p>runloop 启动后(唤醒后)会依次处理 timer(如果有)、source event(如果有)并在此前通知 observer；</p>
+</li>
+<li>
+<p>main runloop每分钟会被唤醒一次</p>
+</li>
+<li>
+<p>UI事件唤醒 main runloop 直到处理完该事件，如果该事件含有异步操作，runloop 不会等待异步操作完成；</p>
+</li>
+<li>
+<p>UIViewController的viewWillAppear:和viewDidAppear:不在同一次 runloop 中被调用；</p>
+</li>
+<li>
+<p>timer会唤醒 runloop 但不会使 runloop 退出；</p>
+</li>
+<li>
+<p>如果子线程的 runloop 没有绑定 timer 或 source event，其 runloop 不会启动；</p>
+</li>
+<li>
+<p>一次 runloop 可以处理多个事件。</p>
+</li>
+</ul>
+<h2>注意点</h2>
+<h3>Timer Sources(NSTimer)</h3>
+<p>Timer source 会在未来一个预定时间向线程同步分发事件。线程可以用 Timer 来通知自己做一些事情。比如用户在搜索栏输入一连串字符之后的某个时间自动搜索一次结果。正是因为有了个延时，才让用户有机会在自动搜索发生前尽可能打出想要的搜索字符串。</p>
+<p><strong>Timer 并不是实时的，会有误差</strong>。如果一个 timer 不在正在运行的 run loop 监控的 mode 中，需要一直等到 run loop 运行在一个支持这个 timer 的 mode 时，timer 才会触发。**如果一个 timer 触发的时候恰巧 run loop 正忙于执行某个 handler 程序，这个 timer 的 handler 程序需要等到下次才会通过 run loop 执行。**如果 run loop 根本不在运行，timer 永远都不会触发。</p>
+<p>可以配置 timer 只生成一次或重复多次事件。重复的 timer 每次会根据已经编排的触发时间自动重新编排。如果实际的触发时间太过于延迟，甚至是晚了一个或多个周期，那么也只会触发一次，而非连续多次。<strong>之后会重新编排下次触发时间</strong>。</p>
+<h2>Runloop 运用场景</h2>
+<p>以<code>AFNetworking2.x</code> 保活原理来说:</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line">AFNetworking/NSURLConnection/AFURLConnectionOperation.m</span><br><span class="line">*/ </span><br><span class="line">+ (NSThread *)networkRequestThread &#123;</span><br><span class="line">    static NSThread *_networkRequestThread = nil;</span><br><span class="line">    static dispatch_once_t oncePredicate;</span><br><span class="line">    dispatch_once(&amp;oncePredicate, ^&#123;</span><br><span class="line">        _networkRequestThread = [[NSThread alloc] initWithTarget:self selector:@selector(networkRequestThreadEntryPoint:) object:nil];</span><br><span class="line">        [_networkRequestThread start];</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    return _networkRequestThread;</span><br><span class="line">&#125;</span><br><span class="line">------------------------------------------------------------------------</span><br><span class="line">/*</span><br><span class="line">AFNetworking/NSURLConnection/AFURLConnectionOperation.m</span><br><span class="line">*/    </span><br><span class="line"></span><br><span class="line">+ (void)networkRequestThreadEntryPoint:(id)__unused object &#123;</span><br><span class="line">    @autoreleasepool &#123;</span><br><span class="line">        [[NSThread currentThread] setName:@&quot;AFNetworking&quot;];</span><br><span class="line"></span><br><span class="line">        NSRunLoop *runLoop = [NSRunLoop currentRunLoop];</span><br><span class="line">        [runLoop addPort:[NSMachPort port] forMode:NSDefaultRunLoopMode];</span><br><span class="line">        [runLoop run];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>如代码，为线程中Runloop添加一个 <code>[NSMachPort port]</code> <code>source1</code> 事件源，让线程不退出一直保活。直到 <code>AF3.x</code>,废弃了 <code>NSURLConnection</code>。因为<code>NSURLConnection</code>中,执行回调的要在子线程,可能回调回来线程已经销毁无法做回调.<code>3.x</code>版本中，使用了 <code>NSURLSession</code>,能指定<code>queue</code>回调，所以避免了问题</p>
+<h2>Reference</h2>
+<p><a href="http://zxfcumtcs.github.io/2014/11/15/runloop/" target="_blank" rel="noopener">1.谜一样的 Runloop</a></p>
+<p><a href="https://blog.ibireme.com/2015/05/18/runloop/" target="_blank" rel="noopener">2.深入理解RunLoop</a></p>
 
           
         
@@ -1226,230 +1450,6 @@ dispatch_async(队列,任务)</p>
 <p>无论复制过来的是可变还是不可变对象，都是NSArray，当调用方调用 Array 的添加对象和移除对象等操作，对于不可变 Array 就会产生程序异常</p>
 <h2>Reference</h2>
 <p><a href="https://juejin.im/post/5c753bc251882505d52fba5c" target="_blank" rel="noopener">1. 面试驱动技术 - Category 相关考点(Article文件夹有收藏)</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://caicoder.github.io/2018/07/08/iOS/Runloop/Runloop/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="caicoder">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="caicoder的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/08/iOS/Runloop/Runloop/" itemprop="url">Runloop</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-08T12:12:42+08:00">
-                2018-07-08
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1>Runloop</h1>
-<p>NSRunLoop是CFRunLoop的封装,提供了面向对象的API</p>
-<p>Apple 官方给 <code>Runloop</code> 的定义：
-Runloop 是线程的基础支撑，是循环处理事件的机制，一个具体的 Runloop 就是一个事件处理循环。</p>
-<p><strong>RunLoop是通过内部维护的事件循环来对事件/消息进行管理的一个对象</strong></p>
-<p><strong>事件循环指,没有消息需要处理时,休眠以避免资源占用,有消息需要处理时,立刻唤醒</strong></p>
-<p><strong>Runloop 的目的是使线程在没有事情可做时进入休眠状态，避免 CPU 空转。</strong></p>
-<blockquote>
-<p>Run loops are part of the fundamental infrastructure associated with threads. A run loop is an event processing loop that you use to schedule work and coordinate the receipt of incoming events. The purpose of a run loop is to keep your thread busy when there is work to do and put your thread to sleep when there is none.</p>
-</blockquote>
-<p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-23-053637.png" alt="img"></p>
-<ul>
-<li>用户态: 应用程序一般都运行在用户态上</li>
-<li>内核态: 系统调用，需要使用到一些操作系统以及一些底层内核指令或者API</li>
-</ul>
-<h2>CFRunLoop</h2>
-<p><img src="http://img.isylar.com/media/15498932761656.jpg" alt></p>
-<h2>CFRunLoopMode</h2>
-<p><img src="http://img.isylar.com/media/15498933418655.jpg" alt></p>
-<ul>
-<li>source0
-需要手动唤醒线程</li>
-<li>source1
-具备唤醒线程的能力</li>
-</ul>
-<h2>CFRunLoopObserver 观察者</h2>
-<p>观察时间点</p>
-<ul>
-<li>kCFRunLoopEntry</li>
-<li>kCFRunLoopBeforeTimers</li>
-<li>kCFRunLoopBeforeSources</li>
-<li>kCFRunLoopBeforeWaiting</li>
-<li>kCFRunLoopAfterWaiting</li>
-<li>kCFRunLoopExit</li>
-</ul>
-<h2>各个数据结构之间关系</h2>
-<p><img src="http://img.isylar.com/media/15498936308142.jpg" alt>
-一个Runloop中包含很多个Mode,Mode中包含Source,Timer与Observer</p>
-<p>Input Source, Timer Source, Run Loop Observer 统称为 Mode Item，这里的 Mode 指的是 Run Loop Mode。一个 Run Loop 包含若干个 Mode，每个 Mode 又包含若干个 Item。Item 与 Mode 是多对多的关系，没有 Item 的 Mode 会立刻退出</p>
-<h2>Runloop Modes</h2>
-<p><code>Runloop Mode</code> 是<code>事件源的集合</code> + <code>Runloop</code>观察者的集合。<strong>Runloop 每次都运行在某个特定的 mode 上。</strong></p>
-<p>之所以要引入 mode 的概念，是<strong>希望 Runloop 在监听过程中过滤掉不关心的事件源，只专注于某些特定的事件。</strong></p>
-<p><code>Runloop</code>总是运行在某种特定的CFRunLoopModeRef下,意思是每次<code>Runloop</code>开始时候会选择一个mode，执行这个mode里面的 <code>block</code>,<code>timer</code>等事件.这可以解释滑动过程中，<code>NSTimer</code>为什么会停止,因为滑动过程中<code>Runloop</code>处于 <code>TrackingMode</code>,<code>NSTimer</code>默认添加在<code>DefaultMode</code>,所以不执行</p>
-<h4>CommonMode的特殊性</h4>
-<p><code>NSRunLoopCommonModes</code></p>
-<ul>
-<li>CommonMode不是实际存在的一种Mode</li>
-<li>是同步Source/Timer/Observer到多个Mode中的一种技术方案</li>
-</ul>
-<p><img src="http://img.isylar.com/media/15441532587740.png" alt></p>
-<p>如果某个 <code>input source</code> 所属的 mode 不是当前监听的 mode，那 <strong>其产生的所有事件都将被 hold 住，直到 runloop 运行在与其匹配的 mode 上。</strong></p>
-<p>应用场景举例：主线程的 RunLoop 里有两个预置的 Mode：<code>kCFRunLoopDefaultMode</code> 和 <code>UITrackingRunLoopMode</code>。这两个 Mode 都已经被标记为”Common”属性。<code>DefaultMode</code> 是 App 平时所处的状态，<code>TrackingRunLoopMode</code> 是追踪 ScrollView 滑动时的状态。当你创建一个 Timer 并加到 <code>DefaultMode</code> 时，Timer 会得到重复回调，但此时滑动一个TableView时，<strong>RunLoop 会将 mode 切换为</strong><code>TrackingRunLoopMode</code>，这时 Timer 就不会被回调，并且也不会影响到滑动操作。</p>
-<p>同时，在默认情况下<code>NSRunLoopCommonModes</code>包含<code>NSEventTrackingRunLoopMode</code>，也就是说与<code>NSRunLoopCommonModes</code>关联的事件源也与<code>NSEventTrackingRunLoopMode</code>关联。</p>
-<p>而此时，如果有子线程想通过<code>performSelecorOnMainThread...</code> 或 <code>dispatch_async(dispatch_get_main_queue(),^{})</code> 在主线程上执行某 selector，默认情况下上述两种方式产生的事件是关联到<code>NSRunLoopCommonModes</code>，因此在 UI 滑动时也会响应该事件并执行指定的 selector，从而影响滑动的流畅性。</p>
-<p>为了避免此问题，可以封装上述接口，使其指定的 selector 运行在 Main Runloop 的其他 mode 上，如：<code>NSDefaultRunLoopMode</code>。</p>
-<h2>Runtloop运行流程</h2>
-<p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-24-031607.png" alt="img"></p>
-<p>Run Loop 接收的事件来源 (source) 有两种。</p>
-<ul>
-<li>Input Source 传送来自其他应用或线程的异步事件/消息；</li>
-<li>Timer Source 传送的是基于定时器的同步事件，可以定时或重复发送。</li>
-</ul>
-<h2>Runloop &amp; Thread</h2>
-<p><code>Runloop</code>与线程是一一对应的，一个runloop对应一个核心的线程。每个 <code>thread</code> 都有自己的 <code>Runloop</code>，可以通过 <code>NSRunLoop</code>的类方法<code>currentRunLoop</code>获取<strong>当前线程</strong>的 <code>runloop</code>。</p>
-<p>但只有 <code>main thread</code> 的 <code>runloop</code> <strong>默认是开启</strong>的，<strong>其他线程如果希望持续存活下去，就需要手动开启Runloop</strong>。对于子线程来说，runloop是懒加载的，只有当我们使用的时候才会创建，所以在子线程用定时器要注意：确保子线程的runloop被创建，不然定时器不会回调。</p>
-<p><code>Runloop</code>是来管理线程的，当线程的runloop被开启后，线程会在执行完任务后进入休眠状态，有了任务就会被唤醒去执行任务。</p>
-<h2>Summary</h2>
-<ul>
-<li>
-<p>main runloop在主界面即将显示前由系统启动(主界面 controller 的 viewWillAppear:执行后启动)；</p>
-</li>
-<li>
-<p>runloop 启动后(唤醒后)会依次处理 timer(如果有)、source event(如果有)并在此前通知 observer；</p>
-</li>
-<li>
-<p>main runloop每分钟会被唤醒一次</p>
-</li>
-<li>
-<p>UI事件唤醒 main runloop 直到处理完该事件，如果该事件含有异步操作，runloop 不会等待异步操作完成；</p>
-</li>
-<li>
-<p>UIViewController的viewWillAppear:和viewDidAppear:不在同一次 runloop 中被调用；</p>
-</li>
-<li>
-<p>timer会唤醒 runloop 但不会使 runloop 退出；</p>
-</li>
-<li>
-<p>如果子线程的 runloop 没有绑定 timer 或 source event，其 runloop 不会启动；</p>
-</li>
-<li>
-<p>一次 runloop 可以处理多个事件。</p>
-</li>
-</ul>
-<h2>注意点</h2>
-<h3>Timer Sources(NSTimer)</h3>
-<p>Timer source 会在未来一个预定时间向线程同步分发事件。线程可以用 Timer 来通知自己做一些事情。比如用户在搜索栏输入一连串字符之后的某个时间自动搜索一次结果。正是因为有了个延时，才让用户有机会在自动搜索发生前尽可能打出想要的搜索字符串。</p>
-<p><strong>Timer 并不是实时的，会有误差</strong>。如果一个 timer 不在正在运行的 run loop 监控的 mode 中，需要一直等到 run loop 运行在一个支持这个 timer 的 mode 时，timer 才会触发。**如果一个 timer 触发的时候恰巧 run loop 正忙于执行某个 handler 程序，这个 timer 的 handler 程序需要等到下次才会通过 run loop 执行。**如果 run loop 根本不在运行，timer 永远都不会触发。</p>
-<p>可以配置 timer 只生成一次或重复多次事件。重复的 timer 每次会根据已经编排的触发时间自动重新编排。如果实际的触发时间太过于延迟，甚至是晚了一个或多个周期，那么也只会触发一次，而非连续多次。<strong>之后会重新编排下次触发时间</strong>。</p>
-<h2>Runloop 运用场景</h2>
-<p>以<code>AFNetworking2.x</code> 保活原理来说:</p>
-<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line">AFNetworking/NSURLConnection/AFURLConnectionOperation.m</span><br><span class="line">*/ </span><br><span class="line">+ (NSThread *)networkRequestThread &#123;</span><br><span class="line">    static NSThread *_networkRequestThread = nil;</span><br><span class="line">    static dispatch_once_t oncePredicate;</span><br><span class="line">    dispatch_once(&amp;oncePredicate, ^&#123;</span><br><span class="line">        _networkRequestThread = [[NSThread alloc] initWithTarget:self selector:@selector(networkRequestThreadEntryPoint:) object:nil];</span><br><span class="line">        [_networkRequestThread start];</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    return _networkRequestThread;</span><br><span class="line">&#125;</span><br><span class="line">------------------------------------------------------------------------</span><br><span class="line">/*</span><br><span class="line">AFNetworking/NSURLConnection/AFURLConnectionOperation.m</span><br><span class="line">*/    </span><br><span class="line"></span><br><span class="line">+ (void)networkRequestThreadEntryPoint:(id)__unused object &#123;</span><br><span class="line">    @autoreleasepool &#123;</span><br><span class="line">        [[NSThread currentThread] setName:@&quot;AFNetworking&quot;];</span><br><span class="line"></span><br><span class="line">        NSRunLoop *runLoop = [NSRunLoop currentRunLoop];</span><br><span class="line">        [runLoop addPort:[NSMachPort port] forMode:NSDefaultRunLoopMode];</span><br><span class="line">        [runLoop run];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>如代码，为线程中Runloop添加一个 <code>[NSMachPort port]</code> <code>source1</code> 事件源，让线程不退出一直保活。直到 <code>AF3.x</code>,废弃了 <code>NSURLConnection</code>。因为<code>NSURLConnection</code>中,执行回调的要在子线程,可能回调回来线程已经销毁无法做回调.<code>3.x</code>版本中，使用了 <code>NSURLSession</code>,能指定<code>queue</code>回调，所以避免了问题</p>
-<h2>Reference</h2>
-<p><a href="http://zxfcumtcs.github.io/2014/11/15/runloop/" target="_blank" rel="noopener">1.谜一样的 Runloop</a></p>
-<p><a href="https://blog.ibireme.com/2015/05/18/runloop/" target="_blank" rel="noopener">2.深入理解RunLoop</a></p>
 
           
         
