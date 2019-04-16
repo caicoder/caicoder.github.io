@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Creating a File Manager Locating System Directories Locating Application Group Container Directories Discovering Directory Contents Creating and Deleting Items Moving and Copying Items Managing iClou">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NSFileManager">
+<meta property="og:url" content="https://caicoder.github.io/2017/07/16/NSFileManager/index.html">
+<meta property="og:site_name" content="caicoder的博客">
+<meta property="og:description" content="Creating a File Manager Locating System Directories Locating Application Group Container Directories Discovering Directory Contents Creating and Deleting Items Moving and Copying Items Managing iClou">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-04-16T04:37:56.077Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="NSFileManager">
+<meta name="twitter:description" content="Creating a File Manager Locating System Directories Locating Application Group Container Directories Discovering Directory Contents Creating and Deleting Items Moving and Copying Items Managing iClou">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://caicoder.github.io/2017/07/16/NSFileManager/">
+
+
+
+
+
+  <title>NSFileManager | caicoder的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">caicoder的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://caicoder.github.io/2017/07/16/NSFileManager/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="caicoder">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="caicoder的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">NSFileManager</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-16T12:12:42+08:00">
+                2017-07-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <ol>
+<li><a href="#1">Creating a File Manager</a></li>
+<li><a href="#2">Locating System Directories</a></li>
+<li><a href="#3">Locating Application Group Container Directories</a></li>
+<li><a href="#4">Discovering Directory Contents</a></li>
+<li><a href="#5">Creating and Deleting Items</a></li>
+<li><a href="#6">Moving and Copying Items</a></li>
+<li><a href="#7">Managing iCloud-Based Items</a></li>
+<li><a href="#8">Creating Symbolic and Hard Links</a></li>
+<li><a href="#9">Determining Access to Files</a></li>
+<li><a href="#10">Getting and Setting Attributes</a></li>
+<li><a href="#11">Getting and Comparing File Contents</a></li>
+<li><a href="#12">Getting the Relationship Between Items</a></li>
+<li><a href="#13">Converting File Paths to Strings</a></li>
+<li><a href="#14">Managing the Delegate</a></li>
+<li><a href="#15">Managing the Current Directory</a></li>
+<li><a href="#16">Deprecated Methods</a></li>
+</ol>
+<hr>
+<p>NSFileManager(Swift中是FileManager)帮助我们快速访问管理文件系统。通过它我们可以对文件进行定位、复制、移动和删除等操作。</p>
+<h1>&lt;a id=&quot;1&quot;&gt;1 Creating a File Manager</h1>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// 获取共享的NSFileManager</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">func</span> <span class="title">defaultManager</span>() -&gt; <span class="title">NSFileManager</span></span></span><br></pre></td></tr></table></figure></p>
+<h1>&lt;a id=&quot;2&quot;&gt;2 Locating System Directories</h1>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 快速获取目录</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">4.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">URLsForDirectory</span><span class="params">(directory: NSSearchPathDirectory, inDomains domainMask: NSSearchPathDomainMask)</span></span> -&gt; [<span class="type">NSURL</span>]</span><br><span class="line">    </span><br><span class="line"><span class="comment">/// 文件夹内快速创建文件夹</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - parameter directory : .ItemReplacementDirectory</span></span><br><span class="line"><span class="comment">/// - parameter inDomain : .UserDomainMask</span></span><br><span class="line"><span class="comment">/// - parameter appropriateForURL : 目标目录</span></span><br><span class="line"><span class="comment">/// - parameter create : 是否创建</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - returns: void</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">4.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">URLForDirectory</span><span class="params">(directory: NSSearchPathDirectory, inDomain domain: NSSearchPathDomainMask, appropriateForURL url: NSURL?, create shouldCreate: Bool)</span></span> <span class="keyword">throws</span> -&gt; <span class="type">NSURL</span></span><br></pre></td></tr></table></figure></p>
+<h1>&lt;a id=&quot;3&quot;&gt;3 Locating Application Group Container Directories</h1>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// 获取应用容器目录</span></span><br><span class="line"><span class="comment">/// 定位应用组目录，需在https://idmsa.apple.com/IDMSWebAuth/authenticate配置</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - parameter groupIdentifier : 容器ID</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - returns: NSURL?</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">7.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">containerURLForSecurityApplicationGroupIdentifier</span><span class="params">(groupIdentifier: String)</span></span> -&gt; <span class="type">NSURL?</span></span><br></pre></td></tr></table></figure></p>
+<h1>&lt;a id=&quot;4&quot;&gt;4 Discovering Directory Contents</h1>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// 获取一级目录内的内容</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - parameter url : 目标路径</span></span><br><span class="line"><span class="comment">/// - parameter includingPropertiesForKeys : 关键字</span></span><br><span class="line"><span class="comment">/// - parameter options : 枚举选项，NSDirectoryEnumerationOptions.SkipsHiddenFiles</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - returns: [NSURL]</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">4.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">contentsOfDirectoryAtURL</span><span class="params">(url: NSURL, includingPropertiesForKeys keys: [String]?, options mask: NSDirectoryEnumerationOptions)</span></span> <span class="keyword">throws</span> -&gt; [<span class="type">NSURL</span>] </span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">2.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">contentsOfDirectoryAtPath</span><span class="params">(path: String)</span></span> <span class="keyword">throws</span> -&gt; [<span class="type">String</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">/// 枚举获取目录下内容</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">4.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">enumeratorAtURL</span><span class="params">(url: NSURL, includingPropertiesForKeys keys: [String]?, options mask: NSDirectoryEnumerationOptions, errorHandler handler: <span class="params">(<span class="params">(NSURL, NSError)</span></span></span></span> -&gt; <span class="type">Bool</span>)?) -&gt; <span class="type">NSDirectoryEnumerator?</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">enumeratorAtPath</span><span class="params">(path: String)</span></span> -&gt; <span class="type">NSDirectoryEnumerator?</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/// 返回所有路径</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">subpathsAtPath</span><span class="params">(path: String)</span></span> -&gt; [<span class="type">String</span>]?</span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">2.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">subpathsOfDirectoryAtPath</span><span class="params">(path: String)</span></span> <span class="keyword">throws</span> -&gt; [<span class="type">String</span>]</span><br></pre></td></tr></table></figure></p>
+<h1>&lt;a id=&quot;5&quot;&gt;5 Creating and Deleting Items</h1>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// 创建文件夹</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">5.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">createDirectoryAtURL</span><span class="params">(url: NSURL, withIntermediateDirectories createIntermediates: Bool, attributes: [String : AnyObject]?)</span></span> <span class="keyword">throws</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">2.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">createDirectoryAtPath</span><span class="params">(path: String, withIntermediateDirectories createIntermediates: Bool, attributes: [String : AnyObject]?)</span></span> <span class="keyword">throws</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">/// 创建文件</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">createFileAtPath</span><span class="params">(path: String, contents data: NSData?, attributes attr: [String : AnyObject]?)</span></span> -&gt; <span class="type">Bool</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">/// 删除文件</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">4.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">removeItemAtURL</span><span class="params">(URL: NSURL)</span></span> <span class="keyword">throws</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">2.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">removeItemAtPath</span><span class="params">(path: String)</span></span> <span class="keyword">throws</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">/// 替换数据内容</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">4.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">replaceItemAtURL</span><span class="params">(originalItemURL: NSURL, withItemAtURL newItemURL: NSURL, backupItemName: String?, options: NSFileManagerItemReplacementOptions, resultingItemURL resultingURL: AutoreleasingUnsafeMutablePointer&lt;NSURL?&gt;)</span></span> <span class="keyword">throws</span></span><br></pre></td></tr></table></figure></p>
+<h1>&lt;a id=&quot;6&quot;&gt;6 Moving and Copying Items</h1>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// 复制文件</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">2.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">copyItemAtPath</span><span class="params">(srcPath: String, toPath dstPath: String)</span></span> <span class="keyword">throws</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">4.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">copyItemAtURL</span><span class="params">(srcURL: NSURL, toURL dstURL: NSURL)</span></span> <span class="keyword">throws</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">// 移动文件</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">2.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">moveItemAtPath</span><span class="params">(srcPath: String, toPath dstPath: String)</span></span> <span class="keyword">throws</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">4.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">moveItemAtURL</span><span class="params">(srcURL: NSURL, toURL dstURL: NSURL)</span></span> <span class="keyword">throws</span></span><br></pre></td></tr></table></figure></p>
+<h1>&lt;a id=&quot;7&quot;&gt;7 Managing iCloud-Based Items</h1>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// 获取iCloud身份标识符</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">6.0</span>, *)</span><br><span class="line"><span class="meta">@NSCopying</span> <span class="keyword">public</span> <span class="keyword">var</span> ubiquityIdentityToken: <span class="class"><span class="keyword">protocol</span>&lt;<span class="title">NSCoding</span>, <span class="title">NSCopying</span>, <span class="title">NSObjectProtocol</span>&gt;? </span>&#123; <span class="keyword">get</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据iCloud容器标识符，创建容器路径</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">5.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">URLForUbiquityContainerIdentifier</span><span class="params">(containerIdentifier: String?)</span></span> -&gt; <span class="type">NSURL?</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 目标路径是否存储在iCloud</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">5.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">isUbiquitousItemAtURL</span><span class="params">(url: NSURL)</span></span> -&gt; <span class="type">Bool</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/// 移动文件到云中</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - parameter flag : true移动到云中,false从云中删除</span></span><br><span class="line"><span class="comment">/// - parameter itemAtURL : 本地路径</span></span><br><span class="line"><span class="comment">/// - parameter destinationURL : 云路径</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - returns: void</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">5.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">setUbiquitous</span><span class="params">(flag: Bool, itemAtURL url: NSURL, destinationURL: NSURL)</span></span> <span class="keyword">throws</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/// 从云中下载文件</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">5.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">startDownloadingUbiquitousItemAtURL</span><span class="params">(url: NSURL)</span></span> <span class="keyword">throws</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 删除云对应的本地副本</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">5.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">evictUbiquitousItemAtURL</span><span class="params">(url: NSURL)</span></span> <span class="keyword">throws</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/// 生成云的url，可在浏览器中下载</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">5.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">URLForPublishingUbiquitousItemAtURL</span><span class="params">(url: NSURL, expirationDate outDate: AutoreleasingUnsafeMutablePointer&lt;NSDate?&gt;)</span></span> <span class="keyword">throws</span> -&gt; <span class="type">NSURL</span></span><br></pre></td></tr></table></figure></p>
+<h1>&lt;a id=&quot;8&quot;&gt;8 Creating Symbolic and Hard Links</h1>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建软连接</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">2.0</span>, *)</span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">createSymbolicLink</span><span class="params">(atPath path: String, withDestinationPath destPath: String)</span></span> <span class="keyword">throws</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">5.0</span>, *)</span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">createSymbolicLink</span><span class="params">(at url: URL, withDestinationURL destURL: URL)</span></span> <span class="keyword">throws</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建硬连接</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">2.0</span>, *)</span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">linkItem</span><span class="params">(atPath srcPath: String, toPath dstPath: String)</span></span> <span class="keyword">throws</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">4.0</span>, *)</span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">linkItem</span><span class="params">(at srcURL: URL, to dstURL: URL)</span></span> <span class="keyword">throws</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取软连接对应的实际地址</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">2.0</span>, *)</span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">destinationOfSymbolicLink</span><span class="params">(atPath path: String)</span></span> <span class="keyword">throws</span> -&gt; <span class="type">String</span></span><br></pre></td></tr></table></figure></p>
+<h1>&lt;a id=&quot;9&quot;&gt;9 Determining Access to Files</h1>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 路径对应的文件或文件夹是否存在</span></span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">fileExists</span><span class="params">(atPath path: String)</span></span> -&gt; <span class="type">Bool</span>  </span><br><span class="line"><span class="comment">// 路径对应的文件或文件夹是否存在，isDirectory对应是否为目录</span></span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">fileExists</span><span class="params">(atPath path: String, isDirectory: UnsafeMutablePointer&lt;ObjCBool&gt;?)</span></span> -&gt; <span class="type">Bool</span>   </span><br><span class="line"><span class="comment">// 能否读取文件</span></span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">isReadableFile</span><span class="params">(atPath path: String)</span></span> -&gt; <span class="type">Bool</span> </span><br><span class="line"><span class="comment">// 能否写入文件</span></span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">isWritableFile</span><span class="params">(atPath path: String)</span></span> -&gt; <span class="type">Bool</span> </span><br><span class="line"><span class="comment">// 是否为可执行文件</span></span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">isExecutableFile</span><span class="params">(atPath path: String)</span></span> -&gt; <span class="type">Bool</span></span><br><span class="line"><span class="comment">// 能否删除文件</span></span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">isDeletableFile</span><span class="params">(atPath path: String)</span></span> -&gt; <span class="type">Bool</span></span><br></pre></td></tr></table></figure></p>
+<h1>&lt;a id=&quot;10&quot;&gt;10 Getting and Setting Attributes</h1>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 文件名</span></span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">displayName</span><span class="params">(atPath path: String)</span></span> -&gt; <span class="type">String</span></span><br><span class="line"><span class="comment">// 路径上的文件夹名</span></span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">componentsToDisplay</span><span class="params">(forPath path: String)</span></span> -&gt; [<span class="type">String</span>]?</span><br><span class="line"><span class="comment">// 获取文件属性</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">2.0</span>, *)</span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">attributesOfItem</span><span class="params">(atPath path: String)</span></span> <span class="keyword">throws</span> -&gt; [<span class="type">FileAttributeKey</span> : <span class="type">Any</span>]</span><br><span class="line"><span class="comment">// 获取文件所处系统的相关文件属性（如剩余存储空间）</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">2.0</span>, *)</span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">attributesOfFileSystem</span><span class="params">(forPath path: String)</span></span> <span class="keyword">throws</span> -&gt; [<span class="type">FileAttributeKey</span> : <span class="type">Any</span>]</span><br><span class="line"><span class="comment">// 设置文件属性</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">2.0</span>, *)</span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">setAttributes</span><span class="params">(<span class="number">_</span> attributes: [FileAttributeKey : <span class="keyword">Any</span>], ofItemAtPath path: String)</span></span> <span class="keyword">throws</span></span><br></pre></td></tr></table></figure></p>
+<h1>&lt;a id=&quot;11&quot;&gt;11 Getting and Comparing File Contents</h1>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取文件内容</span></span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">contents</span><span class="params">(atPath path: String)</span></span> -&gt; <span class="type">Data?</span></span><br><span class="line"><span class="comment">// 判断文件内容是否相同</span></span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">contentsEqual</span><span class="params">(atPath path1: String, andPath path2: String)</span></span> -&gt; <span class="type">Bool</span></span><br></pre></td></tr></table></figure></p>
+<h1>&lt;a id=&quot;12&quot;&gt;12 Getting the Relationship Between Items</h1>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取路径之间的关系</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">8.0</span>, *)</span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">getRelationship</span><span class="params">(<span class="number">_</span> outRelationship: UnsafeMutablePointer&lt;FileManager.URLRelationship&gt;, ofDirectoryAt directoryURL: URL, toItemAt otherURL: URL)</span></span> <span class="keyword">throws</span></span><br><span class="line"><span class="comment">// 获取路径是否在某容器中</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">8.0</span>, *)</span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">getRelationship</span><span class="params">(<span class="number">_</span> outRelationship: UnsafeMutablePointer&lt;FileManager.URLRelationship&gt;, of directory: FileManager.SearchPathDirectory, <span class="keyword">in</span> domainMask: FileManager.SearchPathDomainMask, toItemAt url: URL)</span></span> <span class="keyword">throws</span></span><br></pre></td></tr></table></figure></p>
+<h1>&lt;a id=&quot;13&quot;&gt;13 Converting File Paths to Strings</h1>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 路径转C字符串</span></span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">fileSystemRepresentation</span><span class="params">(withPath path: String)</span></span> -&gt; <span class="type">UnsafePointer</span>&lt;<span class="type">Int8</span>&gt;</span><br><span class="line"><span class="comment">// C字符串转路径</span></span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">string</span><span class="params">(withFileSystemRepresentation str: UnsafePointer&lt;Int8&gt;, length len: Int)</span></span> -&gt; <span class="type">String</span></span><br></pre></td></tr></table></figure></p>
+<h1>&lt;a id=&quot;14&quot;&gt;14 Managing the Delegate</h1>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 代理监听</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">2.0</span>, *)</span><br><span class="line"><span class="keyword">unowned</span>(unsafe) <span class="keyword">open</span> <span class="keyword">var</span> delegate: <span class="type">FileManagerDelegate?</span></span><br></pre></td></tr></table></figure></p>
+<h1>&lt;a id=&quot;15&quot;&gt;15 Managing the Current Directory</h1>
+<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 修改当前工作目录为指定目录</span></span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">changeCurrentDirectoryPath</span><span class="params">(<span class="number">_</span> path: String)</span></span> -&gt; <span class="type">Bool</span></span><br><span class="line"><span class="comment">// 获取当前工作目录</span></span><br><span class="line"><span class="keyword">open</span> <span class="keyword">var</span> currentDirectoryPath: <span class="type">String</span> &#123; <span class="keyword">get</span> &#125;</span><br></pre></td></tr></table></figure></p>
+<p> </p>
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/16/JSON解析/" rel="next" title="Json 解析">
+                <i class="fa fa-chevron-left"></i> Json 解析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/16/NSBlockOperation/" rel="prev" title="Managing the Blocks in the Operation">
+                Managing the Blocks in the Operation <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">caicoder</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">&lt;a id=&quot;1&quot;&gt;1 Creating a File Manager</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">2.</span> <span class="nav-text">&lt;a id=&quot;2&quot;&gt;2 Locating System Directories</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">3.</span> <span class="nav-text">&lt;a id=&quot;3&quot;&gt;3 Locating Application Group Container Directories</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">4.</span> <span class="nav-text">&lt;a id=&quot;4&quot;&gt;4 Discovering Directory Contents</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">5.</span> <span class="nav-text">&lt;a id=&quot;5&quot;&gt;5 Creating and Deleting Items</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">6.</span> <span class="nav-text">&lt;a id=&quot;6&quot;&gt;6 Moving and Copying Items</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">7.</span> <span class="nav-text">&lt;a id=&quot;7&quot;&gt;7 Managing iCloud-Based Items</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">8.</span> <span class="nav-text">&lt;a id=&quot;8&quot;&gt;8 Creating Symbolic and Hard Links</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">9.</span> <span class="nav-text">&lt;a id=&quot;9&quot;&gt;9 Determining Access to Files</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">10.</span> <span class="nav-text">&lt;a id=&quot;10&quot;&gt;10 Getting and Setting Attributes</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">11.</span> <span class="nav-text">&lt;a id=&quot;11&quot;&gt;11 Getting and Comparing File Contents</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">12.</span> <span class="nav-text">&lt;a id=&quot;12&quot;&gt;12 Getting the Relationship Between Items</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">13.</span> <span class="nav-text">&lt;a id=&quot;13&quot;&gt;13 Converting File Paths to Strings</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">14.</span> <span class="nav-text">&lt;a id=&quot;14&quot;&gt;14 Managing the Delegate</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">15.</span> <span class="nav-text">&lt;a id=&quot;15&quot;&gt;15 Managing the Current Directory</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">caicoder</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
