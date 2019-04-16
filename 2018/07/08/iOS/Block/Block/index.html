@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Block,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Block1.什么是Block与Block构造 In programming languages, a closure is a function or reference to a function together with a referencing environment—a table storing a reference to each of the non-local variab">
+<meta name="keywords" content="Block">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Block">
+<meta property="og:url" content="https://caicoder.github.io/2018/07/08/iOS/Block/Block/index.html">
+<meta property="og:site_name" content="caicoder的博客">
+<meta property="og:description" content="Block1.什么是Block与Block构造 In programming languages, a closure is a function or reference to a function together with a referencing environment—a table storing a reference to each of the non-local variab">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-20-051401.jpg">
+<meta property="og:image" content="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-20-051409.jpg">
+<meta property="og:image" content="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-23-035859.jpg">
+<meta property="og:image" content="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-20-051428.jpg">
+<meta property="og:image" content="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-20-051433.jpg">
+<meta property="og:image" content="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-20-051439.jpg">
+<meta property="og:updated_time" content="2019-04-16T06:23:43.597Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Block">
+<meta name="twitter:description" content="Block1.什么是Block与Block构造 In programming languages, a closure is a function or reference to a function together with a referencing environment—a table storing a reference to each of the non-local variab">
+<meta name="twitter:image" content="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-20-051401.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://caicoder.github.io/2018/07/08/iOS/Block/Block/">
+
+
+
+
+
+  <title>Block | caicoder的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">caicoder的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://caicoder.github.io/2018/07/08/iOS/Block/Block/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="caicoder">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="caicoder的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Block</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-08T12:12:42+08:00">
+                2018-07-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Block"><a href="#Block" class="headerlink" title="Block"></a>Block</h1><h2 id="1-什么是Block与Block构造"><a href="#1-什么是Block与Block构造" class="headerlink" title="1.什么是Block与Block构造"></a>1.什么是Block与Block构造</h2><blockquote>
+<p>In programming languages, a closure is a function or reference to a function together with a referencing environment—a table storing a reference to each of the non-local variables (also called free variables or upvalues) of that function.</p>
+</blockquote>
+<ul>
+<li><code>Block</code> 是将函数及其执行上下文封装起来的<code>对象</code></li>
+<li><code>Block</code>的调用即是函数的调用</li>
+</ul>
+<p>如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">int multiplier = 6</span><br><span class="line">int(^Block)(int) = ^int(int num)&#123;</span><br><span class="line">    return num * multiplier;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>使用 <code>clang</code> 重写 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">//会自动生成一个与定义Block具有相同参数与返回值的构造函数</span><br><span class="line">int(*Block)(int) = ((int(*)(int))&amp;xxx_block_impl_0[Block构造函数](函数指针,block描述,multiplier[block外传入block使用的参数])</span><br></pre></td></tr></table></figure>
+<p>一个<code>OC Block</code> <code>Clang</code> 重写之后，编程了一个对象的构造方法，传进去的是函数指针(<code>Block</code>的实现,与外部变量,Block描述)</p>
+<p><code>Block结构体</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">//如上的构造函数</span><br><span class="line">struct xxx_block_impl_0&#123;</span><br><span class="line">    struct __block_impl impl;</span><br><span class="line">    struct __xxx_block_desc_0 *Desc;    //Block描述</span><br><span class="line">    xxx_block_impl_0(void *fp,struct ....[不详细写，其实就是将上面构造函数传进去的参数传这里])&#123;</span><br><span class="line">    impl.isa = &amp;_NSConcreteStackBlock;</span><br><span class="line">    ...</span><br><span class="line">    &#125;</span><br><span class="line">    //其实是C++ 里面对结构体生成的声明</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个<code>Block</code>结构体里面有个方法，可以理解成<code>OC</code>里面的便利构造器，上面通过<code>Clang</code>重写了<code>Block</code>的生成，其实就是调用这个结构体里面的构造函数，将参数传进去赋值给结构体里面的变量</p>
+<h2 id="2-截获变量"><a href="#2-截获变量" class="headerlink" title="2.截获变量"></a>2.截获变量</h2><p>数据类型:</p>
+<ul>
+<li>局部变量<ul>
+<li>基本数据类型</li>
+<li>对象类型</li>
+</ul>
+</li>
+<li>静态局部变量</li>
+<li>全局静态变量</li>
+<li>静态全局变量</li>
+</ul>
+<p>具体不同参考:<a href="../knowledge/staticCompare.md">staic</a></p>
+<p>如何截取:</p>
+<ul>
+<li>对于<strong>基本数据</strong>类型的<strong>局部变量</strong>截获其值</li>
+<li>对于<strong>对象</strong>类型的局部变量<strong>连同所有权修饰符</strong>一齐截获(可以解释循环引用)</li>
+<li>以<strong>指针形式</strong>截获局部静态变量</li>
+<li><strong>不截获</strong>全局变量，静态全局变量</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">//全局变量</span><br><span class="line">int global_var = 4;</span><br><span class="line">//静态全局变量</span><br><span class="line">static int static_global_var = 5;</span><br><span class="line"></span><br><span class="line">-(void)method&#123;</span><br><span class="line">    //基本数据类型的局部变量</span><br><span class="line">    int var = 1;</span><br><span class="line">    //对象类型的局部变量</span><br><span class="line">    __unsafe_unretained id unsafe_obj = nil;</span><br><span class="line">    __strong id strong_obj = nil;</span><br><span class="line">    </span><br><span class="line">    //局部静态变量</span><br><span class="line">    static int static_var = 3;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="3-block-修饰符"><a href="#3-block-修饰符" class="headerlink" title="3.__block 修饰符"></a>3.__block 修饰符</h2><p><strong>一般情况下</strong>，对被截获变量进行<strong>赋值</strong>操作需要添加 <code>__block</code> 修饰符(<strong>注意是赋值!!</strong>, 赋值≠使用)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">NSMutableArray *array = [NSMutableArray array];</span><br><span class="line">void(^Block)(void) = ^&#123;</span><br><span class="line">    [array addObject:@123];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">//不需要添加 __block,因为是使用</span><br></pre></td></tr></table></figure>
+<p>需要__block修饰符:</p>
+<ul>
+<li>局部变量基本数据类型</li>
+<li>局部变量对象类型</li>
+</ul>
+<p>不需要__block修饰符:</p>
+<ul>
+<li>静态局部变量</li>
+<li>全局变量</li>
+<li>静态全局变量</li>
+</ul>
+<h3 id="3-1-block原理"><a href="#3-1-block原理" class="headerlink" title="3.1__block原理"></a>3.1__block原理</h3><p><code>__block</code> 所起到的作用就是只要观察到该变量被 block 所持有，就将“外部变量”在栈中的内存地址放到了堆中。进而在block内部也可以修改外部变量的值。</p>
+<p>__block修饰的变量成了对象</p>
+<p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-20-051401.jpg" alt></p>
+<p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-20-051409.jpg" alt></p>
+<p><strong>栈上</strong>的 __block 的  <code>__forwading</code> 指针指向自己</p>
+<p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-23-035859.jpg" alt></p>
+<h4 id="3-2-forwarding存在意义"><a href="#3-2-forwarding存在意义" class="headerlink" title="3.2 __forwarding存在意义"></a>3.2 __forwarding存在意义</h4><p>不论在任何内存位置,都可以顺利访问同一个__block变量.</p>
+<h2 id="4-Block-的内存管理"><a href="#4-Block-的内存管理" class="headerlink" title="4.Block 的内存管理"></a>4.Block 的内存管理</h2><ul>
+<li>_NSConcreteGlobalBlock (全局的静态 block，不会访问任何外部变量)</li>
+<li>_NSConcreteStackBlock ( 保存在栈中的 block，当函数返回时会被销毁)</li>
+<li><p>_NSConcreateMallocBlock ( 保存在堆中的 block，当引用计数为 0 时会被销毁)</p>
+<p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-20-051428.jpg" alt></p>
+</li>
+</ul>
+<h4 id="NSConcreteGlobalBlock"><a href="#NSConcreteGlobalBlock" class="headerlink" title="_NSConcreteGlobalBlock"></a>_NSConcreteGlobalBlock</h4><p>未捕获任何变量或仅捕获的变量为以下类型的 Block 是 NSConcreteGlobalBlock。</p>
+<ul>
+<li>静态变量</li>
+<li>全局变量</li>
+<li>静态全局变量</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">void (^blk) () = ^&#123;</span><br><span class="line">    printf(&quot;Block&quot;);</span><br><span class="line">&#125;;</span><br><span class="line">int main(int argc, const char * argv[]) &#123;</span><br><span class="line">    @autoreleasepool &#123;</span><br><span class="line">        blk();</span><br><span class="line">    &#125;</span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>全局定义的Block经过代码转换后</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">struct __blk_block_impl_0 &#123;</span><br><span class="line">  struct __block_impl impl;</span><br><span class="line">  struct __blk_block_desc_0* Desc;</span><br><span class="line">  __blk_block_impl_0(void *fp, struct __blk_block_desc_0 *desc, int flags=0) &#123;</span><br><span class="line">    impl.isa = &amp;_NSConcreteGlobalBlock; //设置在数据区的Block</span><br><span class="line">    impl.Flags = flags;</span><br><span class="line">    impl.FuncPtr = fp;</span><br><span class="line">    Desc = desc;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h4 id="NSConcreteStackBlock"><a href="#NSConcreteStackBlock" class="headerlink" title="_NSConcreteStackBlock"></a>_NSConcreteStackBlock</h4><p>只要捕获了以上三种类型以外的变量的 Block 是 NSConcreteStackBlock。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">int i = 0;</span><br><span class="line">void (^blk)() = ^() &#123;</span><br><span class="line">    printf(&quot;%d&quot;, i);</span><br><span class="line">&#125;;</span><br><span class="line">blk();</span><br></pre></td></tr></table></figure>
+<p>局部定义的Block 经过代码转换后</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">struct __main_block_impl_0 &#123;</span><br><span class="line">  struct __block_impl impl;</span><br><span class="line">  struct __main_block_desc_0* Desc;</span><br><span class="line">  __main_block_impl_0(void *fp, struct __main_block_desc_0 *desc, int flags=0) &#123;</span><br><span class="line">    impl.isa = &amp;_NSConcreteStackBlock; //设置在栈区的Block</span><br><span class="line">    impl.Flags = flags;</span><br><span class="line">    impl.FuncPtr = fp;</span><br><span class="line">    Desc = desc;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>大多数时候，clang转换的源代码通常是<code>_NSConcreteStackBlock</code>对象</p>
+<p><strong>可以这么理解，NSConcreteStackBlock就是引用了外部变量的block</strong></p>
+<h4 id="NSConcreteMallocBlock"><a href="#NSConcreteMallocBlock" class="headerlink" title="NSConcreteMallocBlock"></a>NSConcreteMallocBlock</h4><p>系统不提供直接创建 <code>NSConcreteMallocBlock</code> 的方式，但是可以对 <code>NSConcreteStackBlock</code> 进行 copy 操作来生成 <code>NSConcreteMallocBlock</code></p>
+<p>以下情况，Block 会进行 copy 操作：</p>
+<ul>
+<li>手动执行 copy 方法</li>
+<li>将 Block 赋值给 __strong 修饰符修饰（系统默认）的 Block 或者 id 对象</li>
+<li>作为方法的返回值</li>
+<li>系统 API 中含有 usingBlcok 的方法</li>
+</ul>
+<p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-20-051433.jpg" alt></p>
+<p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-20-051439.jpg" alt></p>
+<h3 id="Block生命周期"><a href="#Block生命周期" class="headerlink" title="Block生命周期"></a>Block生命周期</h3><p><code>NSConcreteStackBlock</code> 是由编译器自动管理，超过作用域之外就会自动释放了。而 <code>NSConcreteMallocBlock</code> 是由程序员自己管理，如果没有被强引用也会被消耗。<code>NSConcreteGlobalBlock</code> 由于存在于全局区，所以会一直伴随着应用程序。</p>
+<h2 id="5-weak-实现原理的概括"><a href="#5-weak-实现原理的概括" class="headerlink" title="5 .__weak 实现原理的概括"></a>5 .__weak 实现原理的概括</h2><p><code>Runtime</code>维护了一个<code>weak</code>表，用于存储指向某个对象的所有weak指针。weak表其实是一个hash（哈希）表，Key是所指对象的地址，Value是weak指针的地址（这个地址的值是所指对象的地址）数组。</p>
+<p>weak 的实现原理可以概括一下三步：</p>
+<ol>
+<li>初始化时：runtime会调用<code>objc_initWeak</code>函数，初始化一个新的weak指针指向对象的地址。</li>
+<li>添加引用时：objc_initWeak函数会调用 <code>objc_storeWeak()</code>函数， <code>objc_storeWeak()</code>的作用是更新指针指向，创建对应的弱引用表。</li>
+<li>释放时，调用<code>clearDeallocating</code>函数。<code>clearDeallocating</code>函数首先根据对象地址获取所有weak指针地址的数组，然后遍历这个数组把其中的数据设为nil，最后把这个entry从weak表中删除，最后清理对象的记录。</li>
+</ol>
+<h2 id="6-总结"><a href="#6-总结" class="headerlink" title="6. 总结"></a>6. 总结</h2><p><code>__weak</code> 本身是可以避免循环引用的问题的，但是其会导致外部对象释放了之后，block 内部也访问不到这个对象的问题，我们可以通过在 block 内部声明一个 <code>__strong</code> 的变量来指向 weakObj，使外部对象既能在 block 内部保持住，又能避免循环引用的问题。</p>
+<p><code>__block</code> 本身无法避免循环引用的问题，但是我们可以通过在 block 内部手动把 blockObj 赋值为 nil 的方式来避免循环引用的问题。另外一点就是 <code>__block</code> 修饰的变量在 block 内外都是唯一的，要注意这个特性可能带来的隐患。</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://xiaozhuanlan.com/topic/2710695843" target="_blank" rel="noopener">1.深入理解 Block</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Block/" rel="tag"># Block</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/08/iOS/OCFoundation/OCFoundation/" rel="next" title="OC 语言特性">
+                <i class="fa fa-chevron-left"></i> OC 语言特性
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/08/iOS/Memory/Memory/" rel="prev" title="内存管理">
+                内存管理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">caicoder</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Block"><span class="nav-number">1.</span> <span class="nav-text">Block</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-什么是Block与Block构造"><span class="nav-number">1.1.</span> <span class="nav-text">1.什么是Block与Block构造</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-截获变量"><span class="nav-number">1.2.</span> <span class="nav-text">2.截获变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-block-修饰符"><span class="nav-number">1.3.</span> <span class="nav-text">3.__block 修饰符</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-block原理"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1__block原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-2-forwarding存在意义"><span class="nav-number">1.3.1.1.</span> <span class="nav-text">3.2 __forwarding存在意义</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Block-的内存管理"><span class="nav-number">1.4.</span> <span class="nav-text">4.Block 的内存管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#NSConcreteGlobalBlock"><span class="nav-number">1.4.0.1.</span> <span class="nav-text">_NSConcreteGlobalBlock</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NSConcreteStackBlock"><span class="nav-number">1.4.0.2.</span> <span class="nav-text">_NSConcreteStackBlock</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NSConcreteMallocBlock"><span class="nav-number">1.4.0.3.</span> <span class="nav-text">NSConcreteMallocBlock</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Block生命周期"><span class="nav-number">1.4.1.</span> <span class="nav-text">Block生命周期</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-weak-实现原理的概括"><span class="nav-number">1.5.</span> <span class="nav-text">5 .__weak 实现原理的概括</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-总结"><span class="nav-number">1.6.</span> <span class="nav-text">6. 总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">1.7.</span> <span class="nav-text">Reference</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">caicoder</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

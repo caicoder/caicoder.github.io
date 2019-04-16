@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="面试,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="原文地址 https://juejin.im/post/5a7c011d5188257a654cc76d  1、设计模式是什么？ 你知道哪些设计模式，并简要叙述？设计模式是一种编码经验，就是用比较成熟的逻辑去处理某一种类型的事情。 1). MVC 模式：Model View Control，把模型 视图 控制器 层进行解耦合编写。 2). MVVM 模式：Model View ViewModel">
+<meta name="keywords" content="面试">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面试题目">
+<meta property="og:url" content="https://caicoder.github.io/2018/09/15/Interview/【2018 年最新】 iOS 面试题及答案 (一)/index.html">
+<meta property="og:site_name" content="caicoder的博客">
+<meta property="og:description" content="原文地址 https://juejin.im/post/5a7c011d5188257a654cc76d  1、设计模式是什么？ 你知道哪些设计模式，并简要叙述？设计模式是一种编码经验，就是用比较成熟的逻辑去处理某一种类型的事情。 1). MVC 模式：Model View Control，把模型 视图 控制器 层进行解耦合编写。 2). MVVM 模式：Model View ViewModel">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-04-16T06:20:36.595Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="面试题目">
+<meta name="twitter:description" content="原文地址 https://juejin.im/post/5a7c011d5188257a654cc76d  1、设计模式是什么？ 你知道哪些设计模式，并简要叙述？设计模式是一种编码经验，就是用比较成熟的逻辑去处理某一种类型的事情。 1). MVC 模式：Model View Control，把模型 视图 控制器 层进行解耦合编写。 2). MVVM 模式：Model View ViewModel">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://caicoder.github.io/2018/09/15/Interview/【2018 年最新】 iOS 面试题及答案 (一)/">
+
+
+
+
+
+  <title>面试题目 | caicoder的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">caicoder的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://caicoder.github.io/2018/09/15/Interview/【2018 年最新】 iOS 面试题及答案 (一)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="caicoder">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="caicoder的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">面试题目</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-15T12:12:42+08:00">
+                2018-09-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>原文地址 <a href="https://juejin.im/post/5a7c011d5188257a654cc76d" target="_blank" rel="noopener">https://juejin.im/post/5a7c011d5188257a654cc76d</a></p>
+</blockquote>
+<h5 id="1、设计模式是什么？-你知道哪些设计模式，并简要叙述？"><a href="#1、设计模式是什么？-你知道哪些设计模式，并简要叙述？" class="headerlink" title="1、设计模式是什么？ 你知道哪些设计模式，并简要叙述？"></a>1、设计模式是什么？ 你知道哪些设计模式，并简要叙述？</h5><p>设计模式是一种编码经验，就是用比较成熟的逻辑去处理某一种类型的事情。 1). MVC 模式：Model View Control，把模型 视图 控制器 层进行解耦合编写。 2). MVVM 模式：Model View ViewModel 把模型 视图 业务逻辑 层进行解耦和编写。 3). 单例模式：通过 static 关键词，声明全局变量。在整个进程运行期间只会被赋值一次。 4). 观察者模式：KVO 是典型的通知模式，观察某个属性的状态，状态发生变化时通知观察者。 5). 委托模式：代理 + 协议的组合。实现 1 对 1 的反向传值操作。 6). 工厂模式：通过一个类方法，批量的根据已有模板生产对象。</p>
+<h5 id="2、MVC-和-MVVM-的区别？"><a href="#2、MVC-和-MVVM-的区别？" class="headerlink" title="2、MVC 和 MVVM 的区别？"></a>2、MVC 和 MVVM 的区别？</h5><p>1). MVVM 是对胖模型进行的拆分，其本质是给控制器减负，将一些弱业务逻辑放到 VM 中去处理。 2). MVC 是一切设计的基础，所有新的设计模式都是基于 MVC 进行的改进。</p>
+<h5 id="3、-import-跟-include-有什么区别，-class-呢，-import-lt-gt-跟-import“”-有什么区别？"><a href="#3、-import-跟-include-有什么区别，-class-呢，-import-lt-gt-跟-import“”-有什么区别？" class="headerlink" title="3、#import 跟 #include 有什么区别，@class 呢，#import&lt;&gt; 跟 #import“” 有什么区别？"></a>3、#import 跟 #include 有什么区别，@class 呢，#import&lt;&gt; 跟 #import“” 有什么区别？</h5><p>答： 1). #import 是 Objective-C 导入头文件的关键字，#include 是 C/C++ 导入头文件的关键字，使用 #import 头文件会自动只导入一次，不会重复导入。 2). @class 告诉编译器某个类的声明，当执行时，才去查看类的实现文件，可以解决头文件的相互包含。 3). #import&lt;&gt; 用来包含系统的头文件，#import”” 用来包含用户头文件。</p>
+<h5 id="4、frame-和-bounds-有什么不同？"><a href="#4、frame-和-bounds-有什么不同？" class="headerlink" title="4、frame 和 bounds 有什么不同？"></a>4、frame 和 bounds 有什么不同？</h5><p>frame 指的是：该 view 在父 view 坐标系统中的位置和大小。(参照点是父 view 的坐标系统) bounds 指的是：该 view 在本身坐标系统中的位置和大小。(参照点是本身坐标系统)</p>
+<h5 id="5、Objective-C-的类可以多重继承么？可以实现多个接口么？Category-是什么？重写一个类的方式用继承好还是分类好？为什么？"><a href="#5、Objective-C-的类可以多重继承么？可以实现多个接口么？Category-是什么？重写一个类的方式用继承好还是分类好？为什么？" class="headerlink" title="5、Objective-C 的类可以多重继承么？可以实现多个接口么？Category 是什么？重写一个类的方式用继承好还是分类好？为什么？"></a>5、Objective-C 的类可以多重继承么？可以实现多个接口么？Category 是什么？重写一个类的方式用继承好还是分类好？为什么？</h5><p>答：Objective-C 的类不可以多重继承；可以实现多个接口（协议）；Category 是类别；一般情况用分类好，用 Category 去重写类的方法，仅对本 Category 有效，不会影响到其他类与原有类的关系。</p>
+<h5 id="6、-property-的本质是什么？ivar、getter、setter-是如何生成并添加到这个类中的？"><a href="#6、-property-的本质是什么？ivar、getter、setter-是如何生成并添加到这个类中的？" class="headerlink" title="6、@property 的本质是什么？ivar、getter、setter 是如何生成并添加到这个类中的？"></a>6、@property 的本质是什么？ivar、getter、setter 是如何生成并添加到这个类中的？</h5><p>@property 的本质是什么？ @property = ivar + getter + setter; “属性” (property) 有两大概念：ivar（实例变量）、getter+setter（存取方法）</p>
+<p>“属性” (property)作为 Objective-C 的一项特性，主要的作用就在于封装对象中的数据。 Objective-C 对象通常会把其所需要的数据保存为各种实例变量。实例变量一般通过 “存取方法”(access method) 来访问。其中，“获取方法” (getter)用于读取变量值，而 “设置方法” (setter) 用于写入变量值。</p>
+<h5 id="7、-property-中有哪些属性关键字？-property-后面可以有哪些修饰符？"><a href="#7、-property-中有哪些属性关键字？-property-后面可以有哪些修饰符？" class="headerlink" title="7、@property 中有哪些属性关键字？/ @property 后面可以有哪些修饰符？"></a>7、@property 中有哪些属性关键字？/ @property 后面可以有哪些修饰符？</h5><p>属性可以拥有的特质分为四类: 1. 原子性 — nonatomic 特质 2. 读 / 写权限 —readwrite(读写)、readonly (只读) 3. 内存管理语义 —assign、strong、 weak、unsafe_unretained、copy 4. 方法名 —getter= 、setter= 5. 不常用的：nonnull,null_resettable,nullable</p>
+<h5 id="8、属性关键字-readwrite，readonly，assign，retain，copy，nonatomic-各是什么作用，在那种情况下用？"><a href="#8、属性关键字-readwrite，readonly，assign，retain，copy，nonatomic-各是什么作用，在那种情况下用？" class="headerlink" title="8、属性关键字 readwrite，readonly，assign，retain，copy，nonatomic 各是什么作用，在那种情况下用？"></a>8、属性关键字 readwrite，readonly，assign，retain，copy，nonatomic 各是什么作用，在那种情况下用？</h5><p>答： 1). readwrite 是可读可写特性。需要生成 getter 方法和 setter 方法。 2). readonly 是只读特性。只会生成 getter 方法，不会生成 setter 方法，不希望属性在类外改变。 3). assign 是赋值特性。setter 方法将传入参数赋值给实例变量; 仅设置变量时, assign 用于基本数据类型。 4). retain(MRC)/strong(ARC) 表示持有特性。setter 方法将传入参数先保留，再赋值，传入参数的 retaincount 会 + 1。 5). copy 表示拷贝特性。setter 方法将传入对象复制一份，需要完全一份新的变量时。 6). nonatomic 非原子操作。决定编译器生成的 setter 和 getter 方法是否是原子操作，atomic 表示多线程安全，一般使用 nonatomic，效率高。</p>
+<h5 id="9、什么情况使用-weak-关键字，相比-assign-有什么不同？"><a href="#9、什么情况使用-weak-关键字，相比-assign-有什么不同？" class="headerlink" title="9、什么情况使用 weak 关键字，相比 assign 有什么不同？"></a>9、什么情况使用 weak 关键字，相比 assign 有什么不同？</h5><p>1. 在 ARC 中, 在有可能出现循环引用的时候, 往往要通过让其中一端使用 weak 来解决, 比如: delegate 代理属性。 2. 自身已经对它进行一次强引用, 没有必要再强引用一次, 此时也会使用 weak, 自定义 IBOutlet 控件属性一般也使用 weak；当然，也可以使用 strong。</p>
+<p>IBOutlet 连出来的视图属性为什么可以被设置成 weak? 因为父控件的 subViews 数组已经对它有一个强引用。</p>
+<p>不同点： assign 可以用非 OC 对象，而 weak 必须用于 OC 对象。 weak 表明该属性定义了一种 “非拥有关系”。在属性所指的对象销毁时，属性值会自动清空 (nil)。</p>
+<h5 id="10、怎么用-copy-关键字？"><a href="#10、怎么用-copy-关键字？" class="headerlink" title="10、怎么用 copy 关键字？"></a>10、怎么用 copy 关键字？</h5><p>用途：</p>
+<ol>
+<li>NSString、NSArray、NSDictionary 等等经常使用 copy 关键字，是因为他们有对应的可变类型：NSMutableString、NSMutableArray、NSMutableDictionary；</li>
+<li>block 也经常使用 copy 关键字。</li>
+</ol>
+<p>说明： block 使用 copy 是从 MRC 遗留下来的 “传统”, 在 MRC 中, 方法内部的 block 是在栈区的, 使用 copy 可以把它放到堆区. 在 ARC 中写不写都行：对于 block 使用 copy 还是 strong 效果是一样的，但写上 copy 也无伤大雅，还能时刻提醒我们：编译器自动对 block 进行了 copy 操作。如果不写 copy ，该类的调用者有可能会忘记或者根本不知道 “编译器会自动对 block 进行了 copy 操作”，他们有可能会在调用之前自行拷贝属性值。这种操作多余而低效。</p>
+<h5 id="11、用-property-声明的-NSString-NSArray-NSDictionary-经常使用-copy-关键字，为什么？如果改用-strong-关键字，可能造成什么问题？"><a href="#11、用-property-声明的-NSString-NSArray-NSDictionary-经常使用-copy-关键字，为什么？如果改用-strong-关键字，可能造成什么问题？" class="headerlink" title="11、用 @property 声明的 NSString / NSArray / NSDictionary 经常使用 copy 关键字，为什么？如果改用 strong 关键字，可能造成什么问题？"></a>11、用 @property 声明的 NSString / NSArray / NSDictionary 经常使用 copy 关键字，为什么？如果改用 strong 关键字，可能造成什么问题？</h5><p>答：用 @property 声明 NSString、NSArray、NSDictionary 经常使用 copy 关键字，是因为他们有对应的可变类型：NSMutableString、NSMutableArray、NSMutableDictionary，他们之间可能进行赋值操作（就是把可变的赋值给不可变的），为确保对象中的字符串值不会无意间变动，应该在设置新属性值时拷贝一份。</p>
+<ol>
+<li>因为父类指针可以指向子类对象, 使用 copy 的目的是为了让本对象的属性不受外界影响, 使用 copy 无论给我传入是一个可变对象还是不可对象, 我本身持有的就是一个不可变的副本。</li>
+<li>如果我们使用是 strong , 那么这个属性就有可能指向一个可变对象, 如果这个可变对象在外部被修改了, 那么会影响该属性。</li>
+</ol>
+<p>// 总结：使用 copy 的目的是，防止把可变类型的对象赋值给不可变类型的对象时，可变类型对象的值发送变化会无意间篡改不可变类型对象原来的值。</p>
+<h5 id="12、浅拷贝和深拷贝的区别？"><a href="#12、浅拷贝和深拷贝的区别？" class="headerlink" title="12、浅拷贝和深拷贝的区别？"></a>12、浅拷贝和深拷贝的区别？</h5><p>答： 浅拷贝：只复制指向对象的指针，而不复制引用对象本身。 深拷贝：复制引用对象本身。内存中存在了两份独立对象本身，当修改 A 时，A_copy 不变。</p>
+<h5 id="13、系统对象的-copy-与-mutableCopy-方法？"><a href="#13、系统对象的-copy-与-mutableCopy-方法？" class="headerlink" title="13、系统对象的 copy 与 mutableCopy 方法？"></a>13、系统对象的 copy 与 mutableCopy 方法？</h5><p>不管是集合类对象（NSArray、NSDictionary、NSSet … 之类的对象），还是非集合类对象（NSString, NSNumber … 之类的对象），接收到 copy 和 mutableCopy 消息时，都遵循以下准则：</p>
+<ol>
+<li>copy 返回的是不可变对象（immutableObject）；如果用 copy 返回值调用 mutable 对象的方法就会 crash。</li>
+<li>mutableCopy 返回的是可变对象（mutableObject）。</li>
+</ol>
+<p>一、非集合类对象的 copy 与 mutableCopy 在非集合类对象中，对不可变对象进行 copy 操作，是指针复制，mutableCopy 操作是内容复制； 对可变对象进行 copy 和 mutableCopy 都是内容复制。用代码简单表示如下： NSString <em>str = @”hello word!”; NSString </em>strCopy = [str copy] // 指针复制，strCopy 与 str 的地址一样 NSMutableString *strMCopy = [str mutableCopy] // 内容复制，strMCopy 与 str 的地址不一样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">NSMutableString *mutableStr = [NSMutableString stringWithString: @&quot;hello word!&quot;];</span><br><span class="line">NSString *strCopy = [mutableStr copy] // 内容复制</span><br><span class="line">NSMutableString *strMCopy = [mutableStr mutableCopy] // 内容复制</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<p>二、集合类对象的 copy 与 mutableCopy (同上) 在集合类对象中，对不可变对象进行 copy 操作，是指针复制，mutableCopy 操作是内容复制； 对可变对象进行 copy 和 mutableCopy 都是内容复制。但是：集合对象的内容复制仅限于对象本身，对集合内的对象元素仍然是指针复制。(即单层内容复制) NSArray <em>arr = @[@[@”a”, @”b”], @[@”c”, @”d”]; NSArray </em>copyArr = [arr copy]; // 指针复制 NSMutableArray *mCopyArr = [arr mutableCopy]; // 单层内容复制</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">NSMutableArray *array = [NSMutableArray arrayWithObjects:[NSMutableString stringWithString:@&quot;a&quot;],@&quot;b&quot;,@&quot;c&quot;,nil];</span><br><span class="line">NSArray *copyArr = [mutableArr copy]; // 单层内容复制</span><br><span class="line">NSMutableArray *mCopyArr = [mutableArr mutableCopy]; // 单层内容复制</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<p>【总结一句话】： 只有对不可变对象进行 copy 操作是指针复制（浅复制），其它情况都是内容复制（深复制）！</p>
+<h5 id="14、这个写法会出什么问题：-property-nonatomic-copy-NSMutableArray-arr-？"><a href="#14、这个写法会出什么问题：-property-nonatomic-copy-NSMutableArray-arr-？" class="headerlink" title="14、这个写法会出什么问题：@property (nonatomic, copy) NSMutableArray *arr;？"></a>14、这个写法会出什么问题：@property (nonatomic, copy) NSMutableArray *arr;？</h5><p>问题：添加, 删除, 修改数组内的元素的时候, 程序会因为找不到对应的方法而崩溃。 // 如：-[__NSArrayI removeObjectAtIndex:]: unrecognized selector sent to instance 0x7fcd1bc30460 // copy 后返回的是不可变对象（即 arr 是 NSArray 类型，NSArray 类型对象不能调用 NSMutableArray 类型对象的方法） 原因：是因为 copy 就是复制一个不可变 NSArray 的对象，不能对 NSArray 对象进行添加 / 修改。</p>
+<h5 id="15、如何让自己的类用-copy-修饰符？如何重写带-copy-关键字的-setter？"><a href="#15、如何让自己的类用-copy-修饰符？如何重写带-copy-关键字的-setter？" class="headerlink" title="15、如何让自己的类用 copy 修饰符？如何重写带 copy 关键字的 setter？"></a>15、如何让自己的类用 copy 修饰符？如何重写带 copy 关键字的 setter？</h5><p>若想令自己所写的对象具有拷贝功能，则需实现 NSCopying 协议。如果自定义的对象分为可变版本与不可变版本，那么就要同时实现 NSCopying 与 NSMutableCopying 协议。 具体步骤： 1. 需声明该类遵从 NSCopying 协议 2. 实现 NSCopying 协议的方法。 // 该协议只有一个方法: - (id)copyWithZone:(NSZone *)zone; // 注意：使用 copy 修饰符，调用的是 copy 方法，其实真正需要实现的是 “copyWithZone” 方法。</p>
+<h5 id="16、写一个-setter-方法用于完成-property-nonatomic-retain-NSString-name，写一个-setter-方法用于完成-property-nonatomic-copy-NSString-name-？"><a href="#16、写一个-setter-方法用于完成-property-nonatomic-retain-NSString-name，写一个-setter-方法用于完成-property-nonatomic-copy-NSString-name-？" class="headerlink" title="16、写一个 setter 方法用于完成 @property (nonatomic, retain) NSString name，写一个 setter 方法用于完成 @property (nonatomic, copy) NSString name ？"></a>16、写一个 setter 方法用于完成 @property (nonatomic, retain) NSString <em>name，写一个 setter 方法用于完成 @property (nonatomic, copy) NSString </em>name ？</h5><p>答： // retain</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- (void)setName:(NSString *)str &#123;</span><br><span class="line">  [str retain];</span><br><span class="line">  [_name release];</span><br><span class="line">  _name = str;</span><br><span class="line">&#125;</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<p>// copy</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- (void)setName:(NSString *)str &#123;</span><br><span class="line">  id t = [str copy];</span><br><span class="line">  [_name release];</span><br><span class="line">  _name = t;</span><br><span class="line">&#125;</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<h5 id="17、-synthesize-和-dynamic-分别有什么作用？"><a href="#17、-synthesize-和-dynamic-分别有什么作用？" class="headerlink" title="17、@synthesize 和 @dynamic 分别有什么作用？"></a>17、@synthesize 和 @dynamic 分别有什么作用？</h5><p>@property 有两个对应的词，一个是 @synthesize（合成实例变量），一个是 @dynamic。 如果 @synthesize 和 @dynamic 都没有写，那么默认的就是 @synthesize var = _var; // 在类的实现代码里通过 @synthesize 语法可以来指定实例变量的名字。(@synthesize var = _newVar;)</p>
+<ol>
+<li>@synthesize 的语义是如果你没有手动实现 setter 方法和 getter 方法，那么编译器会自动为你加上这两个方法。</li>
+<li>@dynamic 告诉编译器，属性的 setter 与 getter 方法由用户自己实现，不自动生成（如，@dynamic var）。</li>
+</ol>
+<h5 id="18、常见的-Objective-C-的数据类型有那些，和-C-的基本数据类型有什么区别？如：NSInteger-和-int"><a href="#18、常见的-Objective-C-的数据类型有那些，和-C-的基本数据类型有什么区别？如：NSInteger-和-int" class="headerlink" title="18、常见的 Objective-C 的数据类型有那些，和 C 的基本数据类型有什么区别？如：NSInteger 和 int"></a>18、常见的 Objective-C 的数据类型有那些，和 C 的基本数据类型有什么区别？如：NSInteger 和 int</h5><p>答： Objective-C 的数据类型有 NSString，NSNumber，NSArray，NSMutableArray，NSData 等等，这些都是 class，创建后便是对象，而 C 语言的基本数据类型 int，只是一定字节的内存空间，用于存放数值; NSInteger 是基本数据类型，并不是 NSNumber 的子类，当然也不是 NSObject 的子类。NSInteger 是基本数据类型 Int 或者 Long 的别名 (NSInteger 的定义 typedef long NSInteger)，它的区别在于，NSInteger 会根据系统是 32 位还是 64 位来决定是本身是 int 还是 long。</p>
+<h5 id="19、id-声明的对象有什么特性？"><a href="#19、id-声明的对象有什么特性？" class="headerlink" title="19、id 声明的对象有什么特性？"></a>19、id 声明的对象有什么特性？</h5><p>答：id 声明的对象具有运行时的特性，即可以指向任意类型的 Objcetive-C 的对象。</p>
+<h5 id="20、Objective-C-如何对内存管理的，说说你的看法和解决方法？"><a href="#20、Objective-C-如何对内存管理的，说说你的看法和解决方法？" class="headerlink" title="20、Objective-C 如何对内存管理的，说说你的看法和解决方法？"></a>20、Objective-C 如何对内存管理的，说说你的看法和解决方法？</h5><p>答：Objective-C 的内存管理主要有三种方式 ARC(自动内存计数)、手动内存计数、内存池。 1). 自动内存计数 ARC：由 Xcode 自动在 App 编译阶段，在代码中添加内存管理代码。 2). 手动内存计数 MRC：遵循内存谁申请、谁释放；谁添加，谁释放的原则。 3). 内存释放池 Release Pool：把需要释放的内存统一放在一个池子中，当池子被抽干后 (drain)，池子中所有的内存空间也被自动释放掉。内存池的释放操作分为自动和手动。自动释放受 runloop 机制影响。</p>
+<h5 id="21、Objective-C-中创建线程的方法是什么？如果在主线程中执行代码，方法是什么？如果想延时执行代码、方法又是什么？"><a href="#21、Objective-C-中创建线程的方法是什么？如果在主线程中执行代码，方法是什么？如果想延时执行代码、方法又是什么？" class="headerlink" title="21、Objective-C 中创建线程的方法是什么？如果在主线程中执行代码，方法是什么？如果想延时执行代码、方法又是什么？"></a>21、Objective-C 中创建线程的方法是什么？如果在主线程中执行代码，方法是什么？如果想延时执行代码、方法又是什么？</h5><p>答：线程创建有三种方法：使用 NSThread 创建、使用 GCD 的 dispatch、使用子类化的 NSOperation, 然后将其加入 NSOperationQueue; 在主线程执行代码，方法是 performSelectorOnMainThread，如果想延时执行代码可以用 performSelector:onThread:withObject:waitUntilDone:</p>
+<h5 id="22、Category（类别）、-Extension（扩展）和继承的区别"><a href="#22、Category（类别）、-Extension（扩展）和继承的区别" class="headerlink" title="22、Category（类别）、 Extension（扩展）和继承的区别"></a>22、Category（类别）、 Extension（扩展）和继承的区别</h5><p>区别：</p>
+<ol>
+<li>分类有名字，类扩展没有分类名字，是一种特殊的分类。</li>
+<li>分类只能扩展方法（属性仅仅是声明，并没真正实现），类扩展可以扩展属性、成员变量和方法。</li>
+<li>继承可以增加，修改或者删除方法，并且可以增加属性。</li>
+</ol>
+<h5 id="23、我们说的-OC-是动态运行时语言是什么意思？"><a href="#23、我们说的-OC-是动态运行时语言是什么意思？" class="headerlink" title="23、我们说的 OC 是动态运行时语言是什么意思？"></a>23、我们说的 OC 是动态运行时语言是什么意思？</h5><p>答：主要是将数据类型的确定由编译时，推迟到了运行时。简单来说, 运行时机制使我们直到运行时才去决定一个对象的类别, 以及调用该类别对象指定方法。</p>
+<h5 id="24、为什么我们常见的-delegate-属性都用是-week-而不是-retain-strong？"><a href="#24、为什么我们常见的-delegate-属性都用是-week-而不是-retain-strong？" class="headerlink" title="24、为什么我们常见的 delegate 属性都用是 week 而不是 retain/strong？"></a>24、为什么我们常见的 delegate 属性都用是 week 而不是 retain/strong？</h5><p>答：是为了防止 delegate 两端产生不必要的循环引用。 @property (nonatomic, weak) id delegate;</p>
+<h5 id="25、什么时候用-delete，什么时候用-Notification？"><a href="#25、什么时候用-delete，什么时候用-Notification？" class="headerlink" title="25、什么时候用 delete，什么时候用 Notification？"></a>25、什么时候用 delete，什么时候用 Notification？</h5><p>Delegate(委托模式)：1 对 1 的反向消息通知功能。 Notification(通知模式)：只想要把消息发送出去，告知某些状态的变化。但是并不关心谁想要知道这个。</p>
+<h5 id="26、什么是-KVO-和-KVC？"><a href="#26、什么是-KVO-和-KVC？" class="headerlink" title="26、什么是 KVO 和 KVC？"></a>26、什么是 KVO 和 KVC？</h5><p>1). KVC(Key-Value-Coding)：键值编码 是一种通过字符串间接访问对象的方式（即给属性赋值） 举例说明： stu.name = @”张三” // 点语法给属性赋值 [stu setValue:@”张三” forKey:@”name”]; // 通过字符串使用 KVC 方式给属性赋值 stu1.nameLabel.text = @”张三”; [stu1 setValue:@”张三” forKey:@”nameLabel.text”]; // 跨层赋值 2). KVO(key-Value-Observing)：键值观察机制 他提供了观察某一属性变化的方法，极大的简化了代码。 KVO 只能被 KVC 触发，包括使用 setValue:forKey: 方法和点语法。 // 通过下方方法为属性添加 KVO 观察</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">   - (void)addObserver:(NSObject *)observer</span><br><span class="line">                     forKeyPath:(NSString *)keyPath</span><br><span class="line">                     options:(NSKeyValueObservingOptions)options</span><br><span class="line">                     context:(nullable void *)context;</span><br><span class="line">   // 当被观察的属性发送变化时，会自动触发下方方法                   </span><br><span class="line">   - (void)observeValueForKeyPath:(NSString *)keyPath</span><br><span class="line">                              ofObject:(id)object</span><br><span class="line">                                  change:(NSDictionary *)change</span><br><span class="line">                                 context:(void *)context&#123;&#125;;</span><br><span class="line"></span><br><span class="line">KVC 和 KVO 的 keyPath 可以是属性、实例变量、成员变量。</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<h5 id="27、KVC-的底层实现？"><a href="#27、KVC-的底层实现？" class="headerlink" title="27、KVC 的底层实现？"></a>27、KVC 的底层实现？</h5><p>当一个对象调用 setValue 方法时，方法内部会做以下操作： 1). 检查是否存在相应的 key 的 set 方法，如果存在，就调用 set 方法。 2). 如果 set 方法不存在，就会查找与 key 相同名称并且带下划线的成员变量，如果有，则直接给成员变量属性赋值。 3). 如果没有找到_key，就会查找相同名称的属性 key，如果有就直接赋值。 4). 如果还没有找到，则调用 valueForUndefinedKey: 和 setValue:forUndefinedKey: 方法。 这些方法的默认实现都是抛出异常，我们可以根据需要重写它们。</p>
+<h5 id="28、KVO-的底层实现？"><a href="#28、KVO-的底层实现？" class="headerlink" title="28、KVO 的底层实现？"></a>28、KVO 的底层实现？</h5><p>KVO 基于 runtime 机制实现。</p>
+<h5 id="29、ViewController-生命周期"><a href="#29、ViewController-生命周期" class="headerlink" title="29、ViewController 生命周期"></a>29、ViewController 生命周期</h5><p>按照执行顺序排列：</p>
+<ol>
+<li>initWithCoder：通过 nib 文件初始化时触发。</li>
+<li>awakeFromNib：nib 文件被加载的时候，会发生一个 awakeFromNib 的消息到 nib 文件中的每个对象。</li>
+<li>loadView：开始加载视图控制器自带的 view。</li>
+<li>viewDidLoad：视图控制器的 view 被加载完成。</li>
+<li>viewWillAppear：视图控制器的 view 将要显示在 window 上。</li>
+<li>updateViewConstraints：视图控制器的 view 开始更新 AutoLayout 约束。</li>
+<li>viewWillLayoutSubviews：视图控制器的 view 将要更新内容视图的位置。</li>
+<li>viewDidLayoutSubviews：视图控制器的 view 已经更新视图的位置。</li>
+<li>viewDidAppear：视图控制器的 view 已经展示到 window 上。</li>
+<li>viewWillDisappear：视图控制器的 view 将要从 window 上消失。</li>
+<li>viewDidDisappear：视图控制器的 view 已经从 window 上消失。</li>
+</ol>
+<h5 id="30、方法和选择器有何不同？"><a href="#30、方法和选择器有何不同？" class="headerlink" title="30、方法和选择器有何不同？"></a>30、方法和选择器有何不同？</h5><p>selector 是一个方法的名字，方法是一个组合体，包含了名字和实现。</p>
+<h5 id="31、你是否接触过-OC-中的反射机制？简单聊一下概念和使用"><a href="#31、你是否接触过-OC-中的反射机制？简单聊一下概念和使用" class="headerlink" title="31、你是否接触过 OC 中的反射机制？简单聊一下概念和使用"></a>31、你是否接触过 OC 中的反射机制？简单聊一下概念和使用</h5><p>1). class 反射 通过类名的字符串形式实例化对象。 Class class = NSClassFromString(@”student”); Student *stu = [[class alloc] init]; 将类名变为字符串。 Class class =[Student class]; NSString <em>className = NSStringFromClass(class); 2). SEL 的反射 通过方法的字符串形式实例化方法。 SEL selector = NSSelectorFromString(@”setName”);<br>[stu performSelector:selector withObject:@”Mike”]; 将方法变成字符串。 NSStringFromSelector(@selector</em>(setName:));</p>
+<h5 id="32、调用方法有两种方式："><a href="#32、调用方法有两种方式：" class="headerlink" title="32、调用方法有两种方式："></a>32、调用方法有两种方式：</h5><p>1). 直接通过方法名来调用。[person show]; 2). 间接的通过 SEL 数据来调用 SEL aaa = @selector(show); [person performSelector:aaa];</p>
+<h5 id="33、如何对-iOS-设备进行性能测试？"><a href="#33、如何对-iOS-设备进行性能测试？" class="headerlink" title="33、如何对 iOS 设备进行性能测试？"></a>33、如何对 iOS 设备进行性能测试？</h5><p>答： Profile-&gt; Instruments -&gt;Time Profiler</p>
+<h5 id="34、开发项目时你是怎么检查内存泄露？"><a href="#34、开发项目时你是怎么检查内存泄露？" class="headerlink" title="34、开发项目时你是怎么检查内存泄露？"></a>34、开发项目时你是怎么检查内存泄露？</h5><p>1). 静态分析 analyze。 2). instruments 工具里面有个 leak 可以动态分析。</p>
+<h5 id="35、什么是懒加载？"><a href="#35、什么是懒加载？" class="headerlink" title="35、什么是懒加载？"></a>35、什么是懒加载？</h5><p>答：懒加载就是只在用到的时候才去初始化。也可以理解成延时加载。 我觉得最好也最简单的一个例子就是 tableView 中图片的加载显示了, 一个延时加载, 避免内存过高, 一个异步加载, 避免线程堵塞提高用户体验。</p>
+<h5 id="36、类变量的-public，-protected，-private，-package-声明各有什么含义？"><a href="#36、类变量的-public，-protected，-private，-package-声明各有什么含义？" class="headerlink" title="36、类变量的 @public，@protected，@private，@package 声明各有什么含义？"></a>36、类变量的 @public，@protected，@private，@package 声明各有什么含义？</h5><p>@public 任何地方都能访问; @protected 该类和子类中访问, 是默认的; @private 只能在本类中访问; @package 本包内使用, 跨包不可以。</p>
+<h5 id="37、什么是谓词？"><a href="#37、什么是谓词？" class="headerlink" title="37、什么是谓词？"></a>37、什么是谓词？</h5><p>谓词就是通过 NSPredicate 给定的逻辑条件作为约束条件, 完成对数据的筛选。 // 定义谓词对象, 谓词对象中包含了过滤条件 (过滤条件比较多) NSPredicate <em>predicate = [NSPredicate predicateWithFormat:@”age&lt;%d”,30]; // 使用谓词条件过滤数组中的元素, 过滤之后返回查询的结果 NSArray </em>array = [persons filteredArrayUsingPredicate:predicate];</p>
+<h5 id="38、isa-指针问题"><a href="#38、isa-指针问题" class="headerlink" title="38、isa 指针问题"></a>38、isa 指针问题</h5><p>isa：是一个 Class 类型的指针. 每个实例对象有个 isa 的指针, 他指向对象的类, 而 Class 里也有个 isa 的指针, 指向 meteClass(元类)。元类保存了类方法的列表。当类方法被调 用时, 先会从本身查找类方法的实现, 如果没有, 元类会向他父类查找该方法。同时注意的是: 元类 (meteClass) 也是类, 它也是对象。元类也有 isa 指针, 它的 isa 指针最终指向的是一个根元类(root meteClass)。根元类的 isa 指针指向本身, 这样形成了一个封闭的内循环。</p>
+<h5 id="39、如何访问并修改一个类的私有属性？"><a href="#39、如何访问并修改一个类的私有属性？" class="headerlink" title="39、如何访问并修改一个类的私有属性？"></a>39、如何访问并修改一个类的私有属性？</h5><p>1). 一种是通过 KVC 获取。 2). 通过 runtime 访问并修改私有属性。</p>
+<h5 id="40、一个-objc-对象的-isa-的指针指向什么？有什么作用？"><a href="#40、一个-objc-对象的-isa-的指针指向什么？有什么作用？" class="headerlink" title="40、一个 objc 对象的 isa 的指针指向什么？有什么作用？"></a>40、一个 objc 对象的 isa 的指针指向什么？有什么作用？</h5><p>答：指向他的类对象, 从而可以找到对象上的方法。</p>
+<h5 id="41、下面的代码输出什么？"><a href="#41、下面的代码输出什么？" class="headerlink" title="41、下面的代码输出什么？"></a>41、下面的代码输出什么？</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@implementation Son : Father</span><br><span class="line">- (id)init &#123;</span><br><span class="line">   if (self = [super init]) &#123;</span><br><span class="line">       NSLog(@&quot;%@&quot;, NSStringFromClass([self class])); // Son</span><br><span class="line">       NSLog(@&quot;%@&quot;, NSStringFromClass([super class])); // Son</span><br><span class="line">   &#125;</span><br><span class="line">   return self;</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<p>// 解析： self 是类的隐藏参数，指向当前调用方法的这个类的实例。 super 是一个 Magic Keyword，它本质是一个编译器标示符，和 self 是指向的同一个消息接收者。 不同的是：super 会告诉编译器，调用 class 这个方法时，要去父类的方法，而不是本类里的。 上面的例子不管调用 [self class] 还是[super class]，接受消息的对象都是当前 Son *obj 这个对象。</p>
+<h5 id="42、写一个完整的代理，包括声明、实现"><a href="#42、写一个完整的代理，包括声明、实现" class="headerlink" title="42、写一个完整的代理，包括声明、实现"></a>42、写一个完整的代理，包括声明、实现</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">// 创建</span><br><span class="line">@protocol MyDelagate</span><br><span class="line">@required</span><br><span class="line">-(void)eat:(NSString *)foodName; </span><br><span class="line">@optional</span><br><span class="line">-(void)run;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">//  声明 .h</span><br><span class="line">@interface person: NSObject&lt;MyDelagate&gt;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">//  实现 .m</span><br><span class="line">@implementation person</span><br><span class="line">- (void)eat:(NSString *)foodName &#123; </span><br><span class="line">   NSLog(@&quot;吃:%@!&quot;, foodName);</span><br><span class="line">&#125; </span><br><span class="line">- (void)run &#123;</span><br><span class="line">   NSLog(@&quot;run!&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<h5 id="43、isKindOfClass、isMemberOfClass、selector-作用分别是什么"><a href="#43、isKindOfClass、isMemberOfClass、selector-作用分别是什么" class="headerlink" title="43、isKindOfClass、isMemberOfClass、selector 作用分别是什么"></a>43、isKindOfClass、isMemberOfClass、selector 作用分别是什么</h5><p>isKindOfClass：作用是某个对象属于某个类型或者继承自某类型。 isMemberOfClass：某个对象确切属于某个类型。 selector：通过方法名，获取在内存中的函数的入口地址。</p>
+<h5 id="44、delegate-和-notification-的区别"><a href="#44、delegate-和-notification-的区别" class="headerlink" title="44、delegate 和 notification 的区别"></a>44、delegate 和 notification 的区别</h5><p>1). 二者都用于传递消息，不同之处主要在于一个是一对一的，另一个是一对多的。 2). notification 通过维护一个 array，实现一对多消息的转发。 3). delegate 需要两者之间必须建立联系，不然没法调用代理的方法；notification 不需要两者之间有联系。</p>
+<h5 id="45、什么是-block？"><a href="#45、什么是-block？" class="headerlink" title="45、什么是 block？"></a>45、什么是 block？</h5><p>闭包（block）：闭包就是获取其它函数局部变量的匿名函数。</p>
+<h5 id="46、block-反向传值"><a href="#46、block-反向传值" class="headerlink" title="46、block 反向传值"></a>46、block 反向传值</h5><p>在控制器间传值可以使用代理或者 block，使用 block 相对来说简洁。</p>
+<p>在前一个控制器的 touchesBegan: 方法内实现如下代码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">  // OneViewController.m</span><br><span class="line">  TwoViewController *twoVC = [[TwoViewController alloc] init];</span><br><span class="line">  twoVC.valueBlcok = ^(NSString *str) &#123;</span><br><span class="line">  	NSLog(@&quot;OneViewController拿到值：%@&quot;, str); </span><br><span class="line">  &#125;;</span><br><span class="line">  [self presentViewController:twoVC animated:YES completion:nil];</span><br><span class="line"></span><br><span class="line">  // TwoViewController.h   （在.h文件中声明一个block属性）</span><br><span class="line">  @property (nonatomic ,strong) void(^valueBlcok)(NSString *str);</span><br><span class="line"></span><br><span class="line">  // TwoViewController.m   （在.m文件中实现方法）</span><br><span class="line">- (void)touchesBegan:(NSSet&lt;UITouch *&gt; *)touches withEvent:(UIEvent *)event &#123;</span><br><span class="line">	// 传值:调用block</span><br><span class="line">	if (_valueBlcok) &#123;</span><br><span class="line">		_valueBlcok(@&quot;123456&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<h5 id="47、block-的注意点"><a href="#47、block-的注意点" class="headerlink" title="47、block 的注意点"></a>47、block 的注意点</h5><p>1). 在 block 内部使用外部指针且会造成循环引用情况下，需要用<strong>week 修饰外部指针： </strong>weak typeof(self) weakSelf = self; 2). 在 block 内部如果调用了延时函数还使用弱指针会取不到该指针，因为已经被销毁了，需要在 block 内部再将弱指针重新强引用一下。 <strong>strong typeof(self) strongSelf = weakSelf; 3). 如果需要在 block 内部改变外部栈区变量的话，需要在用</strong>block 修饰外部变量。</p>
+<h5 id="48、BAD-ACCESS-在什么情况下出现？"><a href="#48、BAD-ACCESS-在什么情况下出现？" class="headerlink" title="48、BAD_ACCESS 在什么情况下出现？"></a>48、BAD_ACCESS 在什么情况下出现？</h5><p>答：这种问题在开发时经常遇到。原因是访问了野指针，比如访问已经释放对象的成员变量或者发消息、死循环等。</p>
+<h5 id="49、lldb（gdb）常用的控制台调试命令？"><a href="#49、lldb（gdb）常用的控制台调试命令？" class="headerlink" title="49、lldb（gdb）常用的控制台调试命令？"></a>49、lldb（gdb）常用的控制台调试命令？</h5><p>1). p 输出基本类型。是打印命令，需要指定类型。是 print 的简写 p (int)[[[self view] subviews] count] 2). po 打印对象，会调用对象 description 方法。是 print-object 的简写 po [self view] 3). expr 可以在调试时动态执行指定表达式，并将结果打印出来。常用于在调试过程中修改变量的值。 4). bt：打印调用堆栈，是 thread backtrace 的简写，加 all 可打印所有 thread 的堆栈 5). br l：是 breakpoint list 的简写</p>
+<h5 id="50、你一般是怎么用-Instruments-的？"><a href="#50、你一般是怎么用-Instruments-的？" class="headerlink" title="50、你一般是怎么用 Instruments 的？"></a>50、你一般是怎么用 Instruments 的？</h5><p>Instruments 里面工具很多，常用： 1). Time Profiler: 性能分析 2). Zombies：检查是否访问了僵尸对象，但是这个工具只能从上往下检查，不智能。 3). Allocations：用来检查内存，写算法的那批人也用这个来检查。 4). Leaks：检查内存，看是否有内存泄露。</p>
+<h5 id="51、iOS-中常用的数据存储方式有哪些？"><a href="#51、iOS-中常用的数据存储方式有哪些？" class="headerlink" title="51、iOS 中常用的数据存储方式有哪些？"></a>51、iOS 中常用的数据存储方式有哪些？</h5><p>数据存储有四种方案：NSUserDefault、KeyChain、file、DB。 其中 File 有三种方式：plist、Archive（归档） DB 包括：SQLite、FMDB、CoreData</p>
+<h5 id="52、iOS-的沙盒目录结构是怎样的？"><a href="#52、iOS-的沙盒目录结构是怎样的？" class="headerlink" title="52、iOS 的沙盒目录结构是怎样的？"></a>52、iOS 的沙盒目录结构是怎样的？</h5><p>沙盒结构： 1). Application：存放程序源文件，上架前经过数字签名，上架后不可修改。 2). Documents：常用目录，iCloud 备份目录，存放数据。（这里不能存缓存文件，否则上架不被通过） 3). Library： Caches：存放体积大又不需要备份的数据。(常用的缓存路径) Preference：设置目录，iCloud 会备份设置信息。 4). tmp：存放临时文件，不会被备份，而且这个文件下的数据有可能随时被清除的可能。</p>
+<h5 id="53、iOS-多线程技术有哪几种方式？"><a href="#53、iOS-多线程技术有哪几种方式？" class="headerlink" title="53、iOS 多线程技术有哪几种方式？"></a>53、iOS 多线程技术有哪几种方式？</h5><p>答：pthread、NSThread、GCD、NSOperation</p>
+<h5 id="54、GCD-与-NSOperation-的区别："><a href="#54、GCD-与-NSOperation-的区别：" class="headerlink" title="54、GCD 与 NSOperation 的区别："></a>54、GCD 与 NSOperation 的区别：</h5><p>GCD 和 NSOperation 都是用于实现多线程： GCD 基于 C 语言的底层 API，GCD 主要与 block 结合使用，代码简洁高效。 NSOperation 属于 Objective-C 类，是基于 GCD 更高一层的封装。复杂任务一般用 NSOperation 实现。</p>
+<h5 id="55、写出使用-GCD-方式从子线程回到主线程的方法代码"><a href="#55、写出使用-GCD-方式从子线程回到主线程的方法代码" class="headerlink" title="55、写出使用 GCD 方式从子线程回到主线程的方法代码"></a>55、写出使用 GCD 方式从子线程回到主线程的方法代码</h5><p>答：dispatch_sync(dispatch_get_main_queue(), ^{ });</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">如何用GCD同步若干个异步调用？（如根据若干个url异步加载多张图片，然后在都下载完成后合成一张整图）</span><br><span class="line"></span><br><span class="line">// 使用Dispatch Group追加block到Global Group Queue,这些block如果全部执行完毕，就会执行Main Dispatch Queue中的结束处理的block。</span><br><span class="line">// 创建队列组</span><br><span class="line">dispatch_group_t group = dispatch_group_create();</span><br><span class="line">// 获取全局并发队列</span><br><span class="line">dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);</span><br><span class="line">dispatch_group_async(group, queue, ^&#123; /*加载图片1 */ &#125;);</span><br><span class="line">dispatch_group_async(group, queue, ^&#123; /*加载图片2 */ &#125;);</span><br><span class="line">dispatch_group_async(group, queue, ^&#123; /*加载图片3 */ &#125;); </span><br><span class="line">// 当并发队列组中的任务执行完毕后才会执行这里的代码</span><br><span class="line">dispatch_group_notify(group, dispatch_get_main_queue(), ^&#123;</span><br><span class="line">        // 合并图片</span><br><span class="line">&#125;);</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<h5 id="56、dispatch-barrier-async（栅栏函数）的作用是什么？"><a href="#56、dispatch-barrier-async（栅栏函数）的作用是什么？" class="headerlink" title="56、dispatch_barrier_async（栅栏函数）的作用是什么？"></a>56、dispatch_barrier_async（栅栏函数）的作用是什么？</h5><p>函数定义：dispatch_barrier_async(dispatch_queue_t queue, dispatch_block_t block); 作用： 1. 在它前面的任务执行结束后它才执行，它后面的任务要等它执行完成后才会开始执行。 2. 避免数据竞争</p>
+<p>// 1. 创建并发队列</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">dispatch_queue_t queue = dispatch_queue_create(&quot;myQueue&quot;, DISPATCH_QUEUE_CONCURRENT);</span><br><span class="line">// 2.向队列中添加任务</span><br><span class="line">dispatch_async(queue, ^&#123;  // 1.2是并行的</span><br><span class="line">    NSLog(@&quot;任务1, %@&quot;,[NSThread currentThread]);</span><br><span class="line">&#125;);</span><br><span class="line">dispatch_async(queue, ^&#123;</span><br><span class="line">    NSLog(@&quot;任务2, %@&quot;,[NSThread currentThread]);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">dispatch_barrier_async(queue, ^&#123;</span><br><span class="line">    NSLog(@&quot;任务 barrier, %@&quot;, [NSThread currentThread]);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">dispatch_async(queue, ^&#123;   // 这两个是同时执行的</span><br><span class="line">    NSLog(@&quot;任务3, %@&quot;,[NSThread currentThread]);</span><br><span class="line">&#125;);</span><br><span class="line">dispatch_async(queue, ^&#123;</span><br><span class="line">    NSLog(@&quot;任务4, %@&quot;,[NSThread currentThread]);</span><br><span class="line">&#125;);</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<p>// 输出结果: 任务 1 任务 2 ——》 任务 barrier ——》任务 3 任务 4 // 其中的任务 1 与任务 2，任务 3 与任务 4 由于是并行处理先后顺序不定。</p>
+<h5 id="57、以下代码运行结果如何？"><a href="#57、以下代码运行结果如何？" class="headerlink" title="57、以下代码运行结果如何？"></a>57、以下代码运行结果如何？</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- (void)viewDidLoad &#123;</span><br><span class="line">    [super viewDidLoad];</span><br><span class="line">    NSLog(@&quot;1&quot;);</span><br><span class="line">    dispatch_sync(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">        NSLog(@&quot;2&quot;);</span><br><span class="line">    &#125;);</span><br><span class="line">    NSLog(@&quot;3&quot;);</span><br><span class="line">&#125;</span><br><span class="line">// 只输出：1。（主线程死锁）</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<h5 id="58、什么是-RunLoop"><a href="#58、什么是-RunLoop" class="headerlink" title="58、什么是 RunLoop"></a>58、什么是 RunLoop</h5><p>从字面上讲就是运行循环，它内部就是 do-while 循环，在这个循环内部不断地处理各种任务。 一个线程对应一个 RunLoop，基本作用就是保持程序的持续运行，处理 app 中的各种事件。通过 runloop，有事运行，没事就休息，可以节省 cpu 资源，提高程序性能。</p>
+<p>主线程的 run loop 默认是启动的。iOS 的应用程序里面，程序启动后会有一个如下的 main() 函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">int main(int argc, char * argv[]) &#123;</span><br><span class="line">	@autoreleasepool &#123;</span><br><span class="line">    	return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<h5 id="59、什么是-Runtime"><a href="#59、什么是-Runtime" class="headerlink" title="59、什么是 Runtime"></a>59、什么是 Runtime</h5><p>Runtime 又叫运行时，是一套底层的 C 语言 API，其为 iOS 内部的核心之一，我们平时编写的 OC 代码，底层都是基于它来实现的。</p>
+<h5 id="60、Runtime-实现的机制是什么，怎么用，一般用于干嘛？"><a href="#60、Runtime-实现的机制是什么，怎么用，一般用于干嘛？" class="headerlink" title="60、Runtime 实现的机制是什么，怎么用，一般用于干嘛？"></a>60、Runtime 实现的机制是什么，怎么用，一般用于干嘛？</h5><p>1). 使用时需要导入的头文件 &lt;objc/message.h&gt; &lt;objc/runtime.h&gt; 2). Runtime 运行时机制，它是一套 C 语言库。 3). 实际上我们编写的所有 OC 代码，最终都是转成了 runtime 库的东西。 比如： 类转成了 Runtime 库里面的结构体等数据类型， 方法转成了 Runtime 库里面的 C 语言函数， 平时调方法都是转成了 objc_msgSend 函数（所以说 OC 有个消息发送机制） // OC 是动态语言，每个方法在运行时会被动态转为消息发送，即：objc_msgSend(receiver, selector)。 // [stu show]; 在 objc 动态编译时，会被转意为：objc_msgSend(stu, @selector(show)); 4). 因此，可以说 Runtime 是 OC 的底层实现，是 OC 的幕后执行者。</p>
+<h5 id="61、有了-Runtime-库，能做什么事情呢？-Runtime-库里面包含了跟类、成员变量、方法相关的-API。-比如：-（1）获取类里面的所有成员变量。-（2）为类动态添加成员变量。-（3）动态改变类的方法实现。-（4）为类动态添加新的方法等。-因此，有了-Runtime，想怎么改就怎么改。"><a href="#61、有了-Runtime-库，能做什么事情呢？-Runtime-库里面包含了跟类、成员变量、方法相关的-API。-比如：-（1）获取类里面的所有成员变量。-（2）为类动态添加成员变量。-（3）动态改变类的方法实现。-（4）为类动态添加新的方法等。-因此，有了-Runtime，想怎么改就怎么改。" class="headerlink" title="61、有了 Runtime 库，能做什么事情呢？ Runtime 库里面包含了跟类、成员变量、方法相关的 API。 比如： （1）获取类里面的所有成员变量。 （2）为类动态添加成员变量。 （3）动态改变类的方法实现。 （4）为类动态添加新的方法等。 因此，有了 Runtime，想怎么改就怎么改。"></a>61、有了 Runtime 库，能做什么事情呢？ Runtime 库里面包含了跟类、成员变量、方法相关的 API。 比如： （1）获取类里面的所有成员变量。 （2）为类动态添加成员变量。 （3）动态改变类的方法实现。 （4）为类动态添加新的方法等。 因此，有了 Runtime，想怎么改就怎么改。</h5><h5 id="62、什么是-Method-Swizzle（黑魔法），什么情况下会使用？"><a href="#62、什么是-Method-Swizzle（黑魔法），什么情况下会使用？" class="headerlink" title="62、什么是 Method Swizzle（黑魔法），什么情况下会使用？"></a>62、什么是 Method Swizzle（黑魔法），什么情况下会使用？</h5><p>1). 在没有一个类的实现源码的情况下，想改变其中一个方法的实现，除了继承它重写、和借助类别重名方法暴力抢先之外，还有更加灵活的方法 Method Swizzle。 2). Method Swizzle 指的是改变一个已存在的选择器对应的实现的过程。OC 中方法的调用能够在运行时通过改变，通过改变类的调度表中选择器到最终函数间的映射关系。 3). 在 OC 中调用一个方法，其实是向一个对象发送消息，查找消息的唯一依据是 selector 的名字。利用 OC 的动态特性，可以实现在运行时偷换 selector 对应的方法实现。 4). 每个类都有一个方法列表，存放着 selector 的名字和方法实现的映射关系。IMP 有点类似函数指针，指向具体的方法实现。 5). 我们可以利用 method_exchangeImplementations 来交换 2 个方法中的 IMP。 6). 我们可以利用 class_replaceMethod 来修改类。 7). 我们可以利用 method_setImplementation 来直接设置某个方法的 IMP。 8). 归根结底，都是偷换了 selector 的 IMP。</p>
+<h5 id="63、-objc-msgForward-函数是做什么的，直接调用它将会发生什么？"><a href="#63、-objc-msgForward-函数是做什么的，直接调用它将会发生什么？" class="headerlink" title="63、_objc_msgForward 函数是做什么的，直接调用它将会发生什么？"></a>63、_objc_msgForward 函数是做什么的，直接调用它将会发生什么？</h5><p>答：_objc_msgForward 是 IMP 类型，用于消息转发的：当向一个对象发送一条消息，但它并没有实现的时候，_objc_msgForward 会尝试做消息转发。</p>
+<h5 id="64、什么是-TCP-UDP"><a href="#64、什么是-TCP-UDP" class="headerlink" title="64、什么是 TCP / UDP ?"></a>64、什么是 TCP / UDP ?</h5><p>TCP：传输控制协议。 UDP：用户数据协议。</p>
+<p>TCP 是面向连接的，建立连接需要经历三次握手，是可靠的传输层协议。 UDP 是面向无连接的，数据传输是不可靠的，它只管发，不管收不收得到。 简单的说，TCP 注重数据安全，而 UDP 数据传输快点，但安全性一般。</p>
+<h5 id="65、通信底层原理（OSI-七层模型）"><a href="#65、通信底层原理（OSI-七层模型）" class="headerlink" title="65、通信底层原理（OSI 七层模型）"></a>65、通信底层原理（OSI 七层模型）</h5><p>OSI 采用了分层的结构化技术，共分七层： 物理层、数据链路层、网络层、传输层、会话层、表示层、应用层。</p>
+<h5 id="66、介绍一下-XMPP？"><a href="#66、介绍一下-XMPP？" class="headerlink" title="66、介绍一下 XMPP？"></a>66、介绍一下 XMPP？</h5><p>XMPP 是一种以 XML 为基础的开放式实时通信协议。 简单的说，XMPP 就是一种协议，一种规定。就是说，在网络上传东西，XMM 就是规定你上传大小的格式。</p>
+<h5 id="67、OC-中创建线程的方法是什么？如果在主线程中执行代码，方法是什么？"><a href="#67、OC-中创建线程的方法是什么？如果在主线程中执行代码，方法是什么？" class="headerlink" title="67、OC 中创建线程的方法是什么？如果在主线程中执行代码，方法是什么？"></a>67、OC 中创建线程的方法是什么？如果在主线程中执行代码，方法是什么？</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// 创建线程的方法</span><br><span class="line">- [NSThread detachNewThreadSelector:nil toTarget:nil withObject:nil]</span><br><span class="line">- [self performSelectorInBackground:nil withObject:nil];</span><br><span class="line">- [[NSThread alloc] initWithTarget:nil selector:nil object:nil];</span><br><span class="line">- dispatch_async(dispatch_get_global_queue(0, 0), ^&#123;&#125;);</span><br><span class="line">- [[NSOperationQueue new] addOperation:nil];</span><br><span class="line"></span><br><span class="line">// 主线程中执行代码的方法</span><br><span class="line">- [self performSelectorOnMainThread:nil withObject:nil waitUntilDone:YES];</span><br><span class="line">- dispatch_async(dispatch_get_main_queue(), ^&#123;&#125;);</span><br><span class="line">- [[NSOperationQueue mainQueue] addOperation:nil];</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<h5 id="68、tableView-的重用机制？"><a href="#68、tableView-的重用机制？" class="headerlink" title="68、tableView 的重用机制？"></a>68、tableView 的重用机制？</h5><p>答：UITableView 通过重用单元格来达到节省内存的目的: 通过为每个单元格指定一个重用标识符，即指定了单元格的种类, 当屏幕上的单元格滑出屏幕时，系统会把这个单元格添加到重用队列中，等待被重用，当有新单元格从屏幕外滑入屏幕内时，从重用队列中找看有没有可以重用的单元格，如果有，就拿过来用，如果没有就创建一个来使用。</p>
+<h5 id="69、用伪代码写一个线程安全的单例模式"><a href="#69、用伪代码写一个线程安全的单例模式" class="headerlink" title="69、用伪代码写一个线程安全的单例模式"></a>69、用伪代码写一个线程安全的单例模式</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">static id _instance;</span><br><span class="line">+ (id)allocWithZone:(struct _NSZone *)zone &#123;</span><br><span class="line">   static dispatch_once_t onceToken;</span><br><span class="line">   dispatch_once(&amp;onceToken, ^&#123;</span><br><span class="line">       _instance = [super allocWithZone:zone];</span><br><span class="line">   &#125;);</span><br><span class="line">   return _instance;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">+ (instancetype)sharedData &#123;</span><br><span class="line">   static dispatch_once_t onceToken;</span><br><span class="line">   dispatch_once(&amp;onceToken, ^&#123;</span><br><span class="line">       _instance = [[self alloc] init];</span><br><span class="line">   &#125;);</span><br><span class="line">   return _instance;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (id)copyWithZone:(NSZone *)zone &#123;</span><br><span class="line">   return _instance;</span><br><span class="line">&#125;</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<h5 id="70、如何实现视图的变形"><a href="#70、如何实现视图的变形" class="headerlink" title="70、如何实现视图的变形?"></a>70、如何实现视图的变形?</h5><p>答：通过修改 view 的 transform 属性即可。</p>
+<h5 id="71、在手势对象基础类-UIGestureRecognizer-的常用子类手势类型中哪两个手势发生后，响应只会执行一次？"><a href="#71、在手势对象基础类-UIGestureRecognizer-的常用子类手势类型中哪两个手势发生后，响应只会执行一次？" class="headerlink" title="71、在手势对象基础类 UIGestureRecognizer 的常用子类手势类型中哪两个手势发生后，响应只会执行一次？"></a>71、在手势对象基础类 UIGestureRecognizer 的常用子类手势类型中哪两个手势发生后，响应只会执行一次？</h5><p>答：UITapGestureRecognizer,UISwipeGestureRecognizer 是一次性手势, 手势发生后, 响应只会执行一次。</p>
+<h5 id="72、字符串常用方法："><a href="#72、字符串常用方法：" class="headerlink" title="72、字符串常用方法："></a>72、字符串常用方法：</h5><p>NSString _str = @”abc_123”; NSArray <em>arr = [str componentsSeparatedByString:@”</em>“]; // 以目标字符串把原字符串分割成两部分，存到数组中。@[@”abc”, @”123”];</p>
+<h5 id="73如何高性能的给-UIImageView-加个圆角"><a href="#73如何高性能的给-UIImageView-加个圆角" class="headerlink" title="73如何高性能的给 UIImageView 加个圆角?"></a>73如何高性能的给 UIImageView 加个圆角?</h5><p>不好的解决方案：使用下面的方式会强制 Core Animation 提前渲染屏幕的离屏绘制, 而离屏绘制就会给性能带来负面影响，会有卡顿的现象出现。</p>
+<p>self.view.layer.cornerRadius = 5.0f; self.view.layer.masksToBounds = YES;</p>
+<p>正确的解决方案：使用绘图技术</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">- (UIImage *)circleImage &#123;</span><br><span class="line">    // NO代表透明</span><br><span class="line">    UIGraphicsBeginImageContextWithOptions(self.size, NO, 0.0);</span><br><span class="line">    // 获得上下文</span><br><span class="line">    CGContextRef ctx = UIGraphicsGetCurrentContext();</span><br><span class="line">    // 添加一个圆</span><br><span class="line">    CGRect rect = CGRectMake(0, 0, self.size.width, self.size.height);</span><br><span class="line">    CGContextAddEllipseInRect(ctx, rect);</span><br><span class="line">    // 裁剪</span><br><span class="line">    CGContextClip(ctx);</span><br><span class="line">    // 将图片画上去</span><br><span class="line">    [self drawInRect:rect];</span><br><span class="line">    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();</span><br><span class="line">    // 关闭上下文</span><br><span class="line">    UIGraphicsEndImageContext();</span><br><span class="line">    return image;</span><br><span class="line">&#125;</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<p>还有一种方案：使用了贝塞尔曲线 “切割” 个这个图片, 给 UIImageView 添加了的圆角，其实也是通过绘图技术来实现的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 100, 100)];</span><br><span class="line">imageView.center = CGPointMake(200, 300);</span><br><span class="line">UIImage *anotherImage = [UIImage imageNamed:@&quot;image&quot;];</span><br><span class="line">UIGraphicsBeginImageContextWithOptions(imageView.bounds.size, NO, 1.0);</span><br><span class="line">[[UIBezierPath bezierPathWithRoundedRect:imageView.bounds</span><br><span class="line">                       cornerRadius:50] addClip];</span><br><span class="line">[anotherImage drawInRect:imageView.bounds];</span><br><span class="line">imageView.image = UIGraphicsGetImageFromCurrentImageContext();</span><br><span class="line">UIGraphicsEndImageContext();</span><br><span class="line">[self.view addSubview:imageView];</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<h5 id="74你是怎么封装一个-view-的"><a href="#74你是怎么封装一个-view-的" class="headerlink" title="74你是怎么封装一个 view 的"></a>74你是怎么封装一个 view 的</h5><p>1）. 可以通过纯代码或者 xib 的方式来封装子控件 2）. 建立一个跟 view 相关的模型，然后将模型数据传给 view，通过模型上的数据给 view 的子控件赋值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> *  纯代码初始化控件时一定会走这个方法</span><br><span class="line"> */</span><br><span class="line">- (instancetype)initWithFrame:(CGRect)frame &#123;</span><br><span class="line">    if(self = [super initWithFrame:frame]) &#123;</span><br><span class="line">        [self setupUI];</span><br><span class="line">    &#125;</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> *  通过xib初始化控件时一定会走这个方法</span><br><span class="line"> */</span><br><span class="line">- (id)initWithCoder:(NSCoder *)aDecoder &#123;</span><br><span class="line">    if(self = [super initWithCoder:aDecoder]) &#123;</span><br><span class="line">        [self setupUI];</span><br><span class="line">    &#125;</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)setupUI &#123;</span><br><span class="line">    // 初始化代码</span><br><span class="line">&#125;</span><br><span class="line">复制代码</span><br></pre></td></tr></table></figure>
+<h5 id="75HTTP-协议中-POST-方法和-GET-方法有那些区别"><a href="#75HTTP-协议中-POST-方法和-GET-方法有那些区别" class="headerlink" title="75HTTP 协议中 POST 方法和 GET 方法有那些区别?"></a>75HTTP 协议中 POST 方法和 GET 方法有那些区别?</h5><ol>
+<li>GET 用于向服务器请求数据，POST 用于提交数据</li>
+<li>GET 请求，请求参数拼接形式暴露在地址栏，而 POST 请求参数则放在请求体里面，因此 GET 请求不适合用于验证密码等操作</li>
+<li>GET 请求的 URL 有长度限制，POST 请求不会有长度限制</li>
+</ol>
+<h5 id="76请简单的介绍下-APNS-发送系统消息的机制？"><a href="#76请简单的介绍下-APNS-发送系统消息的机制？" class="headerlink" title="76请简单的介绍下 APNS 发送系统消息的机制？"></a>76请简单的介绍下 APNS 发送系统消息的机制？</h5><p>APNS 优势：杜绝了类似安卓那种为了接受通知不停在后台唤醒程序保持长连接的行为，由 iOS 系统和 APNS 进行长连接替代。 APNS 的原理： 1). 应用在通知中心注册，由 iOS 系统向 APNS 请求返回设备令牌 (device Token) 2). 应用程序接收到设备令牌并发送给自己的后台服务器 3). 服务器把要推送的内容和设备发送给 APNS 4). APNS 根据设备令牌找到设备，再由 iOS 根据 APPID 把推送内容展示</p>
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/面试/" rel="tag"># 面试</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/12/iOS/UI/UI/" rel="next" title="UI基础">
+                <i class="fa fa-chevron-left"></i> UI基础
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/18/knowledge/iOSRenderFramework/" rel="prev" title="iOS 渲染框架">
+                iOS 渲染框架 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">caicoder</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、设计模式是什么？-你知道哪些设计模式，并简要叙述？"><span class="nav-number">1.</span> <span class="nav-text">1、设计模式是什么？ 你知道哪些设计模式，并简要叙述？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、MVC-和-MVVM-的区别？"><span class="nav-number">2.</span> <span class="nav-text">2、MVC 和 MVVM 的区别？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3、-import-跟-include-有什么区别，-class-呢，-import-lt-gt-跟-import“”-有什么区别？"><span class="nav-number">3.</span> <span class="nav-text">3、#import 跟 #include 有什么区别，@class 呢，#import&lt;&gt; 跟 #import“” 有什么区别？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4、frame-和-bounds-有什么不同？"><span class="nav-number">4.</span> <span class="nav-text">4、frame 和 bounds 有什么不同？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5、Objective-C-的类可以多重继承么？可以实现多个接口么？Category-是什么？重写一个类的方式用继承好还是分类好？为什么？"><span class="nav-number">5.</span> <span class="nav-text">5、Objective-C 的类可以多重继承么？可以实现多个接口么？Category 是什么？重写一个类的方式用继承好还是分类好？为什么？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6、-property-的本质是什么？ivar、getter、setter-是如何生成并添加到这个类中的？"><span class="nav-number">6.</span> <span class="nav-text">6、@property 的本质是什么？ivar、getter、setter 是如何生成并添加到这个类中的？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7、-property-中有哪些属性关键字？-property-后面可以有哪些修饰符？"><span class="nav-number">7.</span> <span class="nav-text">7、@property 中有哪些属性关键字？/ @property 后面可以有哪些修饰符？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#8、属性关键字-readwrite，readonly，assign，retain，copy，nonatomic-各是什么作用，在那种情况下用？"><span class="nav-number">8.</span> <span class="nav-text">8、属性关键字 readwrite，readonly，assign，retain，copy，nonatomic 各是什么作用，在那种情况下用？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#9、什么情况使用-weak-关键字，相比-assign-有什么不同？"><span class="nav-number">9.</span> <span class="nav-text">9、什么情况使用 weak 关键字，相比 assign 有什么不同？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#10、怎么用-copy-关键字？"><span class="nav-number">10.</span> <span class="nav-text">10、怎么用 copy 关键字？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#11、用-property-声明的-NSString-NSArray-NSDictionary-经常使用-copy-关键字，为什么？如果改用-strong-关键字，可能造成什么问题？"><span class="nav-number">11.</span> <span class="nav-text">11、用 @property 声明的 NSString / NSArray / NSDictionary 经常使用 copy 关键字，为什么？如果改用 strong 关键字，可能造成什么问题？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#12、浅拷贝和深拷贝的区别？"><span class="nav-number">12.</span> <span class="nav-text">12、浅拷贝和深拷贝的区别？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#13、系统对象的-copy-与-mutableCopy-方法？"><span class="nav-number">13.</span> <span class="nav-text">13、系统对象的 copy 与 mutableCopy 方法？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#14、这个写法会出什么问题：-property-nonatomic-copy-NSMutableArray-arr-？"><span class="nav-number">14.</span> <span class="nav-text">14、这个写法会出什么问题：@property (nonatomic, copy) NSMutableArray *arr;？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#15、如何让自己的类用-copy-修饰符？如何重写带-copy-关键字的-setter？"><span class="nav-number">15.</span> <span class="nav-text">15、如何让自己的类用 copy 修饰符？如何重写带 copy 关键字的 setter？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#16、写一个-setter-方法用于完成-property-nonatomic-retain-NSString-name，写一个-setter-方法用于完成-property-nonatomic-copy-NSString-name-？"><span class="nav-number">16.</span> <span class="nav-text">16、写一个 setter 方法用于完成 @property (nonatomic, retain) NSString name，写一个 setter 方法用于完成 @property (nonatomic, copy) NSString name ？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#17、-synthesize-和-dynamic-分别有什么作用？"><span class="nav-number">17.</span> <span class="nav-text">17、@synthesize 和 @dynamic 分别有什么作用？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#18、常见的-Objective-C-的数据类型有那些，和-C-的基本数据类型有什么区别？如：NSInteger-和-int"><span class="nav-number">18.</span> <span class="nav-text">18、常见的 Objective-C 的数据类型有那些，和 C 的基本数据类型有什么区别？如：NSInteger 和 int</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#19、id-声明的对象有什么特性？"><span class="nav-number">19.</span> <span class="nav-text">19、id 声明的对象有什么特性？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#20、Objective-C-如何对内存管理的，说说你的看法和解决方法？"><span class="nav-number">20.</span> <span class="nav-text">20、Objective-C 如何对内存管理的，说说你的看法和解决方法？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#21、Objective-C-中创建线程的方法是什么？如果在主线程中执行代码，方法是什么？如果想延时执行代码、方法又是什么？"><span class="nav-number">21.</span> <span class="nav-text">21、Objective-C 中创建线程的方法是什么？如果在主线程中执行代码，方法是什么？如果想延时执行代码、方法又是什么？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#22、Category（类别）、-Extension（扩展）和继承的区别"><span class="nav-number">22.</span> <span class="nav-text">22、Category（类别）、 Extension（扩展）和继承的区别</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#23、我们说的-OC-是动态运行时语言是什么意思？"><span class="nav-number">23.</span> <span class="nav-text">23、我们说的 OC 是动态运行时语言是什么意思？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#24、为什么我们常见的-delegate-属性都用是-week-而不是-retain-strong？"><span class="nav-number">24.</span> <span class="nav-text">24、为什么我们常见的 delegate 属性都用是 week 而不是 retain/strong？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#25、什么时候用-delete，什么时候用-Notification？"><span class="nav-number">25.</span> <span class="nav-text">25、什么时候用 delete，什么时候用 Notification？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#26、什么是-KVO-和-KVC？"><span class="nav-number">26.</span> <span class="nav-text">26、什么是 KVO 和 KVC？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#27、KVC-的底层实现？"><span class="nav-number">27.</span> <span class="nav-text">27、KVC 的底层实现？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#28、KVO-的底层实现？"><span class="nav-number">28.</span> <span class="nav-text">28、KVO 的底层实现？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#29、ViewController-生命周期"><span class="nav-number">29.</span> <span class="nav-text">29、ViewController 生命周期</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#30、方法和选择器有何不同？"><span class="nav-number">30.</span> <span class="nav-text">30、方法和选择器有何不同？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#31、你是否接触过-OC-中的反射机制？简单聊一下概念和使用"><span class="nav-number">31.</span> <span class="nav-text">31、你是否接触过 OC 中的反射机制？简单聊一下概念和使用</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#32、调用方法有两种方式："><span class="nav-number">32.</span> <span class="nav-text">32、调用方法有两种方式：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#33、如何对-iOS-设备进行性能测试？"><span class="nav-number">33.</span> <span class="nav-text">33、如何对 iOS 设备进行性能测试？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#34、开发项目时你是怎么检查内存泄露？"><span class="nav-number">34.</span> <span class="nav-text">34、开发项目时你是怎么检查内存泄露？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#35、什么是懒加载？"><span class="nav-number">35.</span> <span class="nav-text">35、什么是懒加载？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#36、类变量的-public，-protected，-private，-package-声明各有什么含义？"><span class="nav-number">36.</span> <span class="nav-text">36、类变量的 @public，@protected，@private，@package 声明各有什么含义？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#37、什么是谓词？"><span class="nav-number">37.</span> <span class="nav-text">37、什么是谓词？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#38、isa-指针问题"><span class="nav-number">38.</span> <span class="nav-text">38、isa 指针问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#39、如何访问并修改一个类的私有属性？"><span class="nav-number">39.</span> <span class="nav-text">39、如何访问并修改一个类的私有属性？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#40、一个-objc-对象的-isa-的指针指向什么？有什么作用？"><span class="nav-number">40.</span> <span class="nav-text">40、一个 objc 对象的 isa 的指针指向什么？有什么作用？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#41、下面的代码输出什么？"><span class="nav-number">41.</span> <span class="nav-text">41、下面的代码输出什么？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#42、写一个完整的代理，包括声明、实现"><span class="nav-number">42.</span> <span class="nav-text">42、写一个完整的代理，包括声明、实现</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#43、isKindOfClass、isMemberOfClass、selector-作用分别是什么"><span class="nav-number">43.</span> <span class="nav-text">43、isKindOfClass、isMemberOfClass、selector 作用分别是什么</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#44、delegate-和-notification-的区别"><span class="nav-number">44.</span> <span class="nav-text">44、delegate 和 notification 的区别</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#45、什么是-block？"><span class="nav-number">45.</span> <span class="nav-text">45、什么是 block？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#46、block-反向传值"><span class="nav-number">46.</span> <span class="nav-text">46、block 反向传值</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#47、block-的注意点"><span class="nav-number">47.</span> <span class="nav-text">47、block 的注意点</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#48、BAD-ACCESS-在什么情况下出现？"><span class="nav-number">48.</span> <span class="nav-text">48、BAD_ACCESS 在什么情况下出现？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#49、lldb（gdb）常用的控制台调试命令？"><span class="nav-number">49.</span> <span class="nav-text">49、lldb（gdb）常用的控制台调试命令？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#50、你一般是怎么用-Instruments-的？"><span class="nav-number">50.</span> <span class="nav-text">50、你一般是怎么用 Instruments 的？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#51、iOS-中常用的数据存储方式有哪些？"><span class="nav-number">51.</span> <span class="nav-text">51、iOS 中常用的数据存储方式有哪些？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#52、iOS-的沙盒目录结构是怎样的？"><span class="nav-number">52.</span> <span class="nav-text">52、iOS 的沙盒目录结构是怎样的？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#53、iOS-多线程技术有哪几种方式？"><span class="nav-number">53.</span> <span class="nav-text">53、iOS 多线程技术有哪几种方式？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#54、GCD-与-NSOperation-的区别："><span class="nav-number">54.</span> <span class="nav-text">54、GCD 与 NSOperation 的区别：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#55、写出使用-GCD-方式从子线程回到主线程的方法代码"><span class="nav-number">55.</span> <span class="nav-text">55、写出使用 GCD 方式从子线程回到主线程的方法代码</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#56、dispatch-barrier-async（栅栏函数）的作用是什么？"><span class="nav-number">56.</span> <span class="nav-text">56、dispatch_barrier_async（栅栏函数）的作用是什么？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#57、以下代码运行结果如何？"><span class="nav-number">57.</span> <span class="nav-text">57、以下代码运行结果如何？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#58、什么是-RunLoop"><span class="nav-number">58.</span> <span class="nav-text">58、什么是 RunLoop</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#59、什么是-Runtime"><span class="nav-number">59.</span> <span class="nav-text">59、什么是 Runtime</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#60、Runtime-实现的机制是什么，怎么用，一般用于干嘛？"><span class="nav-number">60.</span> <span class="nav-text">60、Runtime 实现的机制是什么，怎么用，一般用于干嘛？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#61、有了-Runtime-库，能做什么事情呢？-Runtime-库里面包含了跟类、成员变量、方法相关的-API。-比如：-（1）获取类里面的所有成员变量。-（2）为类动态添加成员变量。-（3）动态改变类的方法实现。-（4）为类动态添加新的方法等。-因此，有了-Runtime，想怎么改就怎么改。"><span class="nav-number">61.</span> <span class="nav-text">61、有了 Runtime 库，能做什么事情呢？ Runtime 库里面包含了跟类、成员变量、方法相关的 API。 比如： （1）获取类里面的所有成员变量。 （2）为类动态添加成员变量。 （3）动态改变类的方法实现。 （4）为类动态添加新的方法等。 因此，有了 Runtime，想怎么改就怎么改。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#62、什么是-Method-Swizzle（黑魔法），什么情况下会使用？"><span class="nav-number">62.</span> <span class="nav-text">62、什么是 Method Swizzle（黑魔法），什么情况下会使用？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#63、-objc-msgForward-函数是做什么的，直接调用它将会发生什么？"><span class="nav-number">63.</span> <span class="nav-text">63、_objc_msgForward 函数是做什么的，直接调用它将会发生什么？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#64、什么是-TCP-UDP"><span class="nav-number">64.</span> <span class="nav-text">64、什么是 TCP / UDP ?</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#65、通信底层原理（OSI-七层模型）"><span class="nav-number">65.</span> <span class="nav-text">65、通信底层原理（OSI 七层模型）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#66、介绍一下-XMPP？"><span class="nav-number">66.</span> <span class="nav-text">66、介绍一下 XMPP？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#67、OC-中创建线程的方法是什么？如果在主线程中执行代码，方法是什么？"><span class="nav-number">67.</span> <span class="nav-text">67、OC 中创建线程的方法是什么？如果在主线程中执行代码，方法是什么？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#68、tableView-的重用机制？"><span class="nav-number">68.</span> <span class="nav-text">68、tableView 的重用机制？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#69、用伪代码写一个线程安全的单例模式"><span class="nav-number">69.</span> <span class="nav-text">69、用伪代码写一个线程安全的单例模式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#70、如何实现视图的变形"><span class="nav-number">70.</span> <span class="nav-text">70、如何实现视图的变形?</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#71、在手势对象基础类-UIGestureRecognizer-的常用子类手势类型中哪两个手势发生后，响应只会执行一次？"><span class="nav-number">71.</span> <span class="nav-text">71、在手势对象基础类 UIGestureRecognizer 的常用子类手势类型中哪两个手势发生后，响应只会执行一次？</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#72、字符串常用方法："><span class="nav-number">72.</span> <span class="nav-text">72、字符串常用方法：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#73如何高性能的给-UIImageView-加个圆角"><span class="nav-number">73.</span> <span class="nav-text">73如何高性能的给 UIImageView 加个圆角?</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#74你是怎么封装一个-view-的"><span class="nav-number">74.</span> <span class="nav-text">74你是怎么封装一个 view 的</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#75HTTP-协议中-POST-方法和-GET-方法有那些区别"><span class="nav-number">75.</span> <span class="nav-text">75HTTP 协议中 POST 方法和 GET 方法有那些区别?</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#76请简单的介绍下-APNS-发送系统消息的机制？"><span class="nav-number">76.</span> <span class="nav-text">76请简单的介绍下 APNS 发送系统消息的机制？</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">caicoder</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

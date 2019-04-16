@@ -229,7 +229,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://caicoder.github.io/2018/01/16/Objective-C Runtime Reference/">
+    <link itemprop="mainEntityOfPage" href="https://caicoder.github.io/2019/02/11/network/Socket/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="caicoder">
@@ -248,7 +248,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/01/16/Objective-C Runtime Reference/" itemprop="url">Objective-C Runtime Reference</a></h1>
+                <a class="post-title-link" href="/2019/02/11/network/Socket/" itemprop="url">Socket编程</a></h1>
         
 
         <div class="post-meta">
@@ -260,8 +260,8 @@
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-16T19:12:42+08:00">
-                2018-01-16
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-11T12:12:42+08:00">
+                2019-02-11
               </time>
             
 
@@ -300,922 +300,28 @@
       
         
           
-            <p>本文档描述了OS X 2.0 objective - c运行时库函数和数据结构的支持。相关实现功能在<code>objc/objc-runtime.h</code>共享库中。</p>
-<blockquote>
-<p>所有const char *使用UTF-8转码</p>
-</blockquote>
-<h1>1 Functions</h1>
-<p>所有方法前带OBJC_EXPORT</p>
-<h2>1.1 Working with Classes</h2>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取类名</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> *class_getName(Class cls)</span><br><span class="line"><span class="comment">// 获取类的父类</span></span><br><span class="line">Class class_getSuperclass(Class cls)</span><br><span class="line"><span class="comment">// 设置类的父类</span></span><br><span class="line">Class class_setSuperclass(Class cls, Class newSuper)</span><br><span class="line"><span class="comment">// 判断给定的Class是否是一个元类</span></span><br><span class="line"><span class="built_in">BOOL</span> class_isMetaClass(Class cls)</span><br><span class="line"><span class="comment">// 获取初始化class需要的内存大小</span></span><br><span class="line">size_t class_getInstanceSize(Class cls)</span><br><span class="line"><span class="comment">// 获取类中指定名称实例成员变量的信息</span></span><br><span class="line">Ivar class_getInstanceVariable(Class cls, <span class="keyword">const</span> <span class="keyword">char</span> *name)</span><br><span class="line"><span class="comment">// 获取类成员变量的信息</span></span><br><span class="line">Ivar class_getClassVariable(Class cls, <span class="keyword">const</span> <span class="keyword">char</span> *name)</span><br><span class="line"><span class="comment">// 添加成员变量</span></span><br><span class="line"><span class="built_in">BOOL</span> class_addIvar(Class cls, <span class="keyword">const</span> <span class="keyword">char</span> *name, size_t size, int8_t alignment, <span class="keyword">const</span> <span class="keyword">char</span> *types) </span><br><span class="line"><span class="comment">// 获取整个成员变量列表</span></span><br><span class="line">Ivar *class_copyIvarList(Class cls, <span class="keyword">unsigned</span> <span class="keyword">int</span> *outCount)</span><br><span class="line"><span class="comment">// 获取strong成员</span></span><br><span class="line"><span class="keyword">const</span> uint8_t *class_getIvarLayout(Class cls)</span><br><span class="line"><span class="comment">// 设置strong成员</span></span><br><span class="line"><span class="keyword">void</span> class_setIvarLayout(Class cls, <span class="keyword">const</span> uint8_t *layout)</span><br><span class="line"><span class="comment">// 获取weak成员</span></span><br><span class="line"><span class="keyword">const</span> uint8_t *class_getWeakIvarLayout(Class cls)</span><br><span class="line"><span class="comment">// 设置weak成员</span></span><br><span class="line"><span class="keyword">void</span> class_setWeakIvarLayout(Class cls, <span class="keyword">const</span> <span class="keyword">char</span> *layout)</span><br><span class="line"><span class="comment">// 获取指定的属性</span></span><br><span class="line">objc_property_t class_getProperty(Class cls, <span class="keyword">const</span> <span class="keyword">char</span> *name)</span><br><span class="line"><span class="comment">// 获取属性列表</span></span><br><span class="line">objc_property_t * class_copyPropertyList(Class cls, <span class="keyword">unsigned</span> <span class="keyword">int</span> *outCount)</span><br><span class="line"><span class="comment">// 添加方法</span></span><br><span class="line"><span class="built_in">BOOL</span> class_addMethod(Class cls, SEL name, IMP imp, <span class="keyword">const</span> <span class="keyword">char</span> *types)</span><br><span class="line"><span class="comment">// 获取实例方法</span></span><br><span class="line">Method class_getInstanceMethod(Class aClass, SEL aSelector)</span><br><span class="line"><span class="comment">// 获取类方法</span></span><br><span class="line">Method class_getClassMethod(Class aClass, SEL aSelector)</span><br><span class="line"><span class="comment">// 获取所有方法的数组</span></span><br><span class="line">Method * class_copyMethodList(Class cls, <span class="keyword">unsigned</span> <span class="keyword">int</span> *outCount)</span><br><span class="line"><span class="comment">// 替代方法的实现</span></span><br><span class="line">IMP class_replaceMethod(Class cls, SEL name, IMP imp, <span class="keyword">const</span> <span class="keyword">char</span> *types)</span><br><span class="line"><span class="comment">// 返回方法的具体实现</span></span><br><span class="line">IMP class_getMethodImplementation(Class cls, SEL name)</span><br><span class="line"><span class="comment">// 获取类中的方法的实现,该方法的返回值类型为struct</span></span><br><span class="line">IMP class_getMethodImplementation_stret(Class cls, SEL name)</span><br><span class="line"><span class="comment">// 类实例是否响应指定的selector</span></span><br><span class="line"><span class="built_in">BOOL</span> class_respondsToSelector(Class cls, SEL sel)</span><br><span class="line"><span class="comment">// 添加协议</span></span><br><span class="line"><span class="built_in">BOOL</span> class_addProtocol(Class cls, Protocol *protocol)</span><br><span class="line"><span class="comment">// 为类添加属性</span></span><br><span class="line"><span class="built_in">BOOL</span> class_addProperty(Class cls, <span class="keyword">const</span> <span class="keyword">char</span> *name, <span class="keyword">const</span> objc_property_attribute_t *attributes, <span class="keyword">unsigned</span> <span class="keyword">int</span> attributeCount)</span><br><span class="line"><span class="comment">// 替换类的属性</span></span><br><span class="line"><span class="keyword">void</span> class_replaceProperty(Class cls, <span class="keyword">const</span> <span class="keyword">char</span> *name, <span class="keyword">const</span> objc_property_attribute_t *attributes, <span class="keyword">unsigned</span> <span class="keyword">int</span> attributeCount)</span><br><span class="line"><span class="comment">// 返回类是否实现指定的协议</span></span><br><span class="line"><span class="built_in">BOOL</span> class_conformsToProtocol(Class cls, Protocol *protocol)</span><br><span class="line"><span class="comment">// 返回类实现的协议列表</span></span><br><span class="line">Protocol * __<span class="keyword">unsafe_unretained</span> *class_copyProtocolList(Class cls, <span class="keyword">unsigned</span> <span class="keyword">int</span> *outCount)</span><br><span class="line"><span class="comment">// 获取版本号</span></span><br><span class="line"><span class="keyword">int</span> class_getVersion(Class theClass)</span><br><span class="line"><span class="comment">// 设置版本号</span></span><br><span class="line"><span class="keyword">void</span> class_setVersion(Class theClass, <span class="keyword">int</span> version)</span><br><span class="line"><span class="comment">// 获取CoreFoundation的免费桥接</span></span><br><span class="line">Class objc_getFutureClass(<span class="keyword">const</span> <span class="keyword">char</span> *name) <span class="comment">// Do not call this function yourself.</span></span><br><span class="line"><span class="comment">// 设置CoreFoundation的免费桥接</span></span><br><span class="line"><span class="keyword">void</span> objc_setFutureClass(Class cls, <span class="keyword">const</span> <span class="keyword">char</span> *name) <span class="comment">// Do not call this function yourself.</span></span><br></pre></td></tr></table></figure></p>
-<h2>1.2 Adding Classes</h2>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建一个新类和元类</span></span><br><span class="line">Class objc_allocateClassPair(Class superclass, <span class="keyword">const</span> <span class="keyword">char</span> *name, size_t extraBytes)</span><br><span class="line"><span class="comment">// 销毁一个类及其相关联的类</span></span><br><span class="line"><span class="keyword">void</span> objc_disposeClassPair(Class cls)</span><br><span class="line"><span class="comment">// 在应用中注册由objc_allocateClassPair创建的类</span></span><br><span class="line"><span class="keyword">void</span> objc_registerClassPair(Class cls)</span><br><span class="line"><span class="comment">// Do not call this function yourself.</span></span><br><span class="line">Class objc_duplicateClass(Class original, <span class="keyword">const</span> <span class="keyword">char</span> *name, size_t extraBytes)</span><br></pre></td></tr></table></figure></p>
-<h2>1.3 Instantiating Classes</h2>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建类实例</span></span><br><span class="line"><span class="keyword">id</span> class_createInstance(Class cls, size_t extraBytes)</span><br><span class="line"><span class="comment">// 在指定位置创建类实例</span></span><br><span class="line"><span class="keyword">id</span> objc_constructInstance(Class cls, <span class="keyword">void</span> *bytes)</span><br><span class="line"><span class="comment">// 销毁类实例</span></span><br><span class="line"><span class="keyword">void</span> objc_destructInstance(<span class="keyword">id</span> obj)</span><br></pre></td></tr></table></figure></p>
-<h2>1.4 Working with Instances</h2>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 返回指定对象的一份拷贝</span></span><br><span class="line"><span class="keyword">id</span> object_copy(<span class="keyword">id</span> obj, size_t size)</span><br><span class="line"><span class="comment">// 释放指定对象占用的内存</span></span><br><span class="line"><span class="keyword">id</span> object_dispose(<span class="keyword">id</span> obj)</span><br><span class="line"><span class="comment">// 修改类实例的实例变量的值</span></span><br><span class="line">Ivar object_setInstanceVariable(<span class="keyword">id</span> obj, <span class="keyword">const</span> <span class="keyword">char</span> *name, <span class="keyword">void</span> *value)</span><br><span class="line"><span class="comment">// 获取对象实例变量的值</span></span><br><span class="line">Ivar object_getInstanceVariable(<span class="keyword">id</span> obj, <span class="keyword">const</span> <span class="keyword">char</span> *name, <span class="keyword">void</span> **outValue)</span><br><span class="line"><span class="comment">// 返回指向给定对象分配的任何额外字节的指针</span></span><br><span class="line"><span class="keyword">void</span> *object_getIndexedIvars(<span class="keyword">id</span> obj)</span><br><span class="line"><span class="comment">// 返回对象中实例变量的值</span></span><br><span class="line"><span class="keyword">id</span> object_getIvar(<span class="keyword">id</span> object, Ivar ivar)</span><br><span class="line"><span class="comment">// 设置对象中实例变量的值</span></span><br><span class="line"><span class="keyword">void</span> object_setIvar(<span class="keyword">id</span> object, Ivar ivar, <span class="keyword">id</span> value)</span><br><span class="line"><span class="comment">// 返回给定对象的类名</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> *object_getClassName(<span class="keyword">id</span> obj)</span><br><span class="line"><span class="comment">// 返回对象的类</span></span><br><span class="line">Class object_getClass(<span class="keyword">id</span> object)</span><br><span class="line"><span class="comment">// 设置对象的类</span></span><br><span class="line">Class object_setClass(<span class="keyword">id</span> object, Class cls)</span><br></pre></td></tr></table></figure></p>
-<h2>1.5 Obtaining Class Definitions</h2>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取已注册的类定义的列表</span></span><br><span class="line"><span class="keyword">int</span> objc_getClassList(Class *buffer, <span class="keyword">int</span> bufferLen)</span><br><span class="line"><span class="comment">// 创建并返回一个指向所有已注册类的指针列表</span></span><br><span class="line">Class *objc_copyClassList(<span class="keyword">unsigned</span> <span class="keyword">int</span> *outCount)</span><br><span class="line"><span class="comment">// 返回指定类的类定义</span></span><br><span class="line"><span class="keyword">id</span> objc_lookUpClass(<span class="keyword">const</span> <span class="keyword">char</span> *name)</span><br><span class="line"><span class="comment">// 返回指定类的类定义(会调用类处理程序)</span></span><br><span class="line"><span class="keyword">id</span> objc_getClass(<span class="keyword">const</span> <span class="keyword">char</span> *name)</span><br><span class="line"><span class="comment">// 返回指定类的类定义(会终止进程)</span></span><br><span class="line"><span class="keyword">id</span> objc_getRequiredClass(<span class="keyword">const</span> <span class="keyword">char</span> *name)</span><br><span class="line"><span class="comment">// 返回指定类的元类</span></span><br><span class="line"><span class="keyword">id</span> objc_getMetaClass(<span class="keyword">const</span> <span class="keyword">char</span> *name)</span><br></pre></td></tr></table></figure></p>
-<h2>1.6 Working with Instance Variables</h2>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取成员变量名</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> * ivar_getName( Ivar ivar)</span><br><span class="line"><span class="comment">// 获取成员变量类型编码</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> * ivar_getTypeEncoding( Ivar ivar)</span><br><span class="line"><span class="comment">// 获取成员变量的偏移量</span></span><br><span class="line">ptrdiff_t ivar_getOffset( Ivar ivar)</span><br></pre></td></tr></table></figure></p>
-<h2>1.7 Associative References</h2>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 设置关联对象</span></span><br><span class="line"><span class="keyword">void</span> objc_setAssociatedObject(<span class="keyword">id</span> object, <span class="keyword">void</span> *key, <span class="keyword">id</span> value, objc_AssociationPolicy policy)</span><br><span class="line"><span class="comment">// 获取关联对象</span></span><br><span class="line"><span class="keyword">id</span> objc_getAssociatedObject(<span class="keyword">id</span> object, <span class="keyword">void</span> *key)</span><br><span class="line"><span class="comment">// 移除关联对象</span></span><br><span class="line"><span class="keyword">void</span> objc_removeAssociatedObjects(<span class="keyword">id</span> object)</span><br></pre></td></tr></table></figure></p>
-<h2>1.8 Sending Messages</h2>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 消息转发 -&gt; return id</span></span><br><span class="line"><span class="keyword">id</span> objc_msgSend(<span class="keyword">id</span> <span class="keyword">self</span>, SEL op, ...)</span><br><span class="line"><span class="comment">// objc_msgSend -&gt; 返回一个double值</span></span><br><span class="line"><span class="keyword">double</span> objc_msgSend_fpret(<span class="keyword">id</span> <span class="keyword">self</span>, SEL op, ...)</span><br><span class="line"><span class="comment">// objc_msgSend -&gt; 返回一个结构体</span></span><br><span class="line"><span class="keyword">void</span> objc_msgSend_stret(<span class="keyword">void</span> * stretAddr, <span class="keyword">id</span> theReceiver, SEL theSelector, ...)</span><br><span class="line"><span class="comment">// 发送消息到父类 -&gt; return id</span></span><br><span class="line"><span class="keyword">id</span> objc_msgSendSuper(<span class="keyword">struct</span> objc_super *<span class="keyword">super</span>, SEL op, ...)</span><br><span class="line"><span class="comment">// objc_msgSend -&gt; 返回一个结构体</span></span><br><span class="line"><span class="keyword">void</span> objc_msgSendSuper_stret(<span class="keyword">struct</span> objc_super *<span class="keyword">super</span>, SEL op, ...)</span><br></pre></td></tr></table></figure></p>
-<h2>1.9 Working with Methods</h2>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 调用指定方法的实现</span></span><br><span class="line"><span class="keyword">id</span> method_invoke(<span class="keyword">id</span> receiver, Method m, ...)</span><br><span class="line"><span class="comment">// 调用返回一个数据结构的方法的实现</span></span><br><span class="line"><span class="keyword">void</span> method_invoke_stret(<span class="keyword">id</span> receiver, Method m, ...)</span><br><span class="line"><span class="comment">// 获取方法名</span></span><br><span class="line">SEL method_getName( Method method)</span><br><span class="line"><span class="comment">// 返回方法的实现</span></span><br><span class="line">IMP method_getImplementation( Method method)</span><br><span class="line"><span class="comment">// 获取描述方法参数和返回值类型的字符串</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> * method_getTypeEncoding( Method method)</span><br><span class="line"><span class="comment">// 获取方法的返回值类型的字符串</span></span><br><span class="line"><span class="keyword">char</span> * method_copyReturnType( Method method)</span><br><span class="line"><span class="comment">// 获取方法的指定位置参数的类型字符串</span></span><br><span class="line"><span class="keyword">char</span> * method_copyArgumentType( Method method, <span class="keyword">unsigned</span> <span class="keyword">int</span> index)</span><br><span class="line"><span class="comment">// 通过引用返回方法的返回值类型字符串</span></span><br><span class="line"><span class="keyword">void</span> method_getReturnType( Method method, <span class="keyword">char</span> *dst, size_t dst_len)</span><br><span class="line"><span class="comment">// 返回方法的参数的个数</span></span><br><span class="line"><span class="keyword">unsigned</span> method_getNumberOfArguments( Method method)</span><br><span class="line"><span class="comment">// 通过引用返回方法指定位置参数的类型字符串</span></span><br><span class="line"><span class="keyword">void</span> method_getArgumentType( Method method, <span class="keyword">unsigned</span> <span class="keyword">int</span> index, <span class="keyword">char</span> *dst, size_t dst_len)</span><br><span class="line"><span class="comment">// 返回指定方法的方法描述结构体</span></span><br><span class="line"><span class="keyword">struct</span> objc_method_description *method_getDescription( Method m)</span><br><span class="line"><span class="comment">// 设置方法的实现</span></span><br><span class="line">IMP method_setImplementation( Method method, IMP imp)</span><br><span class="line"><span class="comment">// 交换两个方法的实现</span></span><br><span class="line"><span class="keyword">void</span> method_exchangeImplementations( Method m1, Method m2)</span><br></pre></td></tr></table></figure></p>
-<h2>1.10 Working with Libraries</h2>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取所有加载的Objective-C框架和动态库的名称</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> **objc_copyImageNames(<span class="keyword">unsigned</span> <span class="keyword">int</span> *outCount)</span><br><span class="line"><span class="comment">// 获取指定类所在动态库</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> *class_getImageName(Class cls)</span><br><span class="line"><span class="comment">// 获取指定库或框架中所有类的类名</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> **objc_copyClassNamesForImage(<span class="keyword">const</span> <span class="keyword">char</span> *image, <span class="keyword">unsigned</span> <span class="keyword">int</span> *outCount)</span><br></pre></td></tr></table></figure></p>
-<h2>1.11 Working with Selectors</h2>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 返回给定选择器指定的方法的名称</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span>* sel_getName(SEL aSelector)</span><br><span class="line"><span class="comment">// 在Objective-C Runtime系统中注册一个方法，将方法名映射到一个选择器，并返回这个选择器</span></span><br><span class="line">SEL sel_registerName(<span class="keyword">const</span> <span class="keyword">char</span> *str)</span><br><span class="line"><span class="comment">// 在Objective-C Runtime系统中注册一个方法</span></span><br><span class="line">SEL sel_getUid(<span class="keyword">const</span> <span class="keyword">char</span> *str)</span><br><span class="line"><span class="comment">// 比较两个选择器</span></span><br><span class="line"><span class="built_in">BOOL</span> sel_isEqual(SEL lhs, SEL rhs)</span><br></pre></td></tr></table></figure></p>
-<blockquote>
-<p>sel_registerName函数：在我们将一个方法添加到类定义时，我们必须在Objective-C Runtime系统中注册一个方法名以获取方法的选择器。</p>
-</blockquote>
-<h2>1.12 Working with Protocols</h2>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 返回指定的协议</span></span><br><span class="line">Protocol *objc_getProtocol(<span class="keyword">const</span> <span class="keyword">char</span> *name)</span><br><span class="line"><span class="comment">// 获取运行时所知道的所有协议的数组</span></span><br><span class="line">Protocol **objc_copyProtocolList(<span class="keyword">unsigned</span> <span class="keyword">int</span> *outCount)</span><br><span class="line"><span class="comment">// 创建新的协议实例</span></span><br><span class="line">Protocol *objc_allocateProtocol(<span class="keyword">const</span> <span class="keyword">char</span> *name)</span><br><span class="line"><span class="comment">// 在运行时中注册新创建的协议</span></span><br><span class="line"><span class="keyword">void</span> objc_registerProtocol(Protocol *proto)</span><br><span class="line"><span class="comment">// 为协议添加方法</span></span><br><span class="line"><span class="keyword">void</span> protocol_addMethodDescription(Protocol *proto, SEL name, <span class="keyword">const</span> <span class="keyword">char</span> *types, <span class="built_in">BOOL</span> isRequiredMethod, <span class="built_in">BOOL</span> isInstanceMethod)</span><br><span class="line"><span class="comment">// 添加一个已注册的协议到协议中</span></span><br><span class="line"><span class="keyword">void</span> protocol_addProtocol(Protocol *proto, Protocol *addition)</span><br><span class="line"><span class="comment">// 为协议添加属性</span></span><br><span class="line"><span class="keyword">void</span> protocol_addProperty(Protocol *proto, <span class="keyword">const</span> <span class="keyword">char</span> *name, <span class="keyword">const</span> objc_property_attribute_t *attributes, <span class="keyword">unsigned</span> <span class="keyword">int</span> attributeCount, <span class="built_in">BOOL</span> isRequiredProperty, <span class="built_in">BOOL</span> isInstanceProperty)</span><br><span class="line"><span class="comment">// 返回协议名</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> *protocol_getName(Protocol *p)</span><br><span class="line"><span class="comment">// 测试两个协议是否相等</span></span><br><span class="line"><span class="built_in">BOOL</span> protocol_isEqual(Protocol *proto, Protocol *other)</span><br><span class="line"><span class="comment">// 获取协议中指定条件的方法的方法描述数组</span></span><br><span class="line"><span class="keyword">struct</span> objc_method_description *protocol_copyMethodDescriptionList(Protocol *p, <span class="built_in">BOOL</span> isRequiredMethod, <span class="built_in">BOOL</span> isInstanceMethod, <span class="keyword">unsigned</span> <span class="keyword">int</span> *outCount)</span><br><span class="line"><span class="comment">// 获取协议中指定方法的方法描述</span></span><br><span class="line"><span class="keyword">struct</span> objc_method_description protocol_getMethodDescription(Protocol *p, SEL aSel, <span class="built_in">BOOL</span> isRequiredMethod, <span class="built_in">BOOL</span> isInstanceMethod)</span><br><span class="line"><span class="comment">// 获取协议中的属性列表</span></span><br><span class="line">objc_property_t * protocol_copyPropertyList(Protocol *protocol, <span class="keyword">unsigned</span> <span class="keyword">int</span> *outCount)</span><br><span class="line"><span class="comment">// 获取协议的指定属性</span></span><br><span class="line">objc_property_t protocol_getProperty(Protocol *proto, <span class="keyword">const</span> <span class="keyword">char</span> *name, <span class="built_in">BOOL</span> isRequiredProperty, <span class="built_in">BOOL</span> isInstanceProperty)</span><br><span class="line"><span class="comment">// 获取协议采用的协议</span></span><br><span class="line">Protocol **protocol_copyProtocolList(Protocol *proto, <span class="keyword">unsigned</span> <span class="keyword">int</span> *outCount)</span><br><span class="line"><span class="comment">// 查看协议是否采用了另一个协议</span></span><br><span class="line"><span class="built_in">BOOL</span> protocol_conformsToProtocol(Protocol *proto, Protocol *other)</span><br></pre></td></tr></table></figure></p>
-<h2>1.13 Working with Properties</h2>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取属性名 </span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> *property_getName(objc_property_t property)</span><br><span class="line"><span class="comment">// 获取属性特性描述字符串</span></span><br><span class="line"><span class="keyword">const</span> <span class="keyword">char</span> *property_getAttributes(objc_property_t property)</span><br><span class="line"><span class="comment">// 获取属性中指定的特性</span></span><br><span class="line"><span class="keyword">char</span> *property_copyAttributeValue(objc_property_t property, <span class="keyword">const</span> <span class="keyword">char</span> *attributeName)</span><br><span class="line"><span class="comment">// 获取属性的特性列表</span></span><br><span class="line">objc_property_attribute_t *property_copyAttributeList(objc_property_t property, <span class="keyword">unsigned</span> <span class="keyword">int</span> *outCount)</span><br></pre></td></tr></table></figure></p>
-<h2>1.14 Using Objective-C Language Features</h2>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 通过在一个foreach循环中检测到突变的编译器插入。</span></span><br><span class="line"><span class="keyword">void</span> objc_enumerationMutation(<span class="keyword">id</span> obj)</span><br><span class="line"><span class="comment">// 设置突变处理</span></span><br><span class="line"><span class="keyword">void</span> objc_setEnumerationMutationHandler(<span class="keyword">void</span> (*handler)(<span class="keyword">id</span>))</span><br><span class="line"><span class="comment">// 创建一个指针函数的指针，该函数调用时会调用特定的block</span></span><br><span class="line">IMP imp_implementationWithBlock(<span class="keyword">id</span> block)</span><br><span class="line"><span class="comment">// 返回与IMP(使用imp_implementationWithBlock创建的)相关的block</span></span><br><span class="line"><span class="keyword">id</span> imp_getBlock( IMP anImp)</span><br><span class="line"><span class="comment">// 解除block与IMP(使用imp_implementationWithBlock创建的)的关联关系，并释放block的拷贝</span></span><br><span class="line"><span class="built_in">BOOL</span> imp_removeBlock( IMP anImp)</span><br><span class="line"><span class="comment">// 加载弱引用指针引用的对象并返回</span></span><br><span class="line"><span class="keyword">id</span> objc_loadWeak(<span class="keyword">id</span> *location)</span><br><span class="line"><span class="comment">// 存储__weak变量的新值</span></span><br><span class="line"><span class="keyword">id</span> objc_storeWeak(<span class="keyword">id</span> *location, <span class="keyword">id</span> obj)</span><br></pre></td></tr></table></figure></p>
-<h1>2 Data Types</h1>
-<h2>2.1 Class-Definition Data Structures</h2>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Objective-C类是由Class类型来表示的，实际上是一个指向objc_class结构体的指针</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> objc_class *Class;</span><br><span class="line"><span class="keyword">struct</span> objc_class &#123;</span><br><span class="line">    Class isa  OBJC_ISA_AVAILABILITY;</span><br><span class="line"> </span><br><span class="line"><span class="meta"># if !__OBJC2__</span></span><br><span class="line">    Class super_class                       OBJC2_UNAVAILABLE;  <span class="comment">// 父类</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *name                        OBJC2_UNAVAILABLE;  <span class="comment">// 类名</span></span><br><span class="line">    <span class="keyword">long</span> version                            OBJC2_UNAVAILABLE;  <span class="comment">// 类的版本信息，默认为0</span></span><br><span class="line">    <span class="keyword">long</span> info                               OBJC2_UNAVAILABLE;  <span class="comment">// 类信息，供运行期使用的一些位标识</span></span><br><span class="line">    <span class="keyword">long</span> instance_size                      OBJC2_UNAVAILABLE;  <span class="comment">// 该类的实例变量大小</span></span><br><span class="line">    <span class="keyword">struct</span> objc_ivar_list *ivars            OBJC2_UNAVAILABLE;  <span class="comment">// 该类的成员变量链表</span></span><br><span class="line">    <span class="keyword">struct</span> objc_method_list **methodLists   OBJC2_UNAVAILABLE;  <span class="comment">// 方法定义的链表</span></span><br><span class="line">    <span class="keyword">struct</span> objc_cache *cache                OBJC2_UNAVAILABLE;  <span class="comment">// 方法缓存</span></span><br><span class="line">    <span class="keyword">struct</span> objc_protocol_list *protocols    OBJC2_UNAVAILABLE;  <span class="comment">// 协议链表</span></span><br><span class="line"><span class="meta"># endif</span></span><br><span class="line"> </span><br><span class="line">&#125; OBJC2_UNAVAILABLE;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 类定义中的方法</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> objc_method *Method;</span><br><span class="line"><span class="keyword">struct</span> objc_method &#123;</span><br><span class="line">    SEL method_name    OBJC2_UNAVAILABLE; <span class="comment">// 方法名</span></span><br><span class="line">    <span class="keyword">char</span> *method_types OBJC2_UNAVAILABLE;</span><br><span class="line">    IMP method_imp     OBJC2_UNAVAILABLE; <span class="comment">// 方法实现</span></span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="comment">// 实例变量的类型</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> objc_ivar *Ivar;</span><br><span class="line"><span class="keyword">struct</span> objc_ivar &#123;</span><br><span class="line">    <span class="keyword">char</span> *ivar_name  OBJC2_UNAVAILABLE; <span class="comment">// 变量名</span></span><br><span class="line">    <span class="keyword">char</span> *ivar_type  OBJC2_UNAVAILABLE; <span class="comment">// 变量类型</span></span><br><span class="line">    <span class="keyword">int</span> ivar_offset  OBJC2_UNAVAILABLE; <span class="comment">// 基地址偏移字节</span></span><br><span class="line"><span class="meta"># ifdef __LP64__</span></span><br><span class="line">    <span class="keyword">int</span> space		    OBJC2_UNAVAILABLE; <span class="comment">// </span></span><br><span class="line"><span class="meta"># endif</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/// An opaque type that represents a category.</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> objc_category *Category;</span><br><span class="line"><span class="keyword">struct</span> objc_category &#123;</span><br><span class="line">    <span class="keyword">char</span> *category_name                       OBJC2_UNAVAILABLE; <span class="comment">// 分类名</span></span><br><span class="line">    <span class="keyword">char</span> *class_name                          OBJC2_UNAVAILABLE; <span class="comment">// 分类所属的类名</span></span><br><span class="line">    <span class="keyword">struct</span> objc_method_list *instance_methods OBJC2_UNAVAILABLE; <span class="comment">// 实例方法列表</span></span><br><span class="line">    <span class="keyword">struct</span> objc_method_list *class_methods    OBJC2_UNAVAILABLE; <span class="comment">// 类方法列表</span></span><br><span class="line">    <span class="keyword">struct</span> objc_protocol_list *protocols      OBJC2_UNAVAILABLE; <span class="comment">// 分类所实现的协议列表</span></span><br><span class="line">&#125; OBJC2_UNAVAILABLE;</span><br><span class="line"></span><br><span class="line">Objective-C声明的属性的类型</span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> objc_property *objc_property_t;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 函数指针，指向方法实现的首地址</span></span><br><span class="line"><span class="keyword">id</span> (*IMP)(<span class="keyword">id</span>, SEL, ...)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 选择器，是表示一个方法的selector的指针</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> objc_selector *SEL;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义了一个Objective-C方法</span></span><br><span class="line"><span class="keyword">struct</span> objc_method_description &#123;</span><br><span class="line">	SEL name;               <span class="comment">/**&lt; The name of the method */</span></span><br><span class="line">	<span class="keyword">char</span> *types;            <span class="comment">/**&lt; The types of the method arguments */</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> objc_method_list &#123; <span class="keyword">struct</span> objc_method_list *obsolete; <span class="keyword">int</span> method_count; <span class="keyword">struct</span> objc_method method_list[<span class="number">1</span>]; &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 缓存条用过的方法</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> objc_cache *Cache OBJC2_UNAVAILABLE;</span><br><span class="line"><span class="keyword">struct</span> objc_cache &#123;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> mask <span class="comment">/* total = mask + 1 */</span> OBJC2_UNAVAILABLE; <span class="comment">// 一个整数，指定分配的缓存bucket的总数</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> occupied                    OBJC2_UNAVAILABLE; <span class="comment">// 一个整数，指定实际占用的缓存bucket的总数</span></span><br><span class="line">    Method buckets[<span class="number">1</span>]                        OBJC2_UNAVAILABLE; <span class="comment">// 指向Method数据结构指针的数组</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 协议列表</span></span><br><span class="line"><span class="keyword">struct</span> objc_protocol_list &#123;</span><br><span class="line">    <span class="keyword">struct</span> objc_protocol_list *next;</span><br><span class="line">    <span class="keyword">long</span> count;</span><br><span class="line">    Protocol *list[<span class="number">1</span>];</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *name;  <span class="comment">/**&lt; The name of the attribute */</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *value; <span class="comment">/**&lt; The value of the attribute (usually empty) */</span></span><br><span class="line">&#125; objc_property_attribute_t; <span class="comment">// 属性的特性(attribute)</span></span><br></pre></td></tr></table></figure></p>
-<h2>2.2 Instance Data Types</h2>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 任何oc对象</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">struct</span> objc_object *<span class="keyword">id</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 表示一个类的实例的结构体</span></span><br><span class="line"><span class="keyword">struct</span> objc_object &#123;</span><br><span class="line">    Class isa  OBJC_ISA_AVAILABILITY; <span class="comment">// 类的isa指针</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 表示一个父类的结构体</span></span><br><span class="line"><span class="keyword">struct</span> objc_super &#123;</span><br><span class="line">    <span class="comment">/// Specifies an instance of a class.</span></span><br><span class="line">    __<span class="keyword">unsafe_unretained</span> <span class="keyword">id</span> receiver; <span class="comment">// 消息的实际接收者</span></span><br><span class="line">    <span class="comment">/// Specifies the particular superclass of the instance to message. </span></span><br><span class="line"><span class="meta"># if !defined(__cplusplus)  &amp;&amp;  !__OBJC2__</span></span><br><span class="line">    <span class="comment">/* For compatibility with old objc-runtime.h header */</span></span><br><span class="line">    __<span class="keyword">unsafe_unretained</span> Class <span class="keyword">class</span>;</span><br><span class="line"><span class="meta"># else</span></span><br><span class="line">    __<span class="keyword">unsafe_unretained</span> Class super_class; <span class="comment">// 指针当前类的父类</span></span><br><span class="line"><span class="meta"># endif</span></span><br><span class="line">    <span class="comment">/* super_class is the first class to search */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-<h2>2.3 Boolean Value</h2>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// YES or NO (非0,非nil皆为真)</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="keyword">signed</span> <span class="keyword">char</span> <span class="built_in">BOOL</span>;</span><br></pre></td></tr></table></figure></p>
-<h2>2.4 Associative References</h2>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> OBJC_ENUM(uintptr_t, objc_AssociationPolicy) &#123;</span><br><span class="line">    OBJC_ASSOCIATION_ASSIGN = <span class="number">0</span>,           <span class="comment">/**&lt; Specifies a weak reference to the associated object. */</span></span><br><span class="line">    OBJC_ASSOCIATION_RETAIN_NONATOMIC = <span class="number">1</span>, <span class="comment">/**&lt; Specifies a strong reference to the associated object. The association is not made atomically. */</span></span><br><span class="line">    OBJC_ASSOCIATION_COPY_NONATOMIC = <span class="number">3</span>,   <span class="comment">/**&lt; Specifies that the associated object is copied. The association is not made atomically. */</span></span><br><span class="line">    OBJC_ASSOCIATION_RETAIN = <span class="number">01401</span>,       <span class="comment">/**&lt; Specifies a strong reference to the associated object. The association is made atomically. */</span></span><br><span class="line">    OBJC_ASSOCIATION_COPY = <span class="number">01403</span>          <span class="comment">/**&lt; Specifies that the associated object is copied. The association is made atomically. */</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-<p> </p>
-<hr>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://caicoder.github.io/2017/08/17/NSNotification/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="caicoder">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="caicoder的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/17/NSNotification/" itemprop="url">Notifications</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-08-17T18:12:42+08:00">
-                2017-08-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>NSNotificationCenter发出通知的过程中会发出一个一个NSNotification对象。</p>
-<h1>1 Creating Notifications</h1>
-<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// 创建NSNotification</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - parameter aName : 通知名</span></span><br><span class="line"><span class="comment">/// - parameter anObject : 通知关联的对象</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - returns: NSNotification</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">convenience</span> <span class="keyword">init</span>(name aName: <span class="type">String</span>, object anObject: <span class="type">AnyObject?</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment">/// 创建NSNotification</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - parameter name : 通知名</span></span><br><span class="line"><span class="comment">/// - parameter object : 通知关联的对象</span></span><br><span class="line"><span class="comment">/// - parameter userInfo : 通知携带的数据</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - returns: NSNotification</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">4.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">init</span>(name: <span class="type">String</span>, object: <span class="type">AnyObject?</span>, userInfo: [<span class="type">NSObject</span> : <span class="type">AnyObject</span>]?)</span><br></pre></td></tr></table></figure></p>
-<h1>2 Getting Notification Information</h1>
-<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// 通知名</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">var</span> name: <span class="type">String</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"><span class="comment">/// 通知关联的对象</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">var</span> object: <span class="type">AnyObject?</span> &#123; <span class="keyword">get</span> &#125;</span><br><span class="line"><span class="comment">/// 通知携带的数据</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">var</span> userInfo: [<span class="type">NSObject</span> : <span class="type">AnyObject</span>]? &#123; <span class="keyword">get</span> &#125;</span><br></pre></td></tr></table></figure></p>
-<p> </p>
-<hr>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://caicoder.github.io/2017/07/16/NSBlockOperation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="caicoder">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="caicoder的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/16/NSBlockOperation/" itemprop="url">Managing the Blocks in the Operation</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-16T12:12:42+08:00">
-                2017-07-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>NSBlockOperation是NSOperation的子类，以block的方式添加任务。</p>
-<h1>1 Managing the Blocks in the Operation</h1>
-<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// 初始化NSBlockOperation</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">convenience</span> <span class="keyword">init</span>(block: () -&gt; <span class="type">Void</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">/// 添加blcok</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">addExecutionBlock</span><span class="params">(block: <span class="params">()</span></span></span> -&gt; <span class="type">Void</span>)</span><br><span class="line">    </span><br><span class="line"><span class="comment">/// 需要执行的block</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">var</span> executionBlocks: [() -&gt; <span class="type">Void</span>] &#123; <span class="keyword">get</span> &#125;</span><br></pre></td></tr></table></figure></p>
-<p> </p>
-<hr>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://caicoder.github.io/2017/07/16/NSFileManager/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="caicoder">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="caicoder的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/16/NSFileManager/" itemprop="url">NSFileManager</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-07-16T12:12:42+08:00">
-                2017-07-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li><a href="#1">Creating a File Manager</a></li>
-<li><a href="#2">Locating System Directories</a></li>
-<li><a href="#3">Locating Application Group Container Directories</a></li>
-<li><a href="#4">Discovering Directory Contents</a></li>
-<li><a href="#5">Creating and Deleting Items</a></li>
-<li><a href="#6">Moving and Copying Items</a></li>
-<li><a href="#7">Managing iCloud-Based Items</a></li>
-<li><a href="#8">Creating Symbolic and Hard Links</a></li>
-<li><a href="#9">Determining Access to Files</a></li>
-<li><a href="#10">Getting and Setting Attributes</a></li>
-<li><a href="#11">Getting and Comparing File Contents</a></li>
-<li><a href="#12">Getting the Relationship Between Items</a></li>
-<li><a href="#13">Converting File Paths to Strings</a></li>
-<li><a href="#14">Managing the Delegate</a></li>
-<li><a href="#15">Managing the Current Directory</a></li>
-<li><a href="#16">Deprecated Methods</a></li>
-</ol>
-<hr>
-<p>NSFileManager(Swift中是FileManager)帮助我们快速访问管理文件系统。通过它我们可以对文件进行定位、复制、移动和删除等操作。</p>
-<h1>&lt;a id=&quot;1&quot;&gt;1 Creating a File Manager</h1>
-<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// 获取共享的NSFileManager</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">func</span> <span class="title">defaultManager</span>() -&gt; <span class="title">NSFileManager</span></span></span><br></pre></td></tr></table></figure></p>
-<h1>&lt;a id=&quot;2&quot;&gt;2 Locating System Directories</h1>
-<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 快速获取目录</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">4.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">URLsForDirectory</span><span class="params">(directory: NSSearchPathDirectory, inDomains domainMask: NSSearchPathDomainMask)</span></span> -&gt; [<span class="type">NSURL</span>]</span><br><span class="line">    </span><br><span class="line"><span class="comment">/// 文件夹内快速创建文件夹</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - parameter directory : .ItemReplacementDirectory</span></span><br><span class="line"><span class="comment">/// - parameter inDomain : .UserDomainMask</span></span><br><span class="line"><span class="comment">/// - parameter appropriateForURL : 目标目录</span></span><br><span class="line"><span class="comment">/// - parameter create : 是否创建</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - returns: void</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">4.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">URLForDirectory</span><span class="params">(directory: NSSearchPathDirectory, inDomain domain: NSSearchPathDomainMask, appropriateForURL url: NSURL?, create shouldCreate: Bool)</span></span> <span class="keyword">throws</span> -&gt; <span class="type">NSURL</span></span><br></pre></td></tr></table></figure></p>
-<h1>&lt;a id=&quot;3&quot;&gt;3 Locating Application Group Container Directories</h1>
-<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// 获取应用容器目录</span></span><br><span class="line"><span class="comment">/// 定位应用组目录，需在https://idmsa.apple.com/IDMSWebAuth/authenticate配置</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - parameter groupIdentifier : 容器ID</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - returns: NSURL?</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">7.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">containerURLForSecurityApplicationGroupIdentifier</span><span class="params">(groupIdentifier: String)</span></span> -&gt; <span class="type">NSURL?</span></span><br></pre></td></tr></table></figure></p>
-<h1>&lt;a id=&quot;4&quot;&gt;4 Discovering Directory Contents</h1>
-<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// 获取一级目录内的内容</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - parameter url : 目标路径</span></span><br><span class="line"><span class="comment">/// - parameter includingPropertiesForKeys : 关键字</span></span><br><span class="line"><span class="comment">/// - parameter options : 枚举选项，NSDirectoryEnumerationOptions.SkipsHiddenFiles</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - returns: [NSURL]</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">4.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">contentsOfDirectoryAtURL</span><span class="params">(url: NSURL, includingPropertiesForKeys keys: [String]?, options mask: NSDirectoryEnumerationOptions)</span></span> <span class="keyword">throws</span> -&gt; [<span class="type">NSURL</span>] </span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">2.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">contentsOfDirectoryAtPath</span><span class="params">(path: String)</span></span> <span class="keyword">throws</span> -&gt; [<span class="type">String</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">/// 枚举获取目录下内容</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">4.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">enumeratorAtURL</span><span class="params">(url: NSURL, includingPropertiesForKeys keys: [String]?, options mask: NSDirectoryEnumerationOptions, errorHandler handler: <span class="params">(<span class="params">(NSURL, NSError)</span></span></span></span> -&gt; <span class="type">Bool</span>)?) -&gt; <span class="type">NSDirectoryEnumerator?</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">enumeratorAtPath</span><span class="params">(path: String)</span></span> -&gt; <span class="type">NSDirectoryEnumerator?</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/// 返回所有路径</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">subpathsAtPath</span><span class="params">(path: String)</span></span> -&gt; [<span class="type">String</span>]?</span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">2.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">subpathsOfDirectoryAtPath</span><span class="params">(path: String)</span></span> <span class="keyword">throws</span> -&gt; [<span class="type">String</span>]</span><br></pre></td></tr></table></figure></p>
-<h1>&lt;a id=&quot;5&quot;&gt;5 Creating and Deleting Items</h1>
-<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// 创建文件夹</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">5.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">createDirectoryAtURL</span><span class="params">(url: NSURL, withIntermediateDirectories createIntermediates: Bool, attributes: [String : AnyObject]?)</span></span> <span class="keyword">throws</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">2.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">createDirectoryAtPath</span><span class="params">(path: String, withIntermediateDirectories createIntermediates: Bool, attributes: [String : AnyObject]?)</span></span> <span class="keyword">throws</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">/// 创建文件</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">createFileAtPath</span><span class="params">(path: String, contents data: NSData?, attributes attr: [String : AnyObject]?)</span></span> -&gt; <span class="type">Bool</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">/// 删除文件</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">4.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">removeItemAtURL</span><span class="params">(URL: NSURL)</span></span> <span class="keyword">throws</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">2.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">removeItemAtPath</span><span class="params">(path: String)</span></span> <span class="keyword">throws</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">/// 替换数据内容</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">4.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">replaceItemAtURL</span><span class="params">(originalItemURL: NSURL, withItemAtURL newItemURL: NSURL, backupItemName: String?, options: NSFileManagerItemReplacementOptions, resultingItemURL resultingURL: AutoreleasingUnsafeMutablePointer&lt;NSURL?&gt;)</span></span> <span class="keyword">throws</span></span><br></pre></td></tr></table></figure></p>
-<h1>&lt;a id=&quot;6&quot;&gt;6 Moving and Copying Items</h1>
-<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// 复制文件</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">2.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">copyItemAtPath</span><span class="params">(srcPath: String, toPath dstPath: String)</span></span> <span class="keyword">throws</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">4.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">copyItemAtURL</span><span class="params">(srcURL: NSURL, toURL dstURL: NSURL)</span></span> <span class="keyword">throws</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">// 移动文件</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">2.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">moveItemAtPath</span><span class="params">(srcPath: String, toPath dstPath: String)</span></span> <span class="keyword">throws</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">4.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">moveItemAtURL</span><span class="params">(srcURL: NSURL, toURL dstURL: NSURL)</span></span> <span class="keyword">throws</span></span><br></pre></td></tr></table></figure></p>
-<h1>&lt;a id=&quot;7&quot;&gt;7 Managing iCloud-Based Items</h1>
-<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// 获取iCloud身份标识符</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">6.0</span>, *)</span><br><span class="line"><span class="meta">@NSCopying</span> <span class="keyword">public</span> <span class="keyword">var</span> ubiquityIdentityToken: <span class="class"><span class="keyword">protocol</span>&lt;<span class="title">NSCoding</span>, <span class="title">NSCopying</span>, <span class="title">NSObjectProtocol</span>&gt;? </span>&#123; <span class="keyword">get</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据iCloud容器标识符，创建容器路径</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">5.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">URLForUbiquityContainerIdentifier</span><span class="params">(containerIdentifier: String?)</span></span> -&gt; <span class="type">NSURL?</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 目标路径是否存储在iCloud</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">5.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">isUbiquitousItemAtURL</span><span class="params">(url: NSURL)</span></span> -&gt; <span class="type">Bool</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/// 移动文件到云中</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - parameter flag : true移动到云中,false从云中删除</span></span><br><span class="line"><span class="comment">/// - parameter itemAtURL : 本地路径</span></span><br><span class="line"><span class="comment">/// - parameter destinationURL : 云路径</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - returns: void</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">5.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">setUbiquitous</span><span class="params">(flag: Bool, itemAtURL url: NSURL, destinationURL: NSURL)</span></span> <span class="keyword">throws</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/// 从云中下载文件</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">5.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">startDownloadingUbiquitousItemAtURL</span><span class="params">(url: NSURL)</span></span> <span class="keyword">throws</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 删除云对应的本地副本</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">5.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">evictUbiquitousItemAtURL</span><span class="params">(url: NSURL)</span></span> <span class="keyword">throws</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/// 生成云的url，可在浏览器中下载</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">5.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">URLForPublishingUbiquitousItemAtURL</span><span class="params">(url: NSURL, expirationDate outDate: AutoreleasingUnsafeMutablePointer&lt;NSDate?&gt;)</span></span> <span class="keyword">throws</span> -&gt; <span class="type">NSURL</span></span><br></pre></td></tr></table></figure></p>
-<h1>&lt;a id=&quot;8&quot;&gt;8 Creating Symbolic and Hard Links</h1>
-<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建软连接</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">2.0</span>, *)</span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">createSymbolicLink</span><span class="params">(atPath path: String, withDestinationPath destPath: String)</span></span> <span class="keyword">throws</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">5.0</span>, *)</span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">createSymbolicLink</span><span class="params">(at url: URL, withDestinationURL destURL: URL)</span></span> <span class="keyword">throws</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建硬连接</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">2.0</span>, *)</span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">linkItem</span><span class="params">(atPath srcPath: String, toPath dstPath: String)</span></span> <span class="keyword">throws</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">4.0</span>, *)</span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">linkItem</span><span class="params">(at srcURL: URL, to dstURL: URL)</span></span> <span class="keyword">throws</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取软连接对应的实际地址</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">2.0</span>, *)</span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">destinationOfSymbolicLink</span><span class="params">(atPath path: String)</span></span> <span class="keyword">throws</span> -&gt; <span class="type">String</span></span><br></pre></td></tr></table></figure></p>
-<h1>&lt;a id=&quot;9&quot;&gt;9 Determining Access to Files</h1>
-<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 路径对应的文件或文件夹是否存在</span></span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">fileExists</span><span class="params">(atPath path: String)</span></span> -&gt; <span class="type">Bool</span>  </span><br><span class="line"><span class="comment">// 路径对应的文件或文件夹是否存在，isDirectory对应是否为目录</span></span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">fileExists</span><span class="params">(atPath path: String, isDirectory: UnsafeMutablePointer&lt;ObjCBool&gt;?)</span></span> -&gt; <span class="type">Bool</span>   </span><br><span class="line"><span class="comment">// 能否读取文件</span></span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">isReadableFile</span><span class="params">(atPath path: String)</span></span> -&gt; <span class="type">Bool</span> </span><br><span class="line"><span class="comment">// 能否写入文件</span></span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">isWritableFile</span><span class="params">(atPath path: String)</span></span> -&gt; <span class="type">Bool</span> </span><br><span class="line"><span class="comment">// 是否为可执行文件</span></span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">isExecutableFile</span><span class="params">(atPath path: String)</span></span> -&gt; <span class="type">Bool</span></span><br><span class="line"><span class="comment">// 能否删除文件</span></span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">isDeletableFile</span><span class="params">(atPath path: String)</span></span> -&gt; <span class="type">Bool</span></span><br></pre></td></tr></table></figure></p>
-<h1>&lt;a id=&quot;10&quot;&gt;10 Getting and Setting Attributes</h1>
-<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 文件名</span></span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">displayName</span><span class="params">(atPath path: String)</span></span> -&gt; <span class="type">String</span></span><br><span class="line"><span class="comment">// 路径上的文件夹名</span></span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">componentsToDisplay</span><span class="params">(forPath path: String)</span></span> -&gt; [<span class="type">String</span>]?</span><br><span class="line"><span class="comment">// 获取文件属性</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">2.0</span>, *)</span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">attributesOfItem</span><span class="params">(atPath path: String)</span></span> <span class="keyword">throws</span> -&gt; [<span class="type">FileAttributeKey</span> : <span class="type">Any</span>]</span><br><span class="line"><span class="comment">// 获取文件所处系统的相关文件属性（如剩余存储空间）</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">2.0</span>, *)</span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">attributesOfFileSystem</span><span class="params">(forPath path: String)</span></span> <span class="keyword">throws</span> -&gt; [<span class="type">FileAttributeKey</span> : <span class="type">Any</span>]</span><br><span class="line"><span class="comment">// 设置文件属性</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">2.0</span>, *)</span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">setAttributes</span><span class="params">(<span class="number">_</span> attributes: [FileAttributeKey : <span class="keyword">Any</span>], ofItemAtPath path: String)</span></span> <span class="keyword">throws</span></span><br></pre></td></tr></table></figure></p>
-<h1>&lt;a id=&quot;11&quot;&gt;11 Getting and Comparing File Contents</h1>
-<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取文件内容</span></span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">contents</span><span class="params">(atPath path: String)</span></span> -&gt; <span class="type">Data?</span></span><br><span class="line"><span class="comment">// 判断文件内容是否相同</span></span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">contentsEqual</span><span class="params">(atPath path1: String, andPath path2: String)</span></span> -&gt; <span class="type">Bool</span></span><br></pre></td></tr></table></figure></p>
-<h1>&lt;a id=&quot;12&quot;&gt;12 Getting the Relationship Between Items</h1>
-<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取路径之间的关系</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">8.0</span>, *)</span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">getRelationship</span><span class="params">(<span class="number">_</span> outRelationship: UnsafeMutablePointer&lt;FileManager.URLRelationship&gt;, ofDirectoryAt directoryURL: URL, toItemAt otherURL: URL)</span></span> <span class="keyword">throws</span></span><br><span class="line"><span class="comment">// 获取路径是否在某容器中</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">8.0</span>, *)</span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">getRelationship</span><span class="params">(<span class="number">_</span> outRelationship: UnsafeMutablePointer&lt;FileManager.URLRelationship&gt;, of directory: FileManager.SearchPathDirectory, <span class="keyword">in</span> domainMask: FileManager.SearchPathDomainMask, toItemAt url: URL)</span></span> <span class="keyword">throws</span></span><br></pre></td></tr></table></figure></p>
-<h1>&lt;a id=&quot;13&quot;&gt;13 Converting File Paths to Strings</h1>
-<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 路径转C字符串</span></span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">fileSystemRepresentation</span><span class="params">(withPath path: String)</span></span> -&gt; <span class="type">UnsafePointer</span>&lt;<span class="type">Int8</span>&gt;</span><br><span class="line"><span class="comment">// C字符串转路径</span></span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">string</span><span class="params">(withFileSystemRepresentation str: UnsafePointer&lt;Int8&gt;, length len: Int)</span></span> -&gt; <span class="type">String</span></span><br></pre></td></tr></table></figure></p>
-<h1>&lt;a id=&quot;14&quot;&gt;14 Managing the Delegate</h1>
-<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 代理监听</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">2.0</span>, *)</span><br><span class="line"><span class="keyword">unowned</span>(unsafe) <span class="keyword">open</span> <span class="keyword">var</span> delegate: <span class="type">FileManagerDelegate?</span></span><br></pre></td></tr></table></figure></p>
-<h1>&lt;a id=&quot;15&quot;&gt;15 Managing the Current Directory</h1>
-<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 修改当前工作目录为指定目录</span></span><br><span class="line"><span class="keyword">open</span> <span class="function"><span class="keyword">func</span> <span class="title">changeCurrentDirectoryPath</span><span class="params">(<span class="number">_</span> path: String)</span></span> -&gt; <span class="type">Bool</span></span><br><span class="line"><span class="comment">// 获取当前工作目录</span></span><br><span class="line"><span class="keyword">open</span> <span class="keyword">var</span> currentDirectoryPath: <span class="type">String</span> &#123; <span class="keyword">get</span> &#125;</span><br></pre></td></tr></table></figure></p>
-<p> </p>
-<hr>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://caicoder.github.io/2017/06/16/JSON解析/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="caicoder">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="caicoder的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/06/16/JSON解析/" itemprop="url">Json 解析</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-16T12:12:42+08:00">
-                2017-06-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1>1 简介</h1>
-<p>使用NSJSONSerialization，我们可以将JSON转换为AnyObject对象，或将AnyObject对象转换为JSON对象。</p>
-<p>将一个AnyObject对象转换JSON对象必须具备以下条件。</p>
+            <h1 id="Socket编程"><a href="#Socket编程" class="headerlink" title="Socket编程"></a>Socket编程</h1><p>它是基于TCP/IP协议，Socket就是一个可以连通网络上不同计算机程序之间的管道，把一堆数据从管道的A端扔进去，则会从管道的B端（也许同时还可以从C、D、E、F……端冒出来）。管道的端口由两个因素来唯一确认，即机器的IP地址和程序所使用的端口号。</p>
+<p>Socket可以支持数据的发送和接收，它会定义一种称为套接字的变量，发送数据时首先创建套接字，然后使用该套接字的sendto等方法对准某个IP/端口进行数据发送；接收端也首先创建套接字，然后将该套接字绑定到一个IP/端口上，所有发向此端口的数据会被该套接字的recv等函数读出。如同读出文件中的数据一样。</p>
+<p>TCP/IP的socket提供下列三种类型套接字。  流式套接字、数据报式套接字、原始式套接字。</p>
+<p>客户端编程步骤：</p>
 <ol>
-<li>该对象的是NSArray或NSDictionary。</li>
-<li>内部数据只能是NSString, NSNumber, NSArray, NSDictionary, 或NSNull。</li>
-<li>所有字典的key是NSString。</li>
-<li>Number类型数据不能是NaN或无穷。</li>
-</ol>
-<p>你还可以通过方法<code>isValidJSONObject:</code>判断一个对象能否转换成JSON对象。</p>
-<p>JSON对象其实质是一个NSDAta对象。</p>
-<h1>2 AnyObject转JSON</h1>
-<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> dict = [<span class="type">String</span>: <span class="type">String</span>]()</span><br><span class="line">dict[<span class="string">"name"</span>] = <span class="string">"阳君"</span></span><br><span class="line">dict[<span class="string">"qq"</span>] = <span class="string">"937447974"</span></span><br><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> <span class="type">NSJSONSerialization</span>.isValidJSONObject(dict) &#123; <span class="comment">// 能否转换为JSON Data</span></span><br><span class="line">        <span class="comment">// 转换为JSON Data</span></span><br><span class="line">        <span class="keyword">let</span> data  = <span class="keyword">try</span> <span class="type">NSJSONSerialization</span>.dataWithJSONObject(dict, options: <span class="type">NSJSONWritingOptions</span>.<span class="type">PrettyPrinted</span>)</span><br><span class="line">        <span class="comment">// 转换为json串</span></span><br><span class="line">        <span class="keyword">self</span>.jsonString = <span class="type">String</span>(data: data, encoding: <span class="type">NSUTF8StringEncoding</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"json生成:\(self.jsonString)"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"转换出错:\(error)"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h1>3 JSON转AnyObject</h1>
-<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// json转data</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> data = <span class="keyword">self</span>.jsonString?.dataUsingEncoding(<span class="type">NSUTF8StringEncoding</span>) &#123;</span><br><span class="line">    <span class="keyword">do</span> &#123;</span><br><span class="line">        <span class="comment">// data转JSON Object</span></span><br><span class="line">        <span class="keyword">let</span> jsonObject = <span class="keyword">try</span> <span class="type">NSJSONSerialization</span>.<span class="type">JSONObjectWithData</span>(data, options: <span class="type">NSJSONReadingOptions</span>.<span class="type">AllowFragments</span>)</span><br><span class="line">        <span class="comment">// JSON Object转实际对象</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> dict = jsonObject <span class="keyword">as</span>? <span class="type">Dictionary</span>&lt;<span class="type">String</span>, <span class="type">AnyObject</span>&gt; &#123;</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">"json解析:\(dict)"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"解析xml出错:\(error)"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p> </p>
-<hr>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://caicoder.github.io/2017/05/17/深入理解KVC与KVO/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="caicoder">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="caicoder的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/05/17/深入理解KVC与KVO/" itemprop="url">深入理解KVC与KVO</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-05-17T12:12:42+08:00">
-                2017-05-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1>1 KVC</h1>
-<p>KVC（Key-value coding）键值编码。简单来说，是可以通过对象属性名称（Key）直接给属性值（value）赋值。</p>
-<h2>1.1 使用</h2>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@property</span> (<span class="keyword">class</span>, <span class="keyword">readonly</span>) <span class="built_in">BOOL</span> accessInstanceVariablesDirectly; <span class="comment">// 是否禁用KVC</span></span><br><span class="line">- (<span class="keyword">nullable</span> <span class="keyword">id</span>)valueForKey:(<span class="built_in">NSString</span> *)key;                 <span class="comment">// getter</span></span><br><span class="line">- (<span class="keyword">void</span>)setValue:(<span class="keyword">nullable</span> <span class="keyword">id</span>)value forKey:(<span class="built_in">NSString</span> *)key; <span class="comment">// setter</span></span><br></pre></td></tr></table></figure></p>
-<p>通过 setter 方法我们就可以动态给 readonly 的对象赋值。key 可以是属性也可以是_属性。</p>
-<h2>1.2 底层调用</h2>
-<p>假如我们调用 <code>[[NSObject alloc] setValue:nil forKey:@&quot;property&quot;];</code>，其 KVC 调用如下所示：</p>
-<ol>
-<li>去模型中查找有没有对应的 setter 方法：例如：setProperty 方法，有就直接调用这个 setter 方法给属性赋值;</li>
-<li>如果找不到 setter 方法，接着就会去寻找有没有 property Ivar，如果有，就直接进行 <code>void object_setIvar ( id obj, Ivar ivar, id value )</code> 赋值;</li>
-<li>如果找不到 property 属性，接着又会去寻找 _property Ivar，如果有，直接进行 Ivar 赋值</li>
-<li>如果都找不到会调用 <code>setValue: forUndefinedKey:</code>, 然后报出如下所示的崩溃信息。</li>
-</ol>
-<p><img src="https://raw.githubusercontent.com/937447974/Blog/master/Resources/2017032101.png" alt></p>
-<p>从崩溃信息我们可以发现如下信息</p>
-<ol>
-<li>KVC 使用了 OSSpinLock 锁</li>
-<li>其存储信息可分散在 CFSetCreateMutable -&gt; CFHash -&gt; CFSetGetValue -&gt; CFSetAddValue</li>
-</ol>
-<h1>2 KVO</h1>
-<p>KVO (Key-Value Observing) 建立在 KVC 之上，它通过重写 KVC 和监听 setter 方法，向外发送通知。</p>
-<h2>2.1 使用</h2>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 注册观察者，实施监听</span></span><br><span class="line">- (<span class="keyword">void</span>)addObserver:(<span class="built_in">NSObject</span> *)observer forKeyPath:(<span class="built_in">NSString</span> *)keyPath options:(<span class="built_in">NSKeyValueObservingOptions</span>)options context:(<span class="keyword">nullable</span> <span class="keyword">void</span> *)context;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 在回调方法中处理属性发生的变化</span></span><br><span class="line">- (<span class="keyword">void</span>)observeValueForKeyPath:(<span class="built_in">NSString</span> *)keyPath ofObject:(<span class="keyword">id</span>)object change:(<span class="built_in">NSDictionary</span> *)change context:(<span class="keyword">void</span> *)context &#123;</span><br><span class="line">    <span class="keyword">if</span> (context == &lt;<span class="meta">#context#&gt;) &#123;</span></span><br><span class="line">        &lt;<span class="meta">#code to be executed upon observing keypath#&gt;</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        [<span class="keyword">super</span> observeValueForKeyPath:keyPath ofObject:object change:change context:context];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 3. 移除观察者</span></span><br><span class="line">- (<span class="keyword">void</span>)removeObserver:(<span class="built_in">NSObject</span> *)observer forKeyPath:(<span class="built_in">NSString</span> *)keyPath context:(<span class="keyword">nullable</span> <span class="keyword">void</span> *)context <span class="built_in">NS_AVAILABLE</span>(<span class="number">10</span>_7, <span class="number">5</span>_0);</span><br><span class="line">- (<span class="keyword">void</span>)removeObserver:(<span class="built_in">NSObject</span> *)observer forKeyPath:(<span class="built_in">NSString</span> *)keyPath;</span><br></pre></td></tr></table></figure></p>
-<blockquote>
-<p>当父类和子类同时 KVO 同一个对象时，在 <code>dealloc</code> 移除引起崩溃时 应对 context 赋值，移除时也应通过<code>(void)removeObserver: forKeyPath: context:</code> 方法移除。</p>
-</blockquote>
-<h2>2.2 底层实现</h2>
-<p><img src="https://raw.githubusercontent.com/937447974/Blog/master/Resources/2017032201.png" alt></p>
-<p><img src="https://raw.githubusercontent.com/937447974/Blog/master/Resources/2017032202.png" alt></p>
-<p>通过上面两张图的对比，我们发现对 test 执行 <code>addObserver</code> 操作时，test 的 isa 指向了NSKVONotifying_KVOTest。执行 <code>removeObserver</code> 操作时，其 isa 再次指回了 KVOTest。这也就是 isa-swizzling 技术，isa-swizzling 就是类型混合指针机制。</p>
-<p>由此我们可以结合 runtime 得出如下结论。</p>
-<ol>
-<li>KVO 的底层是 runtime 编译时动态生成 NSKVONotifying_Class 对象，然后通过 object_setClass(id obj, Class cls) 动态修改当前类的 isa 指向 NSKVONotifying_Class。</li>
-<li>NSKVONotifying_Class 是一个动态类，其内部继承了 NSKVONotifying 对象。</li>
-<li>NSKVONotifying 内实现了如下操作：
-<ol>
-<li>重写了 KVC 的机制，这样调用 <code>setValue: forKey:</code> 时，外部 Observer 也能接到通知。</li>
-<li>绑定了原 isa 便于 <code>removeObserver</code> 时，修改原始对象的 isa;</li>
-<li>通过动态方法决议与消息转发实现了属性的 setter 方法。</li>
-<li>可以通过 NSObject 内的 NSKeyValueObserverNotification 扩展方法向外发送 NSKeyValueObservingOptions 通知。如下所示</li>
-</ol>
+<li><p>加载套接字库，创建套接字(WSAStartup()/socket())；</p>
+</li>
+<li><p>向服务器发出连接请求(connect())；</p>
+</li>
+<li><p>和服务器端进行通信(send()/recv())；</p>
+</li>
+<li><p>关闭套接字，关闭加载的套接字库(closesocket()/WSACleanup())。</p>
 </li>
 </ol>
-<pre><code class="language-objc">[test willChangeValueForKey:@&quot;str&quot;]; // KVO 存储旧值
-test -&gt; _str = @&quot;阳君&quot;;               // 指针改变值
-[test didChangeValueForKey:@&quot;str&quot;];  // KVO 存储新值，且发出通知
-</code></pre>
-<blockquote>
-<p><code>willChangeValueForKey:</code> 和 <code>didChangeValueForKey:</code> 成对出现缺一不可。</p>
-</blockquote>
-<p> </p>
-<hr>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://caicoder.github.io/2017/04/16/动态方法决议与消息转发/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="caicoder">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="caicoder的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/04/16/动态方法决议与消息转发/" itemprop="url">动态方法决议与消息转发</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-04-16T12:12:42+08:00">
-                2017-04-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>在Objective-C中，如果向一个对象发送一条该对象无法处理的消息(对应selector不存在)，会导致程序crash， 但是，在crash之前，oc的运行时系统会先经过以下两个步骤：</p>
-<ol>
-<li>Dynamic Method Resolution</li>
-<li>Message Forwarding</li>
+<h2 id="心跳包机制"><a href="#心跳包机制" class="headerlink" title="心跳包机制"></a>心跳包机制</h2><p>跳包之所以叫心跳包是因为：它像心跳一样每隔固定时间发一次，以此来告诉服务器，这个客户端还活着。事实上这是为了保持长连接，至于这个包的内容，是没有什么特别规定的，不过一般都是很小的包，或者只包含包头的一个空包。</p>
+<h2 id="心跳检测步骤"><a href="#心跳检测步骤" class="headerlink" title="心跳检测步骤"></a>心跳检测步骤</h2><ol>
+<li>客户端每隔一个时间间隔发生一个探测包给服务器</li>
+<li>客户端发包时启动一个超时定时器</li>
+<li>服务器端接收到检测包，应该回应一个包</li>
+<li>如果客户机收到服务器的应答包，则说明服务器正常，删除超时定时器</li>
+<li>如果客户端的超时定时器超时，依然没有收到应答包，则说明服务器挂了</li>
 </ol>
-<h2>1 Dynamic Method Resolution（动态方法决议）</h2>
-<p>Objective C 提供了一种名为动态方法决议的手段，使得我们可以在运行时动态地为一个 selector 提供实现。我们只要实现 +resolveInstanceMethod: 或 +resolveClassMethod: 方法，并在其中为指定的 selector  提供实现即可（通过调用运行时函数 class_addMethod 来添加)，并返回YES，运行时系统会重启一次消息的发送过程，调用动态添加的方法。例如,下面的例子：</p>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> dynamicMethodIMP(<span class="keyword">id</span> <span class="keyword">self</span>, SEL _cmd) &#123;</span><br><span class="line">    <span class="comment">// implementation ....</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">MyClass</span></span></span><br><span class="line">+ (<span class="built_in">BOOL</span>)resolveInstanceMethod:(SEL)aSEL</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span> (aSEL == <span class="keyword">@selector</span>(resolveThisMethodDynamically)) &#123;</span><br><span class="line">          class_addMethod([<span class="keyword">self</span> <span class="keyword">class</span>], aSEL, (IMP) dynamicMethodIMP, <span class="string">"v@:"</span>);</span><br><span class="line">          <span class="keyword">return</span> <span class="literal">YES</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> [<span class="keyword">super</span> resolveInstanceMethod:aSEL];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure></p>
-<p>class_addMethod 方法动态的添加新的方法与对应的实现，如果调用了[MyClass resolveThisMethodDynamically],将会转到动态添加的dynamicMethodIMP 方法中。Objective-C的方法本质上是一个至少包含两个参数(id self, SEL _cmd)的C函数，这样，当重启消息发送时，就能在类中找到@selector(dynamicMethodIMP)了。而如果方法返回NO时，将会进入下一步：消息转发(Message Forwarding)</p>
-<h2>2 Message Forwarding（消息转发）</h2>
-<p>消息转发分为两步：</p>
-<p>首先运行时系统会调用- (id)forwardingTargetForSelector:(SEL)aSelector方法，如果这个方法中返回的不是nil或者self，运行时系统将把消息发送给返回的那个对象。</p>
-<p>如果返回的是nil或者self，运行时系统首先会调用- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector方法来获得方法签名，方法签名记录了方法的参数和返回值的信息。</p>
-<p>如果－methodSignatureForSelector 返回的是nil, 运行时系统会抛出unrecognized selector exception，程序到这里就结束了。</p>
-<h2>3 流程图</h2>
-<p>整个流程可以用下面这张图表示</p>
-<p><img src="https://raw.githubusercontent.com/937447974/Blog/master/Resources/2016101401.png" alt></p>
-<p>调用<code>[[YJItem alloc] test]</code>，从控制台打印方法的执行顺序如下所示</p>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">resolveInstanceMethod:</span><br><span class="line">forwardingTargetForSelector:</span><br><span class="line">methodSignatureForSelector:</span><br><span class="line">resolveInstanceMethod:</span><br><span class="line">doesNotRecognizeSelector:</span><br><span class="line">-[YJItem test]: unrecognized selector sent to instance <span class="number">0x61800000d5c0</span></span><br></pre></td></tr></table></figure></p>
-<p> </p>
-<hr>
 
           
         
@@ -1264,7 +370,7 @@ test -&gt; _str = @&quot;阳君&quot;;               // 指针改变值
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://caicoder.github.io/2017/04/15/NSNotificationCenter/">
+    <link itemprop="mainEntityOfPage" href="https://caicoder.github.io/2019/02/10/network/Http 和 Https 有什么关系和区别/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="caicoder">
@@ -1283,7 +389,7 @@ test -&gt; _str = @&quot;阳君&quot;;               // 指针改变值
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/04/15/NSNotificationCenter/" itemprop="url">Notification Center</a></h1>
+                <a class="post-title-link" href="/2019/02/10/network/Http 和 Https 有什么关系和区别/" itemprop="url">Http 和 Https 有什么关系和区别</a></h1>
         
 
         <div class="post-meta">
@@ -1295,8 +401,8 @@ test -&gt; _str = @&quot;阳君&quot;;               // 指针改变值
               
                 <span class="post-meta-item-text">Posted on</span>
               
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-04-15T12:12:42+08:00">
-                2017-04-15
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-10T12:12:42+08:00">
+                2019-02-10
               </time>
             
 
@@ -1335,399 +441,1130 @@ test -&gt; _str = @&quot;阳君&quot;;               // 指针改变值
       
         
           
-            <p>---NSNotificationCenter为通知管理中心，通过它我们可以注册通知监听、取消通知监听以及发出通知。</p>
-<h1>1 Getting the Notification Center</h1>
-<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// 默认通知中心</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">func</span> <span class="title">defaultCenter</span>() -&gt; <span class="title">NSNotificationCenter</span></span></span><br></pre></td></tr></table></figure></p>
-<h1>2 Managing Notification Observers</h1>
-<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// block接受通知</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - parameter name: 通知名</span></span><br><span class="line"><span class="comment">/// - parameter obj: 关联对象</span></span><br><span class="line"><span class="comment">/// - parameter queue: 队列</span></span><br><span class="line"><span class="comment">/// - parameter block: 通知回调</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - returns: NSObjectProtocol</span></span><br><span class="line"><span class="meta">@available</span>(iOS <span class="number">4.0</span>, *)</span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">addObserverForName</span><span class="params">(name: String?, object obj: AnyObject?, queue: NSOperationQueue?, usingBlock block: <span class="params">(NSNotification)</span></span></span> -&gt; <span class="type">Void</span>) -&gt; <span class="type">NSObjectProtocol</span></span><br><span class="line">    </span><br><span class="line"><span class="comment">/// Selector接收通知</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - parameter observer: 目标类self</span></span><br><span class="line"><span class="comment">/// - parameter aSelector: Selector</span></span><br><span class="line"><span class="comment">/// - parameter aName: String</span></span><br><span class="line"><span class="comment">/// - parameter object: 关联对象</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - returns: void</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">addObserver</span><span class="params">(observer: AnyObject, selector aSelector: Selector, name aName: String?, object anObject: AnyObject?)</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">/// 注销通知</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - parameter observer : 目标类self</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - returns: void</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">removeObserver</span><span class="params">(observer: AnyObject)</span></span></span><br><span class="line">    </span><br><span class="line"><span class="comment">/// 注销通知</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - parameter observer : 目标类self</span></span><br><span class="line"><span class="comment">/// - parameter aName : 通知名</span></span><br><span class="line"><span class="comment">/// - parameter anObject : 关联对象</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - returns: void</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">removeObserver</span><span class="params">(observer: AnyObject, name aName: String?, object anObject: AnyObject?)</span></span></span><br></pre></td></tr></table></figure></p>
-<h1>3 Posting Notifications</h1>
-<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// 发出通知</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - parameter notification : NSNotification</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - returns: void</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">postNotification</span><span class="params">(notification: NSNotification)</span></span></span><br><span class="line">    </span><br><span class="line"><span class="comment">/// 发出通知</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - parameter aName : 通知名</span></span><br><span class="line"><span class="comment">/// - parameter anObject : 关联的对象</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - returns: void</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">postNotificationName</span><span class="params">(aName: String, object anObject: AnyObject?)</span></span></span><br><span class="line">    </span><br><span class="line"><span class="comment">/// 发出通知</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - parameter aName : 通知名</span></span><br><span class="line"><span class="comment">/// - parameter anObject : 关联的对象</span></span><br><span class="line"><span class="comment">/// - parameter userInfo : 携带的数据</span></span><br><span class="line"><span class="comment">///</span></span><br><span class="line"><span class="comment">/// - returns: void</span></span><br><span class="line"><span class="keyword">public</span> <span class="function"><span class="keyword">func</span> <span class="title">postNotificationName</span><span class="params">(aName: String, object anObject: AnyObject?, userInfo aUserInfo: [NSObject : AnyObject]?)</span></span></span><br></pre></td></tr></table></figure></p>
-<p> </p>
-<hr>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://caicoder.github.io/2016/05/12/Objective-C对象属性设置/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="caicoder">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="caicoder的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/05/12/Objective-C对象属性设置/" itemprop="url">Objective-C对象属性设置</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-05-12T15:16:21+08:00">
-                2016-05-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2>assign</h2>
-<p>简单赋值，不更改索引计数。</p>
-<p>对基础数据类型 （例如NSInteger，CGFloat）和C数据类型（int, float, double, char, 等），适用简单数据类型。此标记说明设置器直接进行赋值，这也是基础数据类型的默认值。</p>
-<blockquote>
-<p>在使用垃圾收集的应用程序中，如果你要一个属性使用assign，且这个类符合NSCopying协议，你就要明确指出这个标记，而不是简单地使用默认值，否则的话，你将得到一个编译警告。这再次向编译器说明你确实需要赋值，即使它是可拷贝的。</p>
-</blockquote>
-<h2>retain</h2>
-<p>对其他NSObject和其子类进行release旧值，再retain新值。释放旧的对象，将旧对象的指针赋予输入对象，再提高输入对象的索引计数为1</p>
-<blockquote>
-<p>指定retain会在赋值时唤醒传入值的retain消息。此属性只能用于Objective-C对象类型，而不能用于Core Foundation对象。(原因很明显，retain会增加对象的引用计数，而基本数据类型或者Core Foundation对象都没有引用计数——译者注)。
-注意: 把对象添加到数组中时，引用计数将增加对象的引用次数+1。</p>
-</blockquote>
-<h2>copy</h2>
-<p>建立一个索引计数为1的对象，然后释放旧对象。</p>
-<blockquote>
-<p>对NSString 它指出，在赋值时使用传入值的一份拷贝。拷贝工作由copy方法执行，此属性只对那些实行了NSCopying协议的对象类型有效。更深入的讨论，请参考“复制”部分。</p>
-</blockquote>
-<h2>nonatomic</h2>
-<p>禁止多线程，变量保护，提高性能。指出访问器不是原子操作，而默认地，访问器是原子操作。</p>
-<blockquote>
-<p>在多线程环境下，解析的访问器提供一个对属性的安全访问，从获取器得到的返回值或者通过设置器设置的值可以一次完成，即便是别的线程也正在对其进行访问。
-如果你不指定nonatomic，在自己管理内存的环境中，解析的访问器保留并自动释放返回的值，如果指定了nonatomic，那么访问器只是简单地返回这个值。</p>
-</blockquote>
-<h2>readonly与readwrite</h2>
-<p>readonly说明属性是只读的，默认的标记是readwrite。</p>
-<p>readwrite说明属性会被当成读写的，这也是默认属性。</p>
-<h2>weak和strong</h2>
-<p>weak弱引用。ARC机制下的assign。</p>
-<p>strong强引用。ARC机制下的retain。</p>
-<blockquote>
-<p>由于arc机制的引入，开发过程中已不在使用assign和retain。</p>
-</blockquote>
-<h2>setter和getter</h2>
-<p>setter表示当为该属性赋值时，需要使用指定的方法名。
-getter表示提前该属性的值时，需要使用指定的方法名。</p>
-<blockquote>
-<p>由于.方法的引入，开发过程中已不在使用setter和getter。</p>
-</blockquote>
-<h2>nullable和nonnull</h2>
-<p>nullable表示对象可以是NULL或nil。
-nonnull表示对象不应该为空</p>
-<blockquote>
-<p>在Swift与Objective-C混编时，Swift编译器并不知道一个Objective-C对象到底是optional还是non-optional，因此这种情况下编译器会隐式地将Objective-C的对象当成是non-optional。
-为了解决这一问题，苹果在IOS9中引入了新特性Objective-C的新特性： nullable和nonnull。</p>
-</blockquote>
-<hr>
-<p>本人常用的属性设置如下所示：</p>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">copy</span>) <span class="built_in">NSString</span> *name;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">NSObject</span> *name;</span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>) <span class="built_in">NSInteger</span> name;</span><br></pre></td></tr></table></figure></p>
-<p>基本数据类型的默认值是assign；</p>
-<p>对象数据类型的默认值是retain。</p>
-<p> </p>
-<hr>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://caicoder.github.io/2016/04/16/Blocks Programming/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="caicoder">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="caicoder的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/04/16/Blocks Programming/" itemprop="url">Blocks Programming</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-04-16T11:12:42+08:00">
-                2016-04-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1>1 概述</h1>
-<p>在c和c的派生语言中，如Object-c和C++，块对象为你创建一个Ad Hoc功能体。在其他编程语言中，一个块对象有时候会称为“关闭（closure）”。在IOS中，我们称呼它为“块（blocks）”。</p>
-<h2>1.1 Block的功能</h2>
-<p>Block是一个匿名内敛的代码集合：</p>
-<ul>
-<li>就像一个函数具有不同类型的参数列表；</li>
-<li>其返回类型可以是void或者声明的类型；</li>
-<li>从它定义的词法范围可以捕捉其状态；</li>
-<li>在词法范围内，可以随意修改其状态；</li>
-<li>在同一词法范围内的其他块中，可以修改它。</li>
+            <h1 id="Http-和-Https-有什么关系和区别"><a href="#Http-和-Https-有什么关系和区别" class="headerlink" title="Http 和 Https 有什么关系和区别"></a>Http 和 Https 有什么关系和区别</h1><p>HTTP协议传输的数据都是未加密的，也就是明文的，因此使用HTTP协议传输隐私信息非常不安全，为了保证这些隐私数据能加密传输，于是网景公司设计了SSL（Secure Sockets Layer）协议用于对HTTP协议传输的数据进行加密</p>
+<p>HTTPS = HTTP + SSL/TLS<br>HTTPS是安全的HTTP.</p>
+<p><img src="http://img.isylar.com/media/15499427689041.jpg" alt></p>
+<p>HTTPS和HTTP的区别主要如下：</p>
+<p>　　1、https协议需要到ca申请证书，一般免费证书较少，因而需要一定费用。</p>
+<p>　　2、http是超文本传输协议，信息是明文传输，https则是具有安全性的ssl加密传输协议。</p>
+<p>　　3、http和https使用的是完全不同的连接方式，用的端口也不一样，前者是80，后者是443。</p>
+<p>　　4、http的连接很简单，是无状态的；HTTPS协议是由SSL+HTTP协议构建的可进行加密传输、身份认证的网络协议，比http协议安全。</p>
+<h2 id="HTTPS-连接简历流程是怎么样的"><a href="#HTTPS-连接简历流程是怎么样的" class="headerlink" title="HTTPS 连接简历流程是怎么样的"></a>HTTPS 连接简历流程是怎么样的</h2><p><img src="http://img.isylar.com/media/15499430718209.jpg" alt></p>
+<h3 id="会话秘钥"><a href="#会话秘钥" class="headerlink" title="会话秘钥"></a>会话秘钥</h3><p>会话秘钥 = randomS + randomC + 预主秘钥</p>
+<h2 id="HTTPS都是用了哪些加密手段"><a href="#HTTPS都是用了哪些加密手段" class="headerlink" title="HTTPS都是用了哪些加密手段?"></a>HTTPS都是用了哪些加密手段?</h2><ul>
+<li>连接建立过程中是用非对称加密，非对称加密很耗时</li>
+<li>后续通讯过程是用对称加密</li>
 </ul>
-<p>你可以传递它到其他线程中延迟执行，或者在当前线程中执行。在block的生命周期，编译器和运行系统将它引用的所有变量都保存为其副本。虽然block可以在C或C++中使用，但更多的时候，它是作为Object-C对象使用。</p>
-<h2>1.2 Block的使用</h2>
-<p>Bolck作为封装的工作单元特别有用，它是小且独立的代码块。它可以同时执行，或者在一个操作完成后作为回调使用。</p>
-<p>Block可以作为传统回调函数的替代物，有两个主要的原因：</p>
-<ol>
-<li>
-<p>在方法体的实现过程中，它都可以被调用。因此，在IOS系统框架中，我们经常看见它作为方法的参数。如UIView的动画功能或GCD。</p>
+<h3 id="非对称加密"><a href="#非对称加密" class="headerlink" title="非对称加密"></a>非对称加密</h3><p><img src="http://img.isylar.com/media/15499433240342.jpg" alt></p>
+<h3 id="对称加密"><a href="#对称加密" class="headerlink" title="对称加密"></a>对称加密</h3><p><img src="http://img.isylar.com/media/15499434404057.jpg" alt></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://caicoder.github.io/2019/02/10/network/Http&Socket/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="caicoder">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="caicoder的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/10/network/Http&Socket/" itemprop="url">Http和Socket通信的区别</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-10T12:12:42+08:00">
+                2019-02-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Http和Socket通信的区别"><a href="#Http和Socket通信的区别" class="headerlink" title="Http和Socket通信的区别"></a>Http和Socket通信的区别</h1><ol>
+<li><p>http是客户端用http协议进行请求,发送请求时候需要封装http请求头,并绑定请求的数据,服务器一般有web服务器配合(当然也非绝对)。 http请求方式为客户端主动发起请求,服务器才能给响应,一次请求完毕后则断开连接,以节省资源。服务器不能主动给客户端响应(除非采取http长连接技术)。iphone主要使用类是NSUrlConnection。</p>
 </li>
-<li>
-<p>Block允许访问局部变量。当你执行一个函数的回调时，你不需要使用一个数据结构，你只需访问局部变量。</p>
+<li><p>socket是客户端跟服务器直接使用socket <code>套接字</code> 进行连接,并没有规定连接后断开,所以客户端和服务器可以保持连接通道,双方都可以主动发送数据。一般在游戏开发或股票开发这种要求即时性很强并且保持发送数据量比较大的场合使用。主要使用类是CFSocketRef。</p>
 </li>
 </ol>
-<h1>2 声明和创建Block</h1>
-<h2>2.1 声明Block引用</h2>
-<p>声明Block类似于声明一个指向函数的指针，只是使用^替代了*。下面是一些有效的Block声明：</p>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> (^ blockReturningVoidWithVoidArgument)(<span class="keyword">void</span>);</span><br><span class="line"><span class="keyword">int</span> (^ blockReturningIntWithIntAndCharArguments)(<span class="keyword">int</span>, <span class="keyword">char</span>);</span><br><span class="line"><span class="keyword">void</span> (^ arrayOfTenBlocksReturningVoidWithIntArgument[<span class="number">10</span>])(<span class="keyword">int</span>);</span><br></pre></td></tr></table></figure></p>
-<p>Block 也支持 (...) 的参数列表。当其参数列表中没有任何类型的参数时，必须使用void作为参数。</p>
-<p>编译器通过Block提供的一组完成数据来验证使用它，在参数的传递和返回值的赋值过程中，它是线程安全的。你可以使用任何类型的指针作为Block的引用，反过来也是一样的。但是你不能用*作为块引用，在编译过程中，你也不能计算Block的大小。</p>
-<p>当你使用同一个Block在多个地方时，最好的做法是创建一个Block的类型，如：</p>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">float</span> (^ MyBlockType)(<span class="keyword">float</span>, <span class="keyword">float</span>);</span><br><span class="line"></span><br><span class="line">MyBlockType myFirstBlock = <span class="comment">// ... ;</span></span><br><span class="line">MyBlockType mySecondBlock = <span class="comment">// ... ;</span></span><br></pre></td></tr></table></figure></p>
-<h2>2.2 创建Block</h2>
-<p>使用^来标志要创建一个Block，紧随其后使用一个类型名，并放入（）中，Block的主要操作过程在{}中。下面是一个简单的Block块，我们将其命名为oneForm，其传入和回传的参数类型都是float。</p>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">float</span> (^oneFrom)(<span class="keyword">float</span>);</span><br><span class="line">oneFrom = ^(<span class="keyword">float</span> aFloat) &#123;</span><br><span class="line">	<span class="keyword">float</span> result = aFloat - <span class="number">1.0</span>;</span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-<p>如果没有显示的声明Block的返回类型，它也可以通过块内容自动判断返回类型。如果推断参数列表和返回类型都是void，你可以使用void作为参数列表。如果在块中会返回多个值时，你需要保证返回值的类型是一致的。</p>
-<h2>3.2 全局Block</h2>
-<p>在文档的开头，你可以声明一个全局的Block</p>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta"># import <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> GlobalInt = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">int</span> (^getGlobalInt)(<span class="keyword">void</span>) = ^&#123; <span class="keyword">return</span> GlobalInt; &#125;;</span><br></pre></td></tr></table></figure></p>
-<h1>3 Block和变量</h1>
-<p>本节介绍了Block和变量之间的关系，包括内存管理。</p>
-<h2>3.1 变量类型</h2>
-<p>从Block的结构体中，可以有5种不同的变量类型。</p>
-<p>从一个函数中，你可以参考三种不同的标准来区分它们。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://caicoder.github.io/2019/02/10/network/OSI/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="caicoder">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="caicoder的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/10/network/OSI/" itemprop="url">OSI七层模型</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-10T12:12:42+08:00">
+                2019-02-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="通信底层原理（OSI七层模型）"><a href="#通信底层原理（OSI七层模型）" class="headerlink" title="通信底层原理（OSI七层模型）"></a>通信底层原理（OSI七层模型）</h1><p>OSI简介：OSI采用了分层的结构化技术，共分七层，物理层、数据链路层、网络层、传输层、会话层、表示层、应用层。</p>
 <ol>
-<li>全局变量包括静态变量。</li>
-<li>全局函数</li>
-<li>局部变量和从一个封闭的环境中获得的变量。</li>
+<li><p>物理层：主要定义物理设备标准，如网线的接口类型、光纤的接口类型、各种传输介质的传输速率等。它的主要作用是传输比特流（就是由1、0转化为电流强弱来进行传输,到达目的地后在转化为1、0，也就是我们常说的数模转换与模数转换）。这一层的数据叫做比特。</p>
+</li>
+<li><p>数据链路层：定义了如何让格式化数据以进行传输，以及如何让控制对物理介质的访问。这一层通常还提供错误检测和纠正，以确保数据的可靠传输。</p>
+</li>
+<li><p>网络层：：在位于不同地理位置的网络中的两个主机系统之间提供连接和路径选择。Internet的发展使得从世界各站点访问信息的用户数大大增加，而网络层正是管理这种连接的层。</p>
+</li>
+<li><p>传输层：定义了一些传输数据的协议和端口号（WWW端口80等），如：TCP（传输控制协议，传输效率低，可靠性强，用于传输可靠性要求高，数据量大的数据），UDP（用户数据报协议，与TCP特性恰恰相反，用于传输可靠性要求不高，数据量小的数据，如QQ聊天数据就是通过这种方式传输的）。 主要是将从下层接收的数据进行分段和传输，到达目的地址后再进行重组。常常把这一层数据叫做段。</p>
+</li>
+<li><p>会话层：通过传输层（端口号：传输端口与接收端口）建立数据传输的通路。主要在你的系统之间发起会话或者接受会话请求（设备之间需要互相认识可以是IP也可以是MAC或者是主机名）</p>
+</li>
+<li><p>表示层：：可确保一个系统的应用层所发送的信息可以被另一个系统的应用层读取。例如，PC程序与另一台计算机进行通信，其中一台计算机使用扩展二一十进制交换码（EBCDIC），而另一台则使用美国信息交换标准码（ASCII）来表示相同的字符。如有必要，表示层会通过使用一种通格式来实现多种数据格式之间的转换。</p>
+</li>
+<li><p>应用层：是最靠近用户的OSI层。这一层为用户的应用程序（例如电子邮件、文件传输和终端仿真）提供网络服务。</p>
+</li>
 </ol>
-<p>Block也支持其它两个类型的变量：</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://caicoder.github.io/2019/02/10/network/TCP-Three-Way-Handshake/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="caicoder">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="caicoder的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/10/network/TCP-Three-Way-Handshake/" itemprop="url">简述TCP的三次握手过程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-10T12:12:42+08:00">
+                2019-02-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="简述TCP的三次握手过程"><a href="#简述TCP的三次握手过程" class="headerlink" title="简述TCP的三次握手过程"></a>简述TCP的三次握手过程</h1><h2 id="TCP-三次握手"><a href="#TCP-三次握手" class="headerlink" title="TCP 三次握手"></a>TCP 三次握手</h2><ul>
+<li>TCP 提供一种面向连接的、可靠的字节流服务</li>
+<li>在一个 TCP 连接中，仅有两方进行彼此通信。广播和多播不能用于 TCP</li>
+<li>TCP 使用校验和，确认和重传机制来保证可靠传输</li>
+<li>TCP 给数据分节进行排序，并使用累积确认保证数据的顺序不变和非重复</li>
+<li>TCP 使用滑动窗口机制来实现流量控制，通过动态改变窗口的大小进行拥塞控制</li>
+</ul>
+<p>在TCP/IP协议中,TCP协议提供可靠的连接服务,采用三次握手建立一个连接.</p>
+<ul>
+<li>第一次握手(SYN=1, seq=x):</li>
+</ul>
+<p>客户端发送一个 TCP 的 SYN 标志位置1的包，指明客户端打算连接的服务器的端口，以及初始序号 X,保存在包头的序列号(Sequence Number)字段里。</p>
+<p>发送完毕后，客户端进入 SYN_SEND 状态。</p>
+<ul>
+<li>第二次握手(SYN=1, ACK=1, seq=y, ACKnum=x+1):</li>
+</ul>
+<p>服务器发回确认包(ACK)应答。即 SYN 标志位和 ACK 标志位均为1。服务器端选择自己 ISN 序列号，放到 Seq 域里，同时将确认序号(Acknowledgement Number)设置为客户的 ISN 加1，即X+1。 发送完毕后，服务器端进入 SYN_RCVD 状态。</p>
+<ul>
+<li>第三次握手(ACK=1，ACKnum=y+1)</li>
+</ul>
+<p>客户端再次发送确认包(ACK)，SYN 标志位为0，ACK 标志位为1，并且把服务器发来 ACK 的序号字段+1，放在确定字段中发送给对方，并且在数据段放写ISN的+1</p>
+<p>发送完毕后，客户端进入 ESTABLISHED 状态，当服务器端接收到这个包时，也进入 ESTABLISHED 状态，TCP 握手结束。</p>
+<p><img src="http://img.isylar.com/media/15439924019037.png" alt></p>
+<p><img src="http://img.isylar.com/media/15499377203274.jpg" alt></p>
 <ol>
-<li>在函数的级别是__block变量，这些变量是可变的。</li>
-<li>const(常量)</li>
+<li>第一次握手：建立连接时，客户端发送同步序列编号到服务器，并进入发送状态，等待服务器确认</li>
+<li>第二次：服务器收到同步序列编号，确认并同时自己也发送一个同步序列编号+确认标志，此时服务器进入接收状态</li>
+<li>第三次：客户端收到服务器发送的包，并向服务器发送确认标志，随后链接成功。</li>
+<li>注意：是在链接成功后在进行数据传输。</li>
 </ol>
-<p>在Block中使用变量有以下说明：</p>
-<ol>
-<li>在Block内可以访问全局变量或静态变量；</li>
-<li>就像传参数给函数体，给Block也可以传递参数；</li>
-<li>在BLock可以像使用常量一样使用栈(非静态)变量。</li>
-<li>通过 __block声明的局部变量在Block内是可变的；</li>
-<li>在Block内声明的变量，可以像在函数体内声明的变量一样使用。</li>
-</ol>
-<p>下面的例子介绍了怎么使用本地（非静态）变量：</p>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> x = <span class="number">123</span>;</span><br><span class="line"><span class="keyword">void</span> (^printXAndY)(<span class="keyword">int</span>) = ^(<span class="keyword">int</span> y) &#123;</span><br><span class="line">	printf(<span class="string">"%d %d\n"</span>, x, y);</span><br><span class="line">&#125;;</span><br><span class="line">printXAndY(<span class="number">456</span>); <span class="comment">// prints: 123 456</span></span><br></pre></td></tr></table></figure></p>
-<p>但是，在Block内使用Block外声明的局部变量是错误的：</p>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> x = <span class="number">123</span>;</span><br><span class="line"><span class="keyword">void</span> (^printXAndY)(<span class="keyword">int</span>) = ^(<span class="keyword">int</span> y) &#123;</span><br><span class="line">	x = x + y; <span class="comment">// error</span></span><br><span class="line">	printf(<span class="string">"%d %d\n"</span>, x, y);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
-<p>当你想要在Block内改变Blcok外声明的局部变量，需要使用__Block做类型修饰符。</p>
-<h2>3.2 __block存储类型</h2>
-<p>当你使用__block作为存储类型的修饰符后，你就可以在Block内修改它的值。</p>
-<p>通过__block声明保存的数据，在所有Block是共享的。也就是说在给定的范围内，多个Block可以共享一个变量。</p>
-<p>但是使用__block有两个限制：不可以是可变的数组；其结构不可以包含C99可变类型的数组。</p>
-<p>下面的例子介绍了怎么使用__block变量</p>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">__block <span class="keyword">int</span> x = <span class="number">123</span>; <span class="comment">// x lives in block storage</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> (^printXAndY)(<span class="keyword">int</span>) = ^(<span class="keyword">int</span> y) &#123;</span><br><span class="line">	x = x + y;</span><br><span class="line">	printf(<span class="string">"%d %d\n"</span>, x, y);</span><br><span class="line">&#125;;</span><br><span class="line">printXAndY(<span class="number">456</span>); <span class="comment">// prints: 579 456</span></span><br><span class="line"><span class="comment">// x is now 579</span></span><br></pre></td></tr></table></figure></p>
-<p>下面的例子介绍了，在Block中，不同类型的数据是怎么相互协同工作的。</p>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="built_in">NSInteger</span> CounterGlobal;</span><br><span class="line"><span class="keyword">static</span> <span class="built_in">NSInteger</span> CounterStatic;</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">	<span class="built_in">NSInteger</span> localCounter = <span class="number">42</span>;</span><br><span class="line">	__block <span class="keyword">char</span> localCharacter;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">void</span> (^aBlock)(<span class="keyword">void</span>) = ^(<span class="keyword">void</span>) &#123;</span><br><span class="line">		++CounterGlobal;</span><br><span class="line">		++CounterStatic;</span><br><span class="line">		CounterGlobal = localCounter; <span class="comment">// localCounter fixed at block creation</span></span><br><span class="line">		localCharacter = <span class="string">'a'</span>; <span class="comment">// sets localCharacter in enclosing scope</span></span><br><span class="line">	&#125;;</span><br><span class="line"></span><br><span class="line">	++localCounter; <span class="comment">// unseen by the block</span></span><br><span class="line">	localCharacter = <span class="string">'b'</span>;</span><br><span class="line"></span><br><span class="line">	aBlock(); <span class="comment">// execute the block</span></span><br><span class="line">	<span class="comment">// localCharacter now 'a'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h1>4 怎么使用Block</h1>
-<h2>4.1 调用Block</h2>
-<p>如果你将Block声明为一个变量，你可以如下所示像使用函数一样使用它。</p>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> (^oneFrom)(<span class="keyword">int</span>) = ^(<span class="keyword">int</span> anInt) &#123;</span><br><span class="line">	<span class="keyword">return</span> anInt - <span class="number">1</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">printf(<span class="string">"1 from 10 is %d"</span>, oneFrom(<span class="number">10</span>)); <span class="comment">// Prints "1 from 10 is 9"</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">float</span> (^distanceTraveled)(<span class="keyword">float</span>, <span class="keyword">float</span>, <span class="keyword">float</span>) = ^(<span class="keyword">float</span> startingSpeed, <span class="keyword">float</span> acceleration, <span class="keyword">float</span> time) &#123;</span><br><span class="line">	<span class="keyword">float</span> distance = (startingSpeed * time) + (<span class="number">0.5</span> * acceleration * time * time);</span><br><span class="line">	<span class="keyword">return</span> distance;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">float</span> howFar = distanceTraveled(<span class="number">0.0</span>, <span class="number">9.8</span>, <span class="number">1.0</span>); <span class="comment">// howFar = 4.9</span></span><br></pre></td></tr></table></figure></p>
-<p>当你将Block作为一个参数传递给一个函数或者方法体时，通常可以创建一个“内联”块。</p>
-<h2>4.2 将Blcok作为函数参数</h2>
-<p>如同其他参数，你也可以将Block作为一个函数的参数。但是，多数情况下，你不需要声明它，你只需要编写它的方法体来实现。下面的例子使用了qsort_b函数，qsort_b函数类似标准的qsort_r函数，在这里我们使用Blcok作为最后一个参数。</p>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> *myCharacters[<span class="number">3</span>] = &#123; <span class="string">"TomJohn"</span>, <span class="string">"George"</span>, <span class="string">"Charles Condomine"</span> &#125;;</span><br><span class="line"></span><br><span class="line">qsort_b(myCharacters, <span class="number">3</span>, <span class="keyword">sizeof</span>(<span class="keyword">char</span> *), ^(<span class="keyword">const</span> <span class="keyword">void</span> *l, <span class="keyword">const</span> <span class="keyword">void</span> *r) &#123;</span><br><span class="line">	<span class="keyword">char</span> *left = *(<span class="keyword">char</span> **)l;</span><br><span class="line">	<span class="keyword">char</span> *right = *(<span class="keyword">char</span> **)r;</span><br><span class="line">	<span class="keyword">return</span> strncmp(left, right, <span class="number">1</span>);</span><br><span class="line">&#125;); <span class="comment">// Block implementation ends at "&#125;"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// myCharacters is now &#123; "Charles Condomine", "George", "TomJohn" &#125;</span></span><br></pre></td></tr></table></figure></p>
-<p>下面的例子介绍如何通过Blcok使用dispatch_apply函数</p>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#include <span class="meta-string">&lt;dispatch/dispatch.h&gt;</span></span></span><br><span class="line">size_t count = <span class="number">10</span>;</span><br><span class="line"><span class="built_in">dispatch_queue_t</span> queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">dispatch_apply(count, queue, ^(size_t i) &#123;</span><br><span class="line">	printf(<span class="string">"%u\n"</span>, i);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
-<h2>4.3 将Block作为方法体的参数</h2>
-<p>Cocoa提供了大量的支持Blcok作为参数的方法体，你可以像使用其他参数一样使用它。下面的例子介绍了怎么使用Block作为参数给数组过滤。</p>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSArray</span> *array = @[<span class="string">@"A"</span>, <span class="string">@"B"</span>, <span class="string">@"C"</span>, <span class="string">@"A"</span>, <span class="string">@"B"</span>, <span class="string">@"Z"</span>, <span class="string">@"G"</span>, <span class="string">@"are"</span>, <span class="string">@"Q"</span>];</span><br><span class="line"><span class="built_in">NSSet</span> *filterSet = [<span class="built_in">NSSet</span> setWithObjects: <span class="string">@"A"</span>, <span class="string">@"Z"</span>, <span class="string">@"Q"</span>, <span class="literal">nil</span>];</span><br><span class="line"></span><br><span class="line"><span class="built_in">BOOL</span> (^test)(<span class="keyword">id</span> obj, <span class="built_in">NSUInteger</span> idx, <span class="built_in">BOOL</span> *stop);</span><br><span class="line">test = ^(<span class="keyword">id</span> obj, <span class="built_in">NSUInteger</span> idx, <span class="built_in">BOOL</span> *stop) &#123;</span><br><span class="line">	<span class="keyword">if</span> (idx &lt; <span class="number">5</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span> ([filterSet containsObject: obj]) &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">YES</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">NO</span>;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="built_in">NSIndexSet</span> *indexes = [array indexesOfObjectsPassingTest:test];</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"indexes: %@"</span>, indexes);</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">Output:indexes: &lt;NSIndexSet: 0x10236f0&gt;[number of indexes: 2 (in 2 ranges), indexes: (0 3)]</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure></p>
-<p>下面的例子介绍了怎么在NSSet数组中通过Block对数据发出索引：</p>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSSet</span> *aSet = [<span class="built_in">NSSet</span> setWithObjects: <span class="string">@"Alpha"</span>, <span class="string">@"Beta"</span>, <span class="string">@"Gamma"</span>, <span class="string">@"X"</span>, <span class="literal">nil</span>];</span><br><span class="line"><span class="built_in">NSString</span> *string = <span class="string">@"gamma"</span>;</span><br><span class="line">[aSet enumerateObjectsUsingBlock:^(<span class="keyword">id</span> obj, <span class="built_in">BOOL</span> *stop) &#123;</span><br><span class="line">	<span class="keyword">if</span> ([obj localizedCaseInsensitiveCompare:string] == <span class="built_in">NSOrderedSame</span>) &#123;</span><br><span class="line">	*stop = <span class="literal">YES</span>;</span><br><span class="line">	found = <span class="literal">YES</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;];</span><br><span class="line"><span class="comment">// At this point, found == YES</span></span><br></pre></td></tr></table></figure></p>
-<h2>4.4 需要避免的模式</h2>
-<p>当你使用^{ ... }使用Block时，下面的例子是需要避免的模式</p>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> dontDoThis() &#123;</span><br><span class="line">	<span class="keyword">void</span> (^blockArray[<span class="number">3</span>])(<span class="keyword">void</span>); <span class="comment">// an array of 3 block references</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">3</span>; ++i) &#123;</span><br><span class="line">		blockArray[i] = ^&#123; printf(<span class="string">"hello, %d\n"</span>, i); &#125;;</span><br><span class="line">		<span class="comment">// WRONG: The block literal scope is the "for" loop.</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> dontDoThisEither() &#123;</span><br><span class="line">	<span class="keyword">void</span> (^block)(<span class="keyword">void</span>);</span><br><span class="line">	<span class="keyword">int</span> i = random():</span><br><span class="line">	<span class="keyword">if</span> (i &gt; <span class="number">1000</span>) &#123;</span><br><span class="line">		block = ^&#123; printf(<span class="string">"got i at: %d\n"</span>, i); &#125;;</span><br><span class="line">		<span class="comment">// WRONG: The block literal scope is the "then" clause.</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>在block使用self的时候会引起循环引用，也应避免。在block中使用self的正确方式如下,使用<code>__weak</code>先引用当前类，然后再使用。</p>
-<p><figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">__<span class="keyword">weak</span> <span class="built_in">UIViewController</span> *vc = <span class="keyword">self</span>;</span><br><span class="line"><span class="keyword">void</span> (^ test)() = ^() &#123;</span><br><span class="line">    <span class="comment">// 使用vc中的方法和属性</span></span><br><span class="line">    vc.title = <span class="string">@"阳君"</span>;<span class="comment">// 设置标题</span></span><br><span class="line">&#125;;</span><br><span class="line">test();</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://caicoder.github.io/2019/02/10/network/HTTP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="caicoder">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="caicoder的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/10/network/HTTP/" itemprop="url">Http</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-10T11:12:42+08:00">
+                2019-02-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h1><p>超文本传输协议</p>
+<h2 id="HTTP的请求方式有哪些"><a href="#HTTP的请求方式有哪些" class="headerlink" title="HTTP的请求方式有哪些"></a>HTTP的请求方式有哪些</h2><p><code>GET</code> <code>POST</code> <code>PUT</code> <code>DELETE</code> <code>HEAD</code> <code>OPTIONS</code></p>
+<h2 id="GET和POST方式的区别"><a href="#GET和POST方式的区别" class="headerlink" title="GET和POST方式的区别"></a>GET和POST方式的区别</h2><ul>
+<li>GET请求参数以?分割拼接到URL后面,POST请求参数在Body里面</li>
+<li>GET参数长度限制2048个字符,POST一般没有限制</li>
+<li>GET:获取资源<br>  *安全的，幂等的，可缓存的</li>
+<li>POST:处理资源<br>  *非安全的，非幂等的，不可缓存的</li>
+</ul>
+<h3 id="安全性"><a href="#安全性" class="headerlink" title="安全性"></a>安全性</h3><p>不应该引起Server端的任何状态变化: <code>GET</code>,<code>HEAD</code>,<code>OPTIONS</code></p>
+<h3 id="幂等性"><a href="#幂等性" class="headerlink" title="幂等性"></a>幂等性</h3><p>同一个请求方法执行多次和执行一次的效果完全相同</p>
+<h3 id="可缓存性"><a href="#可缓存性" class="headerlink" title="可缓存性"></a>可缓存性</h3><p>请求是否可以被缓存</p>
+<h2 id="状态码"><a href="#状态码" class="headerlink" title="状态码"></a>状态码</h2><p>1xx,2xx,3xx,4xx,5xx</p>
+<h2 id="HTTP特点"><a href="#HTTP特点" class="headerlink" title="HTTP特点"></a>HTTP特点</h2><p>无连接(HTTP有建立连接和释放连接过程),解决这个缺点，可以通过 <code>HTTP的持久连接</code>解决<br>无状态(需要使用cookie/session解决)</p>
+<h3 id="持久连接"><a href="#持久连接" class="headerlink" title="持久连接"></a>持久连接</h3><p><img src="media/15499388912503.jpg" alt></p>
+<p>一段时间后才关闭,采用<code>持久连接方案</code>,实际上是提升了网络请求的效率.</p>
+<h3 id="头部字段"><a href="#头部字段" class="headerlink" title="头部字段"></a>头部字段</h3><ul>
+<li>Connection:keep-alive </li>
+<li>time:20 (持久连接多少时间有效)</li>
+<li>max:10 (指这条连接最多可以发生多少次Http请求)</li>
+</ul>
+<h3 id="怎样判断一个请求是否结束"><a href="#怎样判断一个请求是否结束" class="headerlink" title="怎样判断一个请求是否结束"></a>怎样判断一个请求是否结束</h3><ul>
+<li>Content-length:1024</li>
+<li>chunked,最后会有一个空的chunked</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://caicoder.github.io/2019/02/07/network/get 和 post 区别/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="caicoder">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="caicoder的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/07/network/get 和 post 区别/" itemprop="url">get 和 post 区别</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-07T12:12:42+08:00">
+                2019-02-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="get-和-post-区别"><a href="#get-和-post-区别" class="headerlink" title="get 和 post 区别"></a>get 和 post 区别</h1><p>//简略回答就好</p>
+<ul>
+<li>GET后退按钮/刷新无害，POST数据会被重新提交（浏览器应该告知用户数据会被重新提交）。</li>
+<li>GET书签可收藏，POST为书签不可收藏。</li>
+<li>GET能被缓存，POST不能缓存 </li>
+<li>GET对数据长度有限制，当发送数据时，GET 方法向 URL 添加数据；URL 的长度是受限制的（URL 的最大长度是 2048 个字符）。POST无限制。</li>
+<li>GET只允许 ASCII 字符。POST没有限制。也允许二进制数据。与 POST 相比，GET 的安全性较差，因为所发送的数据是 URL 的一部分。在发送密码或其他敏感信息时绝不要使用 GET ！POST 比 GET 更安全，因为参数不会被保存在浏览器历史或 web 服务器日志中。</li>
+<li>GET的数据在 URL 中对所有人都是可见的。POST的数据不会显示在 URL 中。</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://caicoder.github.io/2019/02/02/network/TCP:UDP区别以及UDP如何实现可靠传输/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="caicoder">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="caicoder的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/02/network/TCP:UDP区别以及UDP如何实现可靠传输/" itemprop="url">TCP/UDP区别以及UDP如何实现可靠传输</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-02T12:12:42+08:00">
+                2019-02-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="TCP-UDP区别以及UDP如何实现可靠传输"><a href="#TCP-UDP区别以及UDP如何实现可靠传输" class="headerlink" title="TCP/UDP区别以及UDP如何实现可靠传输"></a>TCP/UDP区别以及UDP如何实现可靠传输</h1><p>TCP和UDP是OSI模型中的运输层中的协议。TCP提供可靠的通信传输，而UDP则常被用于让广播和细节控制交给应用的通信传输。</p>
+<p><img src="http://img.isylar.com/media/15499536520892.jpg" alt></p>
+<h2 id="UDP-用户数据报协议"><a href="#UDP-用户数据报协议" class="headerlink" title="UDP(用户数据报协议)"></a>UDP(用户数据报协议)</h2><h3 id="特点"><a href="#特点" class="headerlink" title="特点:"></a>特点:</h3><ul>
+<li>无连接</li>
+<li>尽最大努力交付</li>
+<li>面向报文(既不合并，也不拆分)</li>
+</ul>
+<p><img src="http://img.isylar.com/media/15499537866513.jpg" alt></p>
+<h3 id="功能"><a href="#功能" class="headerlink" title="功能:"></a>功能:</h3><p>复用，分用，差错检测</p>
+<h2 id="TCP-传输控制协议"><a href="#TCP-传输控制协议" class="headerlink" title="TCP(传输控制协议)"></a>TCP(传输控制协议)</h2><h3 id="特点-1"><a href="#特点-1" class="headerlink" title="特点"></a>特点</h3><ul>
+<li>面向连接<ul>
+<li>数据传输前需要建立连接</li>
+<li>数据传输结束后断开连接</li>
+</ul>
+</li>
+<li>可靠传输</li>
+<li>面向字节流</li>
+<li>流量控制</li>
+<li>拥塞控制</li>
+</ul>
+<h3 id="为什么要进行三次握手"><a href="#为什么要进行三次握手" class="headerlink" title="为什么要进行三次握手"></a>为什么要进行三次握手</h3><p>超时问题,客户端超时重传策略，又发一次sync，造成多次建立连接</p>
+<h3 id="如何保证可靠传输"><a href="#如何保证可靠传输" class="headerlink" title="如何保证可靠传输"></a>如何保证可靠传输</h3><p>主要需要保证报文无差错，不丢失，不重复，按序到达。<br>TCP主要靠<code>停止等待协议</code>实现的</p>
+<ul>
+<li>无差错情况</li>
+<li>超时重传</li>
+<li>确认丢失</li>
+<li>确认迟到</li>
+</ul>
+<p><img src="http://img.isylar.com/media/15499555001877.jpg" alt></p>
+<p><img src="http://img.isylar.com/media/15499555595704.jpg" alt></p>
+<p><img src="http://img.isylar.com/media/15499556519909.jpg" alt></p>
+<p><img src="http://img.isylar.com/media/15499557872727.jpg" alt></p>
+<h2 id="TCP与UDP区别总结"><a href="#TCP与UDP区别总结" class="headerlink" title="TCP与UDP区别总结"></a>TCP与UDP区别总结</h2><p>1、TCP面向连接（如打电话要先拨号建立连接）;UDP是无连接的，即发送数据之前不需要建立连接</p>
+<p>2、TCP提供可靠的服务。也就是说，通过TCP连接传送的数据，无差错，不丢失，不重复，且按序到达;UDP尽最大努力交付，即不保证可靠交付<br>3、TCP面向字节流，实际上是TCP把数据看成一连串无结构的字节流;UDP是面向报文的<br>UDP没有拥塞控制，因此网络出现拥塞不会使源主机的发送速率降低（对实时应用很有用，如IP电话，实时视频会议等）<br>4、每一条TCP连接只能是点到点的;UDP支持一对一，一对多，多对一和多对多的交互通信<br>5、TCP首部开销20字节;UDP的首部开销小，只有8个字节<br>6、TCP的逻辑通信信道是全双工的可靠信道，UDP则是不可靠信道</p>
+<p><strong>UDP如何实现可靠传输</strong></p>
+<p>由于在传输层UDP已经是不可靠的连接，那就要在应用层自己实现一些保障可靠传输的机制</p>
+<p>简单来讲，要使用UDP来构建可靠的面向连接的数据传输，就要实现类似于TCP协议的</p>
+<p>超时重传（定时器）</p>
+<p>有序接受 （添加包序号）</p>
+<p>应答确认 （Seq/Ack应答机制）</p>
+<p>滑动窗口流量控制等机制 （滑动窗口协议）</p>
+<p>等于说要在传输层的上一层（或者直接在应用层）实现TCP协议的可靠数据传输机制，比如使用UDP数据包+序列号，UDP数据包+时间戳等方</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://caicoder.github.io/2019/01/08/network/一次完整的HTTP请求所经历的7个步骤/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="caicoder">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="caicoder的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/08/network/一次完整的HTTP请求所经历的7个步骤/" itemprop="url">一次完整的HTTP请求所经历的7个步骤</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-08T12:12:42+08:00">
+                2019-01-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="一次完整的HTTP请求所经历的7个步骤"><a href="#一次完整的HTTP请求所经历的7个步骤" class="headerlink" title="一次完整的HTTP请求所经历的7个步骤"></a>一次完整的HTTP请求所经历的7个步骤</h1><p>HTTP通信机制是在一次完整的HTTP通信过程中，Web浏览器与Web服务器之间将完成下列7个步骤：</p>
+<ul>
+<li>建立TCP连接</li>
+</ul>
+<p>在HTTP工作开始之前，Web浏览器首先要通过网络与Web服务器建立连接，该连接是通过TCP来完成的，该协议与IP协议共同构建 Internet，即著名的TCP/IP协议族，因此Internet又被称作是TCP/IP网络。HTTP是比TCP更高层次的应用层协议，根据规则， 只有低层协议建立之后才能，才能进行更层协议的连接，因此，首先要建立TCP连接，一般TCP连接的端口号是80。</p>
+<ul>
+<li>Web浏览器向Web服务器发送请求行</li>
+</ul>
+<p>一旦建立了TCP连接，Web浏览器就会向Web服务器发送请求命令。例如：GET /sample/hello.jsp HTTP/1.1。</p>
+<ul>
+<li>Web浏览器发送请求头</li>
+</ul>
+<p>浏览器发送其请求命令之后，还要以头信息的形式向Web服务器发送一些别的信息，之后浏览器发送了一空白行来通知服务器，它已经结束了该头信息的发送。<br>Web服务器应答<br>客户机向服务器发出请求后，服务器会客户机回送应答， HTTP/1.1 200 OK ，应答的第一部分是协议的版本号和应答状态码。</p>
+<ul>
+<li>Web服务器发送应答头</li>
+</ul>
+<p>正如客户端会随同请求发送关于自身的信息一样，服务器也会随同应答向用户发送关于它自己的数据及被请求的文档。</p>
+<ul>
+<li>Web服务器向浏览器发送数据</li>
+</ul>
+<p>Web服务器向浏览器发送头信息后，它会发送一个空白行来表示头信息的发送到此为结束，接着，它就以Content-Type应答头信息所描述的格式发送用户所请求的实际数据。</p>
+<ul>
+<li>Web服务器关闭TCP连接</li>
+</ul>
+<p>Connection:keep-alive</p>
+<p>一般情况下，一旦Web服务器向浏览器发送了请求数据，它就要关闭TCP连接，然后如果浏览器或者服务器在其头信息加入了这行代码：<br>TCP连接在发送后将仍然保持打开状态，于是，浏览器可以继续通过相同的连接发送请求。保持连接节省了为每个请求建立新连接所需的时间，还节约了网络带宽。</p>
+<p><strong>建立TCP连接-&gt;发送请求行-&gt;发送请求头-&gt;（到达服务器）发送状态行-&gt;发送响应头-&gt;发送响应数据-&gt;断TCP连接</strong></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://caicoder.github.io/2019/01/07/network/什么是Http协议无状态协议?怎么解决Http协议无状态协议?/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="caicoder">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="caicoder的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/07/network/什么是Http协议无状态协议?怎么解决Http协议无状态协议?/" itemprop="url">Http协议无状态协议</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-01-07T12:12:42+08:00">
+                2019-01-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="什么是Http协议无状态协议-怎么解决Http协议无状态协议"><a href="#什么是Http协议无状态协议-怎么解决Http协议无状态协议" class="headerlink" title="什么是Http协议无状态协议?怎么解决Http协议无状态协议?"></a>什么是Http协议无状态协议?怎么解决Http协议无状态协议?</h1><p>无状态协议对于事务处理没有记忆能力。缺少状态意味着如果后续处理需要前面的信息<br>也就是说，当客户端一次HTTP请求完成以后，客户端再发送一次HTTP请求，HTTP并不知道当前客户端是一个”老用户“。<br>可以使用Cookie来解决无状态的问题，Cookie就相当于一个通行证，第一次访问的时候给客户端发送一个Cookie，当客户端再次来的时候，拿着Cookie(通行证)，那么服务器就知道这个是”老用户“。</p>
 
           
         
@@ -1766,6 +1603,10 @@ nonnull表示对象不应该为空</p>
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
 
 
           </div>
@@ -1809,7 +1650,7 @@ nonnull表示对象不应该为空</p>
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">43</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1817,6 +1658,15 @@ nonnull表示对象不应该为空</p>
 
             
 
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
             
 
           </nav>

@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="面试,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Objective-C 在 C 的基础上添加了面向对象的特性，同时它是一种动态编程语言，将静态语言在编译和链接时需要做的一些事情给延后到运行时执行。例如方法的调用，只有在程序执行的时候，才能具体定位到哪个类的哪个方法。这就需要一个运行时库，就是 Runtime。 1. 类的结构和定义在 Objective-C 中，类实际上是一个 objc_class 结构体，其定义如下： 123456789101">
+<meta name="keywords" content="面试">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Objective-C Runtime 机制简析">
+<meta property="og:url" content="https://caicoder.github.io/2017/06/23/Article/Objective-C Runtime 机制简析/index.html">
+<meta property="og:site_name" content="caicoder的博客">
+<meta property="og:description" content="Objective-C 在 C 的基础上添加了面向对象的特性，同时它是一种动态编程语言，将静态语言在编译和链接时需要做的一些事情给延后到运行时执行。例如方法的调用，只有在程序执行的时候，才能具体定位到哪个类的哪个方法。这就需要一个运行时库，就是 Runtime。 1. 类的结构和定义在 Objective-C 中，类实际上是一个 objc_class 结构体，其定义如下： 123456789101">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-19-023919.jpg">
+<meta property="og:image" content="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-19-023930.png">
+<meta property="og:image" content="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-19-023942.png">
+<meta property="og:image" content="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-19-023946.png">
+<meta property="og:image" content="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-19-023952.png">
+<meta property="og:updated_time" content="2019-04-16T06:20:53.011Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Objective-C Runtime 机制简析">
+<meta name="twitter:description" content="Objective-C 在 C 的基础上添加了面向对象的特性，同时它是一种动态编程语言，将静态语言在编译和链接时需要做的一些事情给延后到运行时执行。例如方法的调用，只有在程序执行的时候，才能具体定位到哪个类的哪个方法。这就需要一个运行时库，就是 Runtime。 1. 类的结构和定义在 Objective-C 中，类实际上是一个 objc_class 结构体，其定义如下： 123456789101">
+<meta name="twitter:image" content="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-19-023919.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://caicoder.github.io/2017/06/23/Article/Objective-C Runtime 机制简析/">
+
+
+
+
+
+  <title>Objective-C Runtime 机制简析 | caicoder的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">caicoder的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://caicoder.github.io/2017/06/23/Article/Objective-C Runtime 机制简析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="caicoder">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="caicoder的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Objective-C Runtime 机制简析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-23T12:12:42+08:00">
+                2017-06-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Objective-C 在 C 的基础上添加了面向对象的特性，同时它是一种动态编程语言，将静态语言在编译和链接时需要做的一些事情给延后到运行时执行。例如方法的调用，只有在程序执行的时候，才能具体定位到哪个类的哪个方法。这就需要一个运行时库，就是 Runtime。</p>
+<h1 id="1-类的结构和定义"><a href="#1-类的结构和定义" class="headerlink" title="1. 类的结构和定义"></a>1. 类的结构和定义</h1><p>在 Objective-C 中，类实际上是一个 objc_class 结构体，其定义如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">typedef struct objc_class *Class;</span><br><span class="line">struct objc_class &#123;</span><br><span class="line">   Class isa  OBJC_ISA_AVAILABILITY;</span><br><span class="line"></span><br><span class="line">#if !__OBJC2__</span><br><span class="line">   Class super_class                                        OBJC2_UNAVAILABLE;</span><br><span class="line">   const char *name                                         OBJC2_UNAVAILABLE;</span><br><span class="line">   long version                                             OBJC2_UNAVAILABLE;</span><br><span class="line">   long info                                                OBJC2_UNAVAILABLE;</span><br><span class="line">   long instance_size                                       OBJC2_UNAVAILABLE;</span><br><span class="line">   struct objc_ivar_list *ivars                             OBJC2_UNAVAILABLE;</span><br><span class="line">   struct objc_method_list **methodLists                    OBJC2_UNAVAILABLE;</span><br><span class="line">   struct objc_cache *cache                                 OBJC2_UNAVAILABLE;</span><br><span class="line">   struct objc_protocol_list *protocols                     OBJC2_UNAVAILABLE;</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">&#125; OBJC2_UNAVAILABLE;</span><br><span class="line"></span><br><span class="line">struct objc_object &#123;</span><br><span class="line">   Class isa  OBJC_ISA_AVAILABILITY;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>可以看到，在 objc2.0 中，除了 isa 指针外，objc_class 的其他成员变量皆已被弃用。<br>其中 isa 是 objc_class 结构体的指针，它指向当前类的 meta class。</p>
+<ul>
+<li><strong>meta class 与 class</strong><br>在 objc 中，class 存储类的实例方法（-），meta class 存储类的类方法（+），class 的 isa 指针指向 meta class。下文会对此详细介绍。</li>
+</ul>
+<p>objc_object 结构体就是 objc 中的对象，它仅包含一个 isa 指针，指向当前对象所属的类。 我们常用的 id 实质上就是一个 objc_object 类型的指针。</p>
+<p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-19-023919.jpg" alt></p>
+<p>如图 1.1 所示，一个对象（Instance of Subclass）的 isa 指针指向它所属的类 Subclass（class），Subclass（class）的 isa 指针指向 Subclass（meta），Subclass（meta）的 isa 指针指向 Root class（meta）。Root class（meta）的 isa 指针指向本身。<br>同时，Root class（meta）的父类是 Root class（class），即 NSObject，NSObject 的父类为 nil。</p>
+<h1 id="2-方法的调用"><a href="#2-方法的调用" class="headerlink" title="2. 方法的调用"></a>2. 方法的调用</h1><p>在这里需要先了解几个概念<br><strong>SEL</strong><br>SEL 是 objc_selector 类型指针，是根据特定规则生成的方法的唯一标识。需要注意的是，只要方法名相同，生成的 SEL 就相同，与这个方法属于哪个类没有关系。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">typedef struct objc_selector *SEL;</span><br></pre></td></tr></table></figure>
+<p><strong>IMP</strong><br>如果说，SEL 是方法名，那么 IMP 就是方法的实现。IMP 指针定义了一个方法的入口，指向了实现方法的代码块的内存地址。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">typedef id (*IMP)(id, SEL, ...);</span><br></pre></td></tr></table></figure>
+<p><strong>objc_method</strong><br>在 objc 中，方法实质上是一个 objc_method 指针。其中，method_name 相当于 objc_method 的 hash 值，runtime 通过 method_name 找到相应的方法入口（method_imp），从而执行方法的代码块。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct objc_method &#123;</span><br><span class="line">    SEL method_name                                          OBJC2_UNAVAILABLE;</span><br><span class="line">    char *method_types                                       OBJC2_UNAVAILABLE;</span><br><span class="line">    IMP method_imp                                           OBJC2_UNAVAILABLE;</span><br><span class="line">&#125;                                                            OBJC2_UNAVAILABLE;</span><br></pre></td></tr></table></figure>
+<p><strong>调用一个方法时具体做了什么？</strong><br>在 Objective-C 中，方法的调用采用如下方式:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[object methodWithArg:arg];</span><br></pre></td></tr></table></figure>
+<p>在编译期间，以上代码会被转化为</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objc_msgSend（object, methodWithArg, arg）</span><br></pre></td></tr></table></figure>
+<p>可以把它看作是发送消息的过，其中 object 为消息的接收体，它可能是一个对象，也可能是一个类。若为对象，则是实例方法（- 方法）；反之，则是类方法（+ 方法）。mehodWithArg、arg 是具体的消息内容。<br>object 接收到消息之后，若是实例方法，则会从其所属的类 Subclass(class) 的 methodLists 去寻找 methodWithArg: 方法。若未找着，则到其父类 Superclass(class) 的 methodLists 中寻找。以此类推，直到根类 NSObject，若仍未找着，就 crash。<br>同理，若是类方法，则从对象所属类的 meta class 开始寻找。</p>
+<h1 id="3-在-Objective-C-2-0-中的变化"><a href="#3-在-Objective-C-2-0-中的变化" class="headerlink" title="3. 在 Objective-C 2.0 中的变化"></a>3. 在 Objective-C 2.0 中的变化</h1><p>前面提到过在 objc2.0 中，objc_class 只剩下一个 isa 指针。由于 Xcode 对 API 进行了一定的封装，类的信息并未全部对开发者开放。我们不妨通过阅读 Objective-C 2.0 的源码去分析，可以通过 <a href="https://link.jianshu.com?t=https://opensource.apple.com/tarballs/objc4/" target="_blank" rel="noopener">官网</a>浏览，或者从 <a href="https://link.jianshu.com?t=https://github.com/opensource-apple/objc4" target="_blank" rel="noopener">github</a> 上下载源码。<br>从 objc-runtime-new.h 中可以看到 objc_class 的定义（只截取关键代码，下文同）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">struct objc_object &#123;</span><br><span class="line">    isa_t isa;</span><br><span class="line">&#125;;</span><br><span class="line">struct objc_class : objc_object &#123;</span><br><span class="line">    // Class ISA;</span><br><span class="line">    Class superclass;</span><br><span class="line">    cache_t cache;             // formerly cache pointer and vtable</span><br><span class="line">    class_data_bits_t bits;    // class_rw_t * plus custom rr/alloc flags</span><br><span class="line"></span><br><span class="line">    class_rw_t *data() &#123; </span><br><span class="line">        return bits.data();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>其中，superclass 指向父类，cache 缓存指针、方法入口等，用于提高效率。bits 用于存储类名、类版本号、方法列表、协议列表等信息，替代了 Objective-C1.0 中 methodLists、protocols 等成员变量。</p>
+<p><strong>class_data_bits_t 结构体</strong><br>class_data_bits_t 结构体中只有一个 64 位的指针 bits，它相当于 class_rw_t 指针加上 rr/alloc 等标志位。其中 class_rw_t 指针存在于 4~47 位（从 1 开始计）。</p>
+<p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-19-023930.png" alt></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#define FAST_IS_SWIFT         (1UL&lt;&lt;0)</span><br><span class="line">#define FAST_DATA_MASK        0x00007ffffffffff8UL</span><br></pre></td></tr></table></figure>
+<p>is_swift 标记位标示是否为 swift 的类。通过进行位运算可以得到一个 class_rw_t 类型指针。<br>class_rw_t 结构体的定义如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">struct class_rw_t &#123;</span><br><span class="line">    uint32_t flags;</span><br><span class="line">    uint32_t version;</span><br><span class="line"></span><br><span class="line">    const class_ro_t *ro;</span><br><span class="line"></span><br><span class="line">    method_array_t methods;</span><br><span class="line">    property_array_t properties;</span><br><span class="line">    protocol_array_t protocols;</span><br><span class="line"></span><br><span class="line">    Class firstSubclass;</span><br><span class="line">&#125;；</span><br></pre></td></tr></table></figure>
+<p>其中 methods 存储方法列表、properties 存储属性列表、protocols 存储协议列表。注意到这里有一个 class_ro_t 类型指针，我们会在下文详细介绍。</p>
+<p><strong>dyld 加载镜像</strong><br>dyld 是 objc 的动态链接库，在程序运行时，会将镜像加载进内存。</p>
+<ul>
+<li><strong>镜像</strong><br>工程的编译产物，包括一些动态链接库、Foundation 等等，是一些二进制文件。</li>
+</ul>
+<p>在程序初始化方法_objc_init 中注册了两个回调</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dyld_register_image_state_change_handler(dyld_image_state_bound,1/*batch*/, &amp;map_2_images);</span><br><span class="line">dyld_register_image_state_change_handler(dyld_image_state_dependents_initialized, 0/*not batch*/, &amp;load_images);</span><br></pre></td></tr></table></figure>
+<p>其中, map_2_images 方法的注释为：Process the given images which are being mapped in by dyld，即处理由 dyld 映射的给定镜像。它的调用如下：<br>_map_2_images → map_images_nolock → _read_images → realizeAllClasses_<br>realizeAllClasses 会完成对镜像中所有类的加载和预处理，它最终会调用 realizeClass 来处理每一个类，而 realizeClass 又通过调用 methodizeClass 来对类结构体的 methods 列表赋值。<br>可以通过添加符号断点，来直观的查看这几个方法的调用关系，如图 3.2。</p>
+<p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-19-023942.png" alt></p>
+<p><strong>+load 方法</strong><br>+load 方法会在 main 方法之前被调用，所有使用到的类的 load 方法都会被调用。先调用父类的 + load 方法，再调用子类的 + load 方法；先调用主类的 + load 方法，再调用分类的 + load 方法。</p>
+<p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-19-023946.png" alt></p>
+<p>图 3.3 是 + load 方法的调用栈。load_images 方法是每个镜像加载完毕的回调。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">const char *</span><br><span class="line">load_images(enum dyld_image_states state, uint32_t infoCount,</span><br><span class="line">            const struct dyld_image_info infoList[])</span><br><span class="line">&#123;</span><br><span class="line">    bool found;</span><br><span class="line"></span><br><span class="line">    // Return without taking locks if there are no +load methods here.</span><br><span class="line">    found = false;</span><br><span class="line">    for (uint32_t i = 0; i &lt; infoCount; i++) &#123;</span><br><span class="line">        if (hasLoadMethods((const headerType *)infoList[i].imageLoadAddress)) &#123;</span><br><span class="line">            found = true;</span><br><span class="line">            break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    if (!found) return nil;</span><br><span class="line"></span><br><span class="line">    recursive_mutex_locker_t lock(loadMethodLock);</span><br><span class="line"></span><br><span class="line">    // Discover load methods</span><br><span class="line">    &#123;</span><br><span class="line">        rwlock_writer_t lock2(runtimeLock);</span><br><span class="line">        found = load_images_nolock(state, infoCount, infoList);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // Call +load methods (without runtimeLock - re-entrant)</span><br><span class="line">    if (found) &#123;</span><br><span class="line">        call_load_methods();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return nil;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>load_Images 会判断镜像是否实现了 + load 方法，并且调用 load_images_nolock 方法找到所有 + load 方法，之后通过 call_load_methods 调用所有的 + load 方法。</p>
+<p><strong>class_ro_t</strong><br>class_ro_t 与 class_rw_t 的最大区别在于一个是只读的，一个是可读写的，实质上 ro 就是 readonly 的简写，rw 是 readwrite 的简写。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">struct class_ro_t &#123;</span><br><span class="line">    const char * name;</span><br><span class="line">    method_list_t * baseMethodList;</span><br><span class="line">    protocol_list_t * baseProtocols;</span><br><span class="line">    const ivar_list_t * ivars;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>在编译之后，class_ro_t 的 baseMethodList 就已经确定。当镜像加载的时候，methodizeClass 方法会将 baseMethodList 添加到 class_rw_t 的 methods 列表中，之后会遍历 category_list，并将 category 的方法也添加到 methods 列表中。<br>这里的 category 指的是分类，基于此，category 能扩充一个类的方法。这是开发时经常需要使用到。<br>class_ro_t 在内存中是不可变的。在运行期间，动态给类添加方法，实质上是更新 class_rw_t 的 methods 列表。<br>baseProtocols 与 baseMethodList 类似。<br>objc_object、objc_class、class_rw_t、class_ro_t 的关系如图 3.4。</p>
+<p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-19-023952.png" alt></p>
+<p><strong>类的理解与方法的调用</strong></p>
+<ul>
+<li><p>对象方法：前面提过，调用对象方法，相当于给对象发送消息, 例如 [obj methodWithArg: arg] 。 当 obj_object 接收到消息后，通过其 isa 指针找到对应的 objc_class，objc_class 又通过其 data() 方法，查询 class_rw_t 的 methods 列表。若有，则返回；否则，到其父类寻找。以此类推，直到根类，若在根类中仍没有该方法，则 crash。</p>
+</li>
+<li><p>类方法： 在 objc 中，类本身也是一个对象。objc_class 继承自 objc_object，有一个 isa 指针，指向其所属的类，即 meta class。可以这样理解，类是 meta class 的对象。所以，当调用类方法是，例如 [classObj methodWithArg: arg]，classObj 也会通过其 isa 指针到其所属的类（meta class）中寻找。这也就是为什么说，图 1.1 里 class 存储对象方法，meta class 存储类方法。</p>
+</li>
+<li><p>meta class 的 isa 指针：meta class 本身也是一个对象，它的 isa 指针指向的也是其所属的类。子 meta class 的 isa 指针指向 NSObjct 的 meta class。 NSObjct 的 meta class 的 isa 指针指向自身。当然，由于苹果进行了封装，在开发中基本不可能直接去使用 meta class。</p>
+</li>
+</ul>
+<p><strong>对象的成员变量寻址</strong><br>前面提过，在 objc_object 中只有一个 isa 指针。实际上当我们调用 +alloc 方法来初始化一个对象时，也仅仅在内存中生成了一个 objc_object 结构体，并根据其 instanceSize 来分配空间，将其 isa 指针指向所属的类。<br>类的成员变量 ivar_t 存储在 class_ro_t 中的 ivar_list_t * ivars 中，ivar_t 的定义如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">struct ivar_t &#123;</span><br><span class="line">    int32_t *offset;</span><br><span class="line">    const char *name;</span><br><span class="line">    const char *type;</span><br><span class="line">    uint32_t size;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中 offset 是成员变量相对于对象内存地址的偏移量，正是通过它来完成变量寻址。<br>当我们使用对象的成员变量时，如 myObject.var ，编译器会将其转化为 object_getInstanceVariable(myObject, ‘var’, **value) 找到其 ivar_t 结构体 ivar，然后调用 object_getIvar(myObject, ivar) 来获取成员变量的内存地址。其计算公式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">id *location = (id *)((char *)obj + ivar_offset);</span><br></pre></td></tr></table></figure>
+<p>基于此，虽然多个对象的 isa 指针指向同一个 objc_class，但由于对象的内存地址不一样，所以它们的实例变量存储位置也不一样，从而实现对象与类之间的多对一关系。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/面试/" rel="tag"># 面试</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/19/Article/面试驱动技术 - Category 相关考点/" rel="next" title="面试驱动技术 - Category 相关考点">
+                <i class="fa fa-chevron-left"></i> 面试驱动技术 - Category 相关考点
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/07/01/Article/OC 消息机制和 super 关键字/" rel="prev" title="OC 消息机制和 super 关键字">
+                OC 消息机制和 super 关键字 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">caicoder</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-类的结构和定义"><span class="nav-number">1.</span> <span class="nav-text">1. 类的结构和定义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-方法的调用"><span class="nav-number">2.</span> <span class="nav-text">2. 方法的调用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-在-Objective-C-2-0-中的变化"><span class="nav-number">3.</span> <span class="nav-text">3. 在 Objective-C 2.0 中的变化</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">caicoder</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

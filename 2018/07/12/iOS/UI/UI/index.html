@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="UI,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="UIList1. UI基础要点 2. iOS 界面渲染流程 3.iOS中图片的加载与渲染过程  UI基础1. UITableView/UICollectionView1.1 重用机制一般会通过重用cell来达到节省内存的目的:通过为每个cell指定一个重用标识符(reuseIdentifier),即指定了单元格的种类,当cell滚出屏幕时,会将滚出屏幕的单元格放入重用的缓存池中，当某个未在屏幕上的">
+<meta name="keywords" content="UI">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UI基础">
+<meta property="og:url" content="https://caicoder.github.io/2018/07/12/iOS/UI/UI/index.html">
+<meta property="og:site_name" content="caicoder的博客">
+<meta property="og:description" content="UIList1. UI基础要点 2. iOS 界面渲染流程 3.iOS中图片的加载与渲染过程  UI基础1. UITableView/UICollectionView1.1 重用机制一般会通过重用cell来达到节省内存的目的:通过为每个cell指定一个重用标识符(reuseIdentifier),即指定了单元格的种类,当cell滚出屏幕时,会将滚出屏幕的单元格放入重用的缓存池中，当某个未在屏幕上的">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-22-024811.png">
+<meta property="og:image" content="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-22-024827.png">
+<meta property="og:image" content="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-22-024834.png">
+<meta property="og:image" content="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-22-024839.png">
+<meta property="og:image" content="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-22-024844.png">
+<meta property="og:image" content="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-22-024849.png">
+<meta property="og:image" content="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-22-024854.png">
+<meta property="og:image" content="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-22-024857.png">
+<meta property="og:image" content="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-22-024902.png">
+<meta property="og:image" content="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-22-024910.png">
+<meta property="og:image" content="http://img.isylar.com/media/15420320733034-1.jpg">
+<meta property="og:updated_time" content="2019-04-16T06:19:51.128Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="UI基础">
+<meta name="twitter:description" content="UIList1. UI基础要点 2. iOS 界面渲染流程 3.iOS中图片的加载与渲染过程  UI基础1. UITableView/UICollectionView1.1 重用机制一般会通过重用cell来达到节省内存的目的:通过为每个cell指定一个重用标识符(reuseIdentifier),即指定了单元格的种类,当cell滚出屏幕时,会将滚出屏幕的单元格放入重用的缓存池中，当某个未在屏幕上的">
+<meta name="twitter:image" content="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-22-024811.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://caicoder.github.io/2018/07/12/iOS/UI/UI/">
+
+
+
+
+
+  <title>UI基础 | caicoder的博客</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">caicoder的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://caicoder.github.io/2018/07/12/iOS/UI/UI/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="caicoder">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="caicoder的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">UI基础</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-12T12:12:42+08:00">
+                2018-07-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="UI"><a href="#UI" class="headerlink" title="UI"></a>UI</h1><h2 id="List"><a href="#List" class="headerlink" title="List"></a>List</h2><p><a href="#UI Foundation">1. UI基础要点</a></p>
+<p><a href="#iOS Render Progress">2. iOS 界面渲染流程</a></p>
+<p><a href="#iOS Image Load And Render Progress">3.iOS中图片的加载与渲染过程</a></p>
+<p><a id="UI Foundation"></a></p>
+<h2 id="UI基础"><a href="#UI基础" class="headerlink" title="UI基础"></a>UI基础</h2><h2 id="1-UITableView-UICollectionView"><a href="#1-UITableView-UICollectionView" class="headerlink" title="1. UITableView/UICollectionView"></a>1. UITableView/UICollectionView</h2><h3 id="1-1-重用机制"><a href="#1-1-重用机制" class="headerlink" title="1.1 重用机制"></a>1.1 重用机制</h3><p>一般会通过重用cell来达到节省内存的目的:通过为每个cell指定一个重用标识符(reuseIdentifier),即指定了单元格的种类,当cell滚出屏幕时,会将滚出屏幕的单元格放入重用的缓存池中，当某个未在屏幕上的单元格要显示的时候，就从这个缓存池中取出单元格进行重用。</p>
+<p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-22-024811.png" alt="image-20190312102829081"></p>
+<h3 id="1-2-数据源同步"><a href="#1-2-数据源同步" class="headerlink" title="1.2  数据源同步"></a>1.2  数据源同步</h3><p>如何解决tableView在多线程的情况下修改或者访问数据源的一个同步问题?</p>
+<ul>
+<li>并发访问 &amp; 数据拷贝</li>
+<li>串行访问</li>
+</ul>
+<h2 id="2-UI事件传递和响应"><a href="#2-UI事件传递和响应" class="headerlink" title="2.UI事件传递和响应"></a>2.UI事件传递和响应</h2><h3 id="CALayer-与-UIView"><a href="#CALayer-与-UIView" class="headerlink" title="CALayer 与 UIView"></a>CALayer 与 UIView</h3><ul>
+<li>UIView 为CALayer提供内容，专门负责处理触摸等事件，参与响应链</li>
+<li>CALayer 全权负责显示内容 contents</li>
+<li>单一原则，设计模式（负责相应的功能）</li>
+</ul>
+<h3 id="事件传递"><a href="#事件传递" class="headerlink" title="事件传递"></a>事件传递</h3> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event</span><br><span class="line">//返回最终响应的事件</span><br><span class="line">    //指定想要响应事件的 View, 比如点击的是 A ，可以指派 B 来响应。</span><br><span class="line">- (BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event</span><br><span class="line">//判断点击位置是否在当前范围内</span><br><span class="line">    //控制响应的范围，扩大 or 缩小。</span><br></pre></td></tr></table></figure>
+<p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-22-024827.png" alt="image-20190312105858402"></p>
+<ul>
+<li>首先判断当前视图 !hidden &amp;$ userInteractionEnable &amp;&amp; alpha &gt; 0.01 条件通过的时候，到下一步.   否则返回nil，找不到当前视图</li>
+<li>通过 pointInside 判断点击的点是否在当前范围内，为YES直接下一步.  不在则直接返回nil。</li>
+<li><code>倒序遍历</code>所有子视图，同时调用 hitTest 方法，如果某一个子视图返回了对应的响应视图，这个子视图会直接作为最终的响应视图给响应方，如果为 nil 则继续遍历下一个子视图。如果全部遍历结束都返回nil，那会返回当前点击位置在当前的视图范围内的视图作为最终响应视图…….</li>
+</ul>
+<p>当我们点击屏幕时候的事件传递</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UIApplication -&gt; UIWindow -&gt; hitTest:withEvent:</span><br></pre></td></tr></table></figure>
+<h3 id="视图响应链-注意和事件传递是倆概念"><a href="#视图响应链-注意和事件传递是倆概念" class="headerlink" title="视图响应链 (注意和事件传递是倆概念)"></a>视图响应链 (注意和事件传递是倆概念)</h3><p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-22-024834.png" alt="image-20190312112027519"></p>
+<h2 id="3-图像显示原理"><a href="#3-图像显示原理" class="headerlink" title="3 图像显示原理"></a>3 图像显示原理</h2><p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-22-024839.png" alt="image-20190312113303637"></p>
+<p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-22-024844.png" alt="image-20190312112603570"></p>
+<p>CPU和GPU通过总线连接，CPU中计算出的往往是bitmap位图，通过总线由合适的时机传递给GPU，GPU拿到位图后，渲染到帧缓存区FrameBuffer,然后由视频控制器根据vsync信号在指定时间之前去帧缓冲区提取内容，显示到屏幕上。</p>
+<p><code>CPU工作内容:</code>layout（UI布局，文本计算），display（绘制 drawRect）,prepare(图片解码)，commit（提交位图）</p>
+<p><code>GPU工作内容:</code> 顶点着色，图元装配，光栅化，片段着色，片段处理，最后提交帧缓冲区</p>
+<h3 id="3-1-UI-卡顿、掉帧原理"><a href="#3-1-UI-卡顿、掉帧原理" class="headerlink" title="3.1  UI 卡顿、掉帧原理"></a>3.1  UI 卡顿、掉帧原理</h3><p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-22-024849.png" alt="image-20190312140156990"></p>
+<p>在规定的16.7ms内，在下一个VSync信号到来之前，CPU和GPU并没有共同完成下一帧视频的合成，就会出现掉帧、卡顿。</p>
+<h5 id="滑动优化方案思路："><a href="#滑动优化方案思路：" class="headerlink" title="滑动优化方案思路："></a>滑动优化方案思路：</h5><ul>
+<li><p>CPU：</p>
+<ul>
+<li><p>对象的创建、调整、销毁可以放在子线程中去做ASDK；</p>
+</li>
+<li><p>预排班。布局计算、文本计算等事先放到子线程中去做；</p>
+</li>
+<li><p>使用轻量级对象，比如CALayer代替UIView</p>
+</li>
+<li><p>预渲染。文本等异步绘制，图片编解码等。</p>
+</li>
+<li><p>控制并发线程数量</p>
+</li>
+<li><p>减少重复计算布局，减少修改frame等</p>
+</li>
+<li><p>autolayout比frame更消耗资源</p>
+</li>
+<li><p>可以让图片的size跟frame一致</p>
+</li>
+</ul>
+</li>
+<li><p>GPU：</p>
+<ul>
+<li><p>纹理渲染。避免离屏渲染</p>
+</li>
+<li><p>视图混合。减少视图层级的复杂性，减少透明视图；不透明的opaque设置为YES</p>
+</li>
+<li><p>GPU能处理的最大纹理是4096 * 4096，一旦超过这个尺寸就会调用CPU进行资源处理，所以纹理尽量不要超过这个尺寸</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-UIView的绘制原理"><a href="#4-UIView的绘制原理" class="headerlink" title="4.UIView的绘制原理"></a>4.UIView的绘制原理</h3><p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-22-024854.png" alt="image-20190312141642996"></p>
+<p><code>[UIView setNeedsDisplay]</code> 并没有发生当前视图立即绘制工作,打上需要重绘的脏标记，最后是在某个时机完成</p>
+<p><code>[UIView setLayoutIfNeed]</code> 立即重新布局视图</p>
+<p>当我们调用UIView的<code>setNeedsDisplay</code>的方法时候，会调用<code>layer</code>的同名方法，相当于在当前<code>layer</code>打上绘制标记，在当前<code>runloop</code>将要结束的时候，才会调用CALayer的<code>display</code>方法进入到真正的绘制当中。</p>
+<p>CALayer的<code>display</code>方法中，首先会判断layer的delegate方法<code>displayLayer：</code>是否实现，如果代理没有响应这个方法，则进入到系统绘制流程；如果代理响应了这个方法，则进入到异步绘制流程 </p>
+<h4 id="4-1系统绘制流程"><a href="#4-1系统绘制流程" class="headerlink" title="4.1系统绘制流程"></a>4.1系统绘制流程</h4><p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-22-024857.png" alt="image-20190312142115333"></p>
+<p>在CALayer内部，系统会创建一个backingStore（可以理解为CGContextRef，drawRect中取到的currentRef就是这个东西），然后layer回判断是否有delegate，如果没有代理，就调用CALayer的<code>drawInContext：</code>方法；如果有代理，则调用layer代理的<code>drawLayer:inContext:</code>方法，这一步发生在系统内部，然后在合适的时间给与我们回调一个熟悉的UIView的<code>drawRect：</code>方法。也就是在系统内部的绘制之上，允许我们再做一些额外的绘制。最后CALayer把backting store（位图）传给GPU。</p>
+<h4 id="4-2-异步绘制流程"><a href="#4-2-异步绘制流程" class="headerlink" title="4.2 异步绘制流程"></a>4.2 异步绘制流程</h4><p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-22-024902.png" alt="image-20190312142425272"></p>
+<p>layer的delegate如果实现了<code>displayLayer:</code>方法，就会进入到异步绘制的流程。在异步绘制的过程中，需要代理来生成对应的bitmap位图文件，并把此bitmap作为layer的contents属性</p>
+<p><img src="http://sylarimage.oss-cn-shenzhen.aliyuncs.com/2019-03-22-024910.png" alt="image-20190312142514299"></p>
+<h4 id="4-3-离屏渲染"><a href="#4-3-离屏渲染" class="headerlink" title="4.3 离屏渲染"></a>4.3 离屏渲染</h4><p>当设置某些UI图层属性时候，如果指定为被未预合成之前，不能直接显示在屏幕上的时候，就触发了离屏渲染。离屏渲染是基于GPU层面上的，指GPU在当前屏幕缓冲区外开辟了一个缓冲区，进行渲染操作。</p>
+<h5 id="何时会触发离屏渲染："><a href="#何时会触发离屏渲染：" class="headerlink" title="何时会触发离屏渲染："></a>何时会触发离屏渲染：</h5><ul>
+<li>设置图层圆角的时候，且跟maskToBounds或者clipToBounds同时使用；</li>
+<li>设置图层蒙版</li>
+<li>阴影</li>
+<li>光栅化</li>
+</ul>
+<h5 id="为何要避免离屏渲染"><a href="#为何要避免离屏渲染" class="headerlink" title="为何要避免离屏渲染?"></a>为何要避免离屏渲染?</h5><p>离屏渲染发生在GPU层面上，因为离屏渲染使GPU触发Opengl多通道渲染管线，产生额外开销，所以要避免。 在触发离屏渲染时候，会增加GPU工作量，增加GPU工作量，可能会导致GPU和CPU工作耗时的总耗时超出Vsync信号时间，导致UI卡顿或者掉帧。</p>
+<p><a id="iOS Render Progress"></a></p>
+<h2 id="iOS-界面渲染流程"><a href="#iOS-界面渲染流程" class="headerlink" title="iOS 界面渲染流程"></a>iOS 界面渲染流程</h2><p><img src="http://img.isylar.com/media/15420320733034-1.jpg" alt="15420320733034"></p>
+<ol>
+<li>首先一个视图由 CPU 进行 Frame 布局，准备视图和图层的层级关系，查询是否有重写 <code>drawRect:</code> 或 <code>drawLayer:inContext:</code>方法，<strong>注意：如果有重写的话，这里的渲染是会占用CPU进行处理的。</strong></li>
+<li>CPU 会将处理视图和图层的层级关系打包，通过 IPC（内部处理通信）通道提交给渲染服务，渲染服务由 OpenGL ES 和 GPU 组成。</li>
+<li>渲染服务首先将图层数据交给 OpenGL ES 进行纹理生成和着色。生成前后帧缓存，再根据显示硬件的刷新频率，一般以设备的Vsync信号和CADisplayLink为标准，进行前后帧缓存的切换。</li>
+<li>最后，将最终要显示在画面上的后帧缓存交给 GPU，进行采集图片和形状，运行变换，应用文理和混合。最终显示在屏幕上。</li>
+</ol>
+<blockquote>
+<p>在iOS中是双缓冲机制，有前帧缓存、后帧缓存，即GPU会预先渲染好一帧放入一个缓冲区内（前帧缓存），让视频控制器读取，当下一帧渲染好后，GPU会直接把视频控制器的指针指向第二个缓冲器（后帧缓存）。当你视频控制器已经读完一帧，准备读下一帧的时候，GPU会等待显示器的VSync信号发出后，前帧缓存和后帧缓存会瞬间切换，后帧缓存会变成新的前帧缓存，同时旧的前帧缓存会变成新的后帧缓存。</p>
+</blockquote>
+<p><a id="iOS Image Load And Render Progress"></a></p>
+<h2 id="iOS中图片的加载与渲染过程"><a href="#iOS中图片的加载与渲染过程" class="headerlink" title="iOS中图片的加载与渲染过程"></a>iOS中图片的加载与渲染过程</h2><ol>
+<li>要访问的图片文件通过系统调用 <code>mmap()</code> 映射到内存，通过 <code>CGImageSourceRef</code> 访问图像数据，创建<code>CGImageRef</code>。</li>
+</ol>
+<ul>
+<li>传统操作系统的I/O操作为标准I/O，即缓存I/O。在这种I/O模型下，数据先从磁盘拷贝到内核空间的缓冲区，然后从内核空间缓冲区拷贝到用户的内存空间。这种方式的优点是减少了磁盘操作，提高性能。但因为数据在传输过程中需要在用户内存空间和内核空间间进行多次数据拷贝操作，造成很大的CPU及内存开销。</li>
+<li><code>mmap()</code> 将硬盘数据直接映射到虚拟内存中，应用可以直接访问虚拟内存中对应的地址来读取数据，避免了数据在内核空间和用户空间的相互拷贝，效率更高。在<strong>使用这些数据时，虚拟内存管理系统才会根据缺页加载的机制从磁盘加载对应的数据块到物理内存，在这之前不会消耗用户空间的内存。</strong> iOS中，使用 imageNamed 或者imageWithContentsOfFile 时，系统会调用 mmap() 将图片文件映射到虚拟内存，并创建 CGImageRef 用于后续访问图片数据。</li>
+</ul>
+<ol start="2">
+<li>在主线程中，将图片数据赋值给 UIImageView 。在保存图片时，为了节省空间，通常会将图片编码（压缩）后再进行存储。<strong>如果读取的图片数据为压缩后的数据的话，那就需要对其进行解码成位图（Bitmap）数据。</strong> 不同加载图片的方式，在这一步的操作上会有一定的差异。</li>
+</ol>
+<ul>
+<li><code>imageNamed:</code> 会在图片第一次渲染到屏幕上的时候进行解码，并缓存解码后的图片数据。缓存数据存储在全局缓存中，不会随着UIImag的释放而释放。</li>
+<li><code>imageWithContentsOfFile:</code> 或 <code>imageWithData:</code> 同样会在图片第一次渲染到屏幕上的时候进行解码。底层会调用到 <code>CGImageSourceCreateWithData()</code> 方法，该方法可以指定是否要缓存解码后的数据，在64位机器上默认需要缓存（<code>kCGImageSourceShouldCache</code>）。与上面的方法不同，这种方式创建的缓存会随着UIImage的释放而被释放掉。</li>
+</ul>
+<ol start="3">
+<li>手动调用 <code>CGImageSourceCreateWithData()</code> 方法可以指定是否需要缓存（<code>kCGImageSourceShouldCache</code>），之后再调用 <code>CGImageSourceCreateImageAtIndex()</code> 可以设置是否需要立即进行解码（<code>kCGImageSourceShouldCacheImmediately</code>），如果设置为不需要立刻解码，则会在<strong>将图片渲染到屏幕上时才进行解码。</strong>（设置为立即解码会阻塞主线程，造成性能问题，详见 https://www.objc.io/issues/5-ios7/iOS7-hidden-gems-and-workarounds/）</li>
+<li>UIImageView 的图层树（Layer Tree）发生变化，会生成一个 <code>Implicit Transaction</code>，这个<code>transaction</code>会自动在主线程的下一个 Runloop 进行提交。（<code>Explicit Transaction</code> 由显式调用 begin() 和 commit() 方法触发生成。）</li>
+<li>下一个Main Runloop中，Core Animation会提交这个 Implicit Transaction。如果用户内存中的位图数据没<strong>有字节对齐</strong> ，出于渲染性能考虑， <strong>Core Animation会对数据进行拷贝，以进行字节对齐。</strong> 之后，GPU会渲染对齐后的位图数据，展示在屏幕上。</li>
+</ol>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference:"></a>Reference:</h2><p><a href="http://blog.corneliamu.com/archives/95" target="_blank" rel="noopener">1.iOS中图片的加载与渲染过程</a></p>
+<p><a href="https://blog.ibireme.com/2015/11/12/smooth_user_interfaces_for_ios/" target="_blank" rel="noopener">2.iOS 保持界面流畅的技巧</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/UI/" rel="tag"># UI</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/10/iOS/Runtime/Runtime/" rel="next" title="Runtime">
+                <i class="fa fa-chevron-left"></i> Runtime
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/15/Interview/【2018 年最新】 iOS 面试题及答案 (一)/" rel="prev" title="面试题目">
+                面试题目 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">caicoder</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#UI"><span class="nav-number">1.</span> <span class="nav-text">UI</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#List"><span class="nav-number">1.1.</span> <span class="nav-text">List</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UI基础"><span class="nav-number">1.2.</span> <span class="nav-text">UI基础</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-UITableView-UICollectionView"><span class="nav-number">1.3.</span> <span class="nav-text">1. UITableView/UICollectionView</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-重用机制"><span class="nav-number">1.3.1.</span> <span class="nav-text">1.1 重用机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-数据源同步"><span class="nav-number">1.3.2.</span> <span class="nav-text">1.2  数据源同步</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-UI事件传递和响应"><span class="nav-number">1.4.</span> <span class="nav-text">2.UI事件传递和响应</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CALayer-与-UIView"><span class="nav-number">1.4.1.</span> <span class="nav-text">CALayer 与 UIView</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#事件传递"><span class="nav-number">1.4.2.</span> <span class="nav-text">事件传递</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#视图响应链-注意和事件传递是倆概念"><span class="nav-number">1.4.3.</span> <span class="nav-text">视图响应链 (注意和事件传递是倆概念)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-图像显示原理"><span class="nav-number">1.5.</span> <span class="nav-text">3 图像显示原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-UI-卡顿、掉帧原理"><span class="nav-number">1.5.1.</span> <span class="nav-text">3.1  UI 卡顿、掉帧原理</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#滑动优化方案思路："><span class="nav-number">1.5.1.0.1.</span> <span class="nav-text">滑动优化方案思路：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-UIView的绘制原理"><span class="nav-number">1.5.2.</span> <span class="nav-text">4.UIView的绘制原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#4-1系统绘制流程"><span class="nav-number">1.5.2.1.</span> <span class="nav-text">4.1系统绘制流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-2-异步绘制流程"><span class="nav-number">1.5.2.2.</span> <span class="nav-text">4.2 异步绘制流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-3-离屏渲染"><span class="nav-number">1.5.2.3.</span> <span class="nav-text">4.3 离屏渲染</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#何时会触发离屏渲染："><span class="nav-number">1.5.2.3.1.</span> <span class="nav-text">何时会触发离屏渲染：</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#为何要避免离屏渲染"><span class="nav-number">1.5.2.3.2.</span> <span class="nav-text">为何要避免离屏渲染?</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iOS-界面渲染流程"><span class="nav-number">1.6.</span> <span class="nav-text">iOS 界面渲染流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iOS中图片的加载与渲染过程"><span class="nav-number">1.7.</span> <span class="nav-text">iOS中图片的加载与渲染过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Reference"><span class="nav-number">1.8.</span> <span class="nav-text">Reference:</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">caicoder</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

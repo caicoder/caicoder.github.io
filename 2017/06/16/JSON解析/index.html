@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="1 简介 使用NSJSONSerialization，我们可以将JSON转换为AnyObject对象，或将AnyObject对象转换为JSON对象。 将一个AnyObject对象转换JSON对象必须具备以下条件。  该对象的是NSArray或NSDictionary。 内部数据只能是NSString, NSNumber, NSArray, NSDictionary, 或NSNull。 所有字典的k">
+<meta name="description" content="1 简介使用NSJSONSerialization，我们可以将JSON转换为AnyObject对象，或将AnyObject对象转换为JSON对象。 将一个AnyObject对象转换JSON对象必须具备以下条件。  该对象的是NSArray或NSDictionary。 内部数据只能是NSString, NSNumber, NSArray, NSDictionary, 或NSNull。 所有字典的ke">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Json 解析">
 <meta property="og:url" content="https://caicoder.github.io/2017/06/16/JSON解析/index.html">
 <meta property="og:site_name" content="caicoder的博客">
-<meta property="og:description" content="1 简介 使用NSJSONSerialization，我们可以将JSON转换为AnyObject对象，或将AnyObject对象转换为JSON对象。 将一个AnyObject对象转换JSON对象必须具备以下条件。  该对象的是NSArray或NSDictionary。 内部数据只能是NSString, NSNumber, NSArray, NSDictionary, 或NSNull。 所有字典的k">
+<meta property="og:description" content="1 简介使用NSJSONSerialization，我们可以将JSON转换为AnyObject对象，或将AnyObject对象转换为JSON对象。 将一个AnyObject对象转换JSON对象必须具备以下条件。  该对象的是NSArray或NSDictionary。 内部数据只能是NSString, NSNumber, NSArray, NSDictionary, 或NSNull。 所有字典的ke">
 <meta property="og:locale" content="default">
 <meta property="og:updated_time" content="2019-04-16T04:35:51.845Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Json 解析">
-<meta name="twitter:description" content="1 简介 使用NSJSONSerialization，我们可以将JSON转换为AnyObject对象，或将AnyObject对象转换为JSON对象。 将一个AnyObject对象转换JSON对象必须具备以下条件。  该对象的是NSArray或NSDictionary。 内部数据只能是NSString, NSNumber, NSArray, NSDictionary, 或NSNull。 所有字典的k">
+<meta name="twitter:description" content="1 简介使用NSJSONSerialization，我们可以将JSON转换为AnyObject对象，或将AnyObject对象转换为JSON对象。 将一个AnyObject对象转换JSON对象必须具备以下条件。  该对象的是NSArray或NSDictionary。 内部数据只能是NSString, NSNumber, NSArray, NSDictionary, 或NSNull。 所有字典的ke">
 
 
 
@@ -299,8 +299,7 @@
       
 
       
-        <h1>1 简介</h1>
-<p>使用NSJSONSerialization，我们可以将JSON转换为AnyObject对象，或将AnyObject对象转换为JSON对象。</p>
+        <h1 id="1-简介"><a href="#1-简介" class="headerlink" title="1 简介"></a>1 简介</h1><p>使用NSJSONSerialization，我们可以将JSON转换为AnyObject对象，或将AnyObject对象转换为JSON对象。</p>
 <p>将一个AnyObject对象转换JSON对象必须具备以下条件。</p>
 <ol>
 <li>该对象的是NSArray或NSDictionary。</li>
@@ -310,11 +309,9 @@
 </ol>
 <p>你还可以通过方法<code>isValidJSONObject:</code>判断一个对象能否转换成JSON对象。</p>
 <p>JSON对象其实质是一个NSDAta对象。</p>
-<h1>2 AnyObject转JSON</h1>
-<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> dict = [<span class="type">String</span>: <span class="type">String</span>]()</span><br><span class="line">dict[<span class="string">"name"</span>] = <span class="string">"阳君"</span></span><br><span class="line">dict[<span class="string">"qq"</span>] = <span class="string">"937447974"</span></span><br><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> <span class="type">NSJSONSerialization</span>.isValidJSONObject(dict) &#123; <span class="comment">// 能否转换为JSON Data</span></span><br><span class="line">        <span class="comment">// 转换为JSON Data</span></span><br><span class="line">        <span class="keyword">let</span> data  = <span class="keyword">try</span> <span class="type">NSJSONSerialization</span>.dataWithJSONObject(dict, options: <span class="type">NSJSONWritingOptions</span>.<span class="type">PrettyPrinted</span>)</span><br><span class="line">        <span class="comment">// 转换为json串</span></span><br><span class="line">        <span class="keyword">self</span>.jsonString = <span class="type">String</span>(data: data, encoding: <span class="type">NSUTF8StringEncoding</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"json生成:\(self.jsonString)"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"转换出错:\(error)"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h1>3 JSON转AnyObject</h1>
-<p><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// json转data</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> data = <span class="keyword">self</span>.jsonString?.dataUsingEncoding(<span class="type">NSUTF8StringEncoding</span>) &#123;</span><br><span class="line">    <span class="keyword">do</span> &#123;</span><br><span class="line">        <span class="comment">// data转JSON Object</span></span><br><span class="line">        <span class="keyword">let</span> jsonObject = <span class="keyword">try</span> <span class="type">NSJSONSerialization</span>.<span class="type">JSONObjectWithData</span>(data, options: <span class="type">NSJSONReadingOptions</span>.<span class="type">AllowFragments</span>)</span><br><span class="line">        <span class="comment">// JSON Object转实际对象</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> dict = jsonObject <span class="keyword">as</span>? <span class="type">Dictionary</span>&lt;<span class="type">String</span>, <span class="type">AnyObject</span>&gt; &#123;</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">"json解析:\(dict)"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"解析xml出错:\(error)"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p> </p>
+<h1 id="2-AnyObject转JSON"><a href="#2-AnyObject转JSON" class="headerlink" title="2 AnyObject转JSON"></a>2 AnyObject转JSON</h1><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> dict = [<span class="type">String</span>: <span class="type">String</span>]()</span><br><span class="line">dict[<span class="string">"name"</span>] = <span class="string">"阳君"</span></span><br><span class="line">dict[<span class="string">"qq"</span>] = <span class="string">"937447974"</span></span><br><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> <span class="type">NSJSONSerialization</span>.isValidJSONObject(dict) &#123; <span class="comment">// 能否转换为JSON Data</span></span><br><span class="line">        <span class="comment">// 转换为JSON Data</span></span><br><span class="line">        <span class="keyword">let</span> data  = <span class="keyword">try</span> <span class="type">NSJSONSerialization</span>.dataWithJSONObject(dict, options: <span class="type">NSJSONWritingOptions</span>.<span class="type">PrettyPrinted</span>)</span><br><span class="line">        <span class="comment">// 转换为json串</span></span><br><span class="line">        <span class="keyword">self</span>.jsonString = <span class="type">String</span>(data: data, encoding: <span class="type">NSUTF8StringEncoding</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"json生成:\(self.jsonString)"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">"转换出错:\(error)"</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="3-JSON转AnyObject"><a href="#3-JSON转AnyObject" class="headerlink" title="3 JSON转AnyObject"></a>3 JSON转AnyObject</h1><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// json转data</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> data = <span class="keyword">self</span>.jsonString?.dataUsingEncoding(<span class="type">NSUTF8StringEncoding</span>) &#123;</span><br><span class="line">    <span class="keyword">do</span> &#123;</span><br><span class="line">        <span class="comment">// data转JSON Object</span></span><br><span class="line">        <span class="keyword">let</span> jsonObject = <span class="keyword">try</span> <span class="type">NSJSONSerialization</span>.<span class="type">JSONObjectWithData</span>(data, options: <span class="type">NSJSONReadingOptions</span>.<span class="type">AllowFragments</span>)</span><br><span class="line">        <span class="comment">// JSON Object转实际对象</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">let</span> dict = jsonObject <span class="keyword">as</span>? <span class="type">Dictionary</span>&lt;<span class="type">String</span>, <span class="type">AnyObject</span>&gt; &#123;</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">"json解析:\(dict)"</span>)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"解析xml出错:\(error)"</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>&#160;</p>
 <hr>
 
       
@@ -340,8 +337,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/05/17/深入理解KVC与KVO/" rel="next" title="深入理解KVC与KVO">
-                <i class="fa fa-chevron-left"></i> 深入理解KVC与KVO
+              <a href="/2017/06/08/Article/谜一样的 Runloop(2_2) /" rel="next" title="谜一样的 Runloop(2_2)">
+                <i class="fa fa-chevron-left"></i> 谜一样的 Runloop(2_2)
               </a>
             
           </div>
@@ -350,8 +347,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/07/16/NSFileManager/" rel="prev" title="NSFileManager">
-                NSFileManager <i class="fa fa-chevron-right"></i>
+              <a href="/2017/06/19/Article/面试驱动技术 - Category 相关考点/" rel="prev" title="面试驱动技术 - Category 相关考点">
+                面试驱动技术 - Category 相关考点 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -429,7 +426,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">43</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -437,6 +434,15 @@
 
             
 
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
             
 
           </nav>
@@ -466,7 +472,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">1.</span> <span class="nav-text">1 简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">2.</span> <span class="nav-text">2 AnyObject转JSON</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#undefined"><span class="nav-number">3.</span> <span class="nav-text">3 JSON转AnyObject</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-简介"><span class="nav-number">1.</span> <span class="nav-text">1 简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-AnyObject转JSON"><span class="nav-number">2.</span> <span class="nav-text">2 AnyObject转JSON</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-JSON转AnyObject"><span class="nav-number">3.</span> <span class="nav-text">3 JSON转AnyObject</span></a></li></ol></div>
             
 
           </div>
